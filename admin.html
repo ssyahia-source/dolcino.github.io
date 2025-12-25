@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Délices Sucrés - Gestion gâteaux</title>
+    <style>
+        :root {
+            --primary: #FF6B8B; /* Rose pâtissier */
+            --secondary: #FFB74D; /* Orange doux */
+            --accent: #FFD166; /* Jaune crème */
+            --dark: #8B4513; /* Brun chocolat */
+            --light: #FFF8F0; /* Crème très claire */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE4CC 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.1);
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, var(--dark) 0%, #A0522D 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+        }
+        
+        .admin-header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .back-to-site {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-site:hover {
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        .admin-nav {
+            background: var(--light);
+            padding: 20px;
+            border-bottom: 1px solid #FFE4CC;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: white;
+            border: 2px solid #FFE4CC;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .admin-content {
+            padding: 30px;
+            min-height: 500px;
+        }
+        
+        .admin-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            color: var(--dark);
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+        
+        .form-container {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #FFE4CC;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #FFD166;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-control-file {
+            padding: 8px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: #FF4081;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+        }
+        
+        .btn-secondary {
+            background: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #A0522D;
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+        }
+        
+        .btn-success:hover {
+            background: #FF9800;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .product-card {
+            border: 1px solid #FFE4CC;
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .product-card h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        .product-price {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .product-category {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .category-anniversaire { background: #FFE0E6; color: #D81B60; }
+        .category-mariage { background: #FFF3E0; color: #F57C00; }
+        .category-quotidien { background: #FFF8E1; color: #FFA000; }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background: #FFF8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .image-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .image-thumb.active {
+            border-color: var(--primary);
+        }
+        
+        .image-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-group input {
+            flex: 1;
+        }
+        
+        .images-list {
+            background: #FFF8F0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .image-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            border: 1px solid #FFE4CC;
+        }
+        
+        .image-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border: 1px solid #C8E6C9;
+        }
+        
+        .status-info {
+            background: #E1F5FE;
+            color: #0277BD;
+            border: 1px solid #B3E5FC;
+        }
+        
+        .models-list {
+            margin-top: 20px;
+        }
+        
+        .model-item {
+            background: #FFF8F0;
+            border: 1px solid #FFE4CC;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .model-info h5 {
+            margin: 0 0 5px 0;
+            color: var(--dark);
+        }
+        
+        .model-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .model-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .models-container {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #FFF8F0;
+            border-radius: 8px;
+        }
+        
+        /* Styles pour les ingrédients */
+        .ingredients-group {
+            background: #FFF3E0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .ingredient-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Styles pour l'upload */
+        .upload-area {
+            border: 2px dashed #FFD166;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            background: rgba(255, 209, 102, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(255, 107, 139, 0.1);
+        }
+        
+        .upload-area i {
+            font-size: 3em;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .uploaded-files {
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            border: 1px solid #FFE4CC;
+        }
+        
+        .file-size {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-nav {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .model-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .model-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-birthday-cake"></i> DÉLICES SUCRÉS ADMIN</h1>
+            <p>Gestion complète des gâteaux et prix</p>
+            <a href="index.html" class="back-to-site">
+                <i class="fas fa-arrow-left"></i> Retour à la pâtisserie
+            </a>
+        </div>
+        
+        <div class="admin-nav">
+            <button class="nav-btn active" onclick="showSection('add')">
+                <i class="fas fa-plus-circle"></i> Ajouter un gâteau
+            </button>
+            <button class="nav-btn" onclick="showSection('edit')">
+                <i class="fas fa-edit"></i> Éditer les gâteaux
+            </button>
+            <button class="nav-btn" onclick="showSection('models')">
+                <i class="fas fa-cube"></i> Variantes de gâteaux
+            </button>
+            <button class="nav-btn" onclick="showSection('images')">
+                <i class="fas fa-images"></i> Images multiples
+            </button>
+            <button class="nav-btn" onclick="showSection('prices')">
+                <i class="fas fa-tags"></i> Gestion des prix
+            </button>
+        </div>
+        
+        <div class="admin-content">
+            <!-- SECTION AJOUT GÂTEAU -->
+            <div class="admin-section active" id="add-section">
+                <h2 class="section-title"><i class="fas fa-plus-circle"></i> Nouveau gâteau</h2>
+                <div class="form-container">
+                    <form id="addForm">
+                        <div class="form-group">
+                            <label><i class="fas fa-birthday-cake"></i> Nom du gâteau</label>
+                            <input type="text" id="productName" class="form-control" placeholder="Ex: Gâteau Chocolat Fondant" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill-wave"></i> Prix (DT)</label>
+                            <input type="text" id="productPrice" class="form-control" placeholder="89.99 ou À partir de 89.99 DT" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-list"></i> Catégorie</label>
+                            <select id="productCategory" class="form-control" required>
+                                <option value="">Sélectionner une catégorie</option>
+                                <option value="anniversaire">🎂 Anniversaires</option>
+                                <option value="mariage">💒 Mariages</option>
+                                <option value="quotidien">🍰 Quotidien</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-layer-group"></i> Type de gâteau</label>
+                            <select id="productType" class="form-control">
+                                <option value="">Gâteau simple (pas de variantes)</option>
+                                <option value="chocolat">Chocolat</option>
+                                <option value="vanille">Vanille</option>
+                                <option value="fruit">Fruits</option>
+                                <option value="fromage">Cheesecake</option>
+                                <option value="carotte">Carotte</option>
+                                <option value="redvelvet">Red Velvet</option>
+                                <option value="noix">Noix et fruits secs</option>
+                                <option value="glace">Gâteau glacé</option>
+                            </select>
+                            <small style="color: #666;">Sélectionnez un type pour créer une catégorie avec plusieurs variantes</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-image"></i> Image principale</label>
+                            <div class="upload-area" onclick="document.getElementById('mainImageFile').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Cliquez pour sélectionner une image</p>
+                                <p><small>Formats acceptés: JPG, PNG, GIF (max 2MB)</small></p>
+                            </div>
+                            <input type="file" id="mainImageFile" accept="image/*" style="display: none;" onchange="handleMainImageUpload(event)">
+                            
+                            <div id="mainImagePreview" class="image-preview" style="margin-top: 15px; display: none;">
+                                <img id="mainPreviewImg" src="" alt="Aperçu">
+                            </div>
+                            
+                            <div id="mainImageInfo" style="display: none; margin-top: 10px;">
+                                <strong>Image sélectionnée:</strong>
+                                <span id="selectedFileName"></span>
+                                <button type="button" onclick="removeMainImage()" style="background: none; border: none; color: #FF4081; cursor: pointer; margin-left: 10px;">
+                                    <i class="fas fa-times"></i> Retirer
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-images"></i> Images supplémentaires (optionnel)</label>
+                            <div class="upload-area" onclick="document.getElementById('additionalImages').click()">
+                                <i class="fas fa-images"></i>
+                                <p>Cliquez pour ajouter plusieurs images</p>
+                                <p><small>Maintenez Ctrl pour sélectionner plusieurs images</small></p>
+                            </div>
+                            <input type="file" id="additionalImages" accept="image/*" multiple style="display: none;" onchange="handleAdditionalImagesUpload(event)">
+                            
+                            <div id="additionalImagesPreview" class="image-thumbnails" style="margin-top: 15px; display: none;"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> Description</label>
+                            <textarea id="productDescription" class="form-control" rows="3" placeholder="Description détaillée du gâteau..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-seedling"></i> Ingrédients principaux (optionnel)</label>
+                            <div class="ingredients-group">
+                                <div class="ingredient-item">
+                                    <input type="text" class="form-control" placeholder="Ex: Chocolat noir 70%">
+                                </div>
+                                <button type="button" class="btn btn-secondary" onclick="addIngredientField()" style="width: 100%; margin-top: 10px;">
+                                    <i class="fas fa-plus"></i> Ajouter un ingrédient
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-exclamation-triangle"></i> Allergènes (optionnel)</label>
+                            <input type="text" id="allergens" class="form-control" placeholder="Ex: Lait, Œufs, Noix">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-utensils"></i> Portions (personnes)</label>
+                            <input type="number" id="portions" class="form-control" placeholder="8" min="1" max="100">
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-save"></i> Ajouter le gâteau
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-redo"></i> Réinitialiser
+                        </button>
+                    </form>
+                </div>
+                
+                <div id="addMessage" style="margin-top: 20px;"></div>
+            </div>
+            
+            <!-- SECTION ÉDITION GÂTEAUX -->
+            <div class="admin-section" id="edit-section">
+                <h2 class="section-title"><i class="fas fa-edit"></i> Éditer les gâteaux</h2>
+                
+                <div class="products-grid" id="productsList">
+                    <!-- Les gâteaux seront chargés ici -->
+                </div>
+            </div>
+            
+            <!-- SECTION VARIANTES DE GÂTEAUX -->
+            <div class="admin-section" id="models-section">
+                <h2 class="section-title"><i class="fas fa-cube"></i> Variantes de gâteaux</h2>
+                
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Sélectionner un type</label>
+                        <select id="typeSelect" class="form-control" onchange="loadTypeDetails()">
+                            <option value="">Choisir un type...</option>
+                            <option value="chocolat">Gâteaux au chocolat</option>
+                            <option value="vanille">Gâteaux à la vanille</option>
+                            <option value="fruit">Gâteaux aux fruits</option>
+                            <option value="fromage">Cheesecakes</option>
+                            <option value="carotte">Gâteaux carotte</option>
+                            <option value="redvelvet">Red Velvet</option>
+                            <option value="noix">Gâteaux aux noix</option>
+                            <option value="glace">Gâteaux glacés</option>
+                        </select>
+                    </div>
+                    
+                    <div id="modelsContainer" class="models-container">
+                        <h4>Ajouter une nouvelle variante</h4>
+                        
+                        <div class="form-group">
+                            <label>Nom de la variante</label>
+                            <input type="text" id="modelName" class="form-control" placeholder="Ex: Gâteau Chocolat Noir Intense">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Prix (DT)</label>
+                            <input type="number" id="modelPrice" class="form-control" step="0.01" min="0" placeholder="149.99">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Image de la variante</label>
+                            <div class="upload-area" onclick="document.getElementById('modelImageFile').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Cliquez pour sélectionner une image</p>
+                            </div>
+                            <input type="file" id="modelImageFile" accept="image/*" style="display: none;" onchange="handleModelImageUpload(event)">
+                            <div id="modelImagePreview" class="image-preview" style="margin-top: 15px; display: none;">
+                                <img id="modelPreviewImg" src="" alt="Aperçu">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="modelDescription" class="form-control" rows="3" placeholder="Description détaillée de la variante..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Caractéristiques (clé:valeur, séparées par des points-virgules)</label>
+                            <input type="text" id="modelSpecs" class="form-control" placeholder="Poids:1.5kg; Niveau de sucre:Modéré; Conservation:3 jours">
+                            <small>Format: Clé1:Valeur1; Clé2:Valeur2; etc.</small>
+                        </div>
+                        
+                        <button class="btn btn-success" onclick="addModelToType()">
+                            <i class="fas fa-plus"></i> Ajouter cette variante
+                        </button>
+                        
+                        <hr style="margin: 30px 0;">
+                        
+                        <h4>Variantes existantes</h4>
+                        <div class="models-list" id="modelsList">
+                            <!-- Liste des variantes existantes -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION IMAGES MULTIPLES -->
+            <div class="admin-section" id="images-section">
+                <h2 class="section-title"><i class="fas fa-images"></i> Images multiples</h2>
+                
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Sélectionner un gâteau</label>
+                        <select id="productSelect" class="form-control" onchange="loadProductImages()">
+                            <option value="">Choisir un gâteau...</option>
+                        </select>
+                    </div>
+                    
+                    <div id="productImagesContainer" style="display: none;">
+                        <div class="form-group">
+                            <label>Images actuelles</label>
+                            <div class="images-list" id="currentImages">
+                                <!-- Images actuelles -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Ajouter de nouvelles images</label>
+                            <div class="upload-area" onclick="document.getElementById('newImagesInput').click()">
+                                <i class="fas fa-plus-circle"></i>
+                                <p>Cliquez pour ajouter des images</p>
+                            </div>
+                            <input type="file" id="newImagesInput" accept="image/*" multiple style="display: none;" onchange="addNewImages()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION GESTION DES PRIX -->
+            <div class="admin-section" id="prices-section">
+                <h2 class="section-title"><i class="fas fa-tags"></i> Modifier les prix</h2>
+                
+                <div class="form-container">
+                    <p>Modifiez les prix directement dans la liste des gâteaux (section "Éditer gâteaux") ou utilisez le formulaire ci-dessous pour modifier en masse.</p>
+                    
+                    <div class="form-group">
+                        <label>Augmentation/Réduction en pourcentage</label>
+                        <div class="input-group">
+                            <input type="number" id="pricePercentage" class="form-control" placeholder="10" step="1" min="-100" max="100">
+                            <select id="priceAction" class="form-control" style="width: auto;">
+                                <option value="increase">Augmenter de %</option>
+                                <option value="decrease">Diminuer de %</option>
+                            </select>
+                            <button class="btn" onclick="applyPercentageChange()">
+                                <i class="fas fa-percentage"></i> Appliquer
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Modifier tous les prix d'une catégorie</label>
+                        <div class="input-group">
+                            <select id="categorySelect" class="form-control">
+                                <option value="anniversaire">🎂 Anniversaires</option>
+                                <option value="mariage">💒 Mariages</option>
+                                <option value="quotidien">🍰 Quotidien</option>
+                            </select>
+                            <input type="number" id="categoryPrice" class="form-control" placeholder="Nouveau prix" step="0.01">
+                            <button class="btn btn-secondary" onclick="updateCategoryPrices()">
+                                <i class="fas fa-sync-alt"></i> Mettre à jour
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="priceMessage" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let products = [];
+        let selectedProductId = null;
+        let productTypes = {};
+        let currentModelIndex = null;
+        let currentMainImage = null;
+        let currentAdditionalImages = [];
+        let currentModelImage = null;
+        
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function showSection(sectionId) {
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            if (sectionId === 'edit') {
+                loadProductsForEdit();
+            } else if (sectionId === 'models') {
+                loadTypeSelect();
+            } else if (sectionId === 'images') {
+                loadProductSelect();
+            }
+        }
+        
+        // ============================================
+        // CHARGEMENT DES DONNÉES
+        // ============================================
+        function loadProducts() {
+            const stored = localStorage.getItem('delices-gateaux');
+            if (stored) {
+                products = JSON.parse(stored);
+            } else {
+                products = [];
+            }
+            return products;
+        }
+        
+        function loadProductTypes() {
+            const stored = localStorage.getItem('delices-types-gateaux');
+            if (stored) {
+                productTypes = JSON.parse(stored);
+            } else {
+                productTypes = {
+                    'chocolat': {
+                        name: 'Gâteaux au chocolat',
+                        category: 'anniversaire',
+                        types: []
+                    },
+                    'vanille': {
+                        name: 'Gâteaux à la vanille',
+                        category: 'anniversaire',
+                        types: []
+                    },
+                    'fruit': {
+                        name: 'Gâteaux aux fruits',
+                        category: 'quotidien',
+                        types: []
+                    },
+                    'fromage': {
+                        name: 'Cheesecakes',
+                        category: 'quotidien',
+                        types: []
+                    }
+                };
+            }
+            return productTypes;
+        }
+        
+        function saveProducts() {
+            localStorage.setItem('delices-gateaux', JSON.stringify(products));
+            localStorage.setItem('delices-updated', Date.now().toString());
+            return true;
+        }
+        
+        function saveProductTypes() {
+            localStorage.setItem('delices-types-gateaux', JSON.stringify(productTypes));
+            localStorage.setItem('delices-updated', Date.now().toString());
+            return true;
+        }
+        
+        // ============================================
+        // GESTION DES IMAGES (NOUVELLE FONCTIONNALITÉ)
+        // ============================================
+        function handleMainImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                alert('L\'image est trop volumineuse (max 2MB)');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentMainImage = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    data: e.target.result
+                };
+                
+                // Afficher l'aperçu
+                document.getElementById('mainPreviewImg').src = e.target.result;
+                document.getElementById('mainImagePreview').style.display = 'flex';
+                document.getElementById('selectedFileName').textContent = file.name;
+                document.getElementById('mainImageInfo').style.display = 'block';
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        function removeMainImage() {
+            currentMainImage = null;
+            document.getElementById('mainImagePreview').style.display = 'none';
+            document.getElementById('mainImageInfo').style.display = 'none';
+            document.getElementById('mainImageFile').value = '';
+        }
+        
+        function handleAdditionalImagesUpload(event) {
+            const files = Array.from(event.target.files);
+            const validFiles = files.filter(file => file.size <= 2 * 1024 * 1024);
+            
+            if (validFiles.length < files.length) {
+                alert('Certaines images dépassent 2MB et ont été ignorées');
+            }
+            
+            const container = document.getElementById('additionalImagesPreview');
+            container.style.display = 'flex';
+            container.innerHTML = '';
+            
+            validFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: e.target.result
+                    };
+                    
+                    currentAdditionalImages.push(imageData);
+                    
+                    // Créer une vignette
+                    const thumb = document.createElement('div');
+                    thumb.className = 'image-thumb';
+                    thumb.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                    `;
+                    container.appendChild(thumb);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function handleModelImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                alert('L\'image est trop volumineuse (max 2MB)');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentModelImage = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    data: e.target.result
+                };
+                
+                // Afficher l'aperçu
+                document.getElementById('modelPreviewImg').src = e.target.result;
+                document.getElementById('modelImagePreview').style.display = 'flex';
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // ============================================
+        // SECTION AJOUT GÂTEAU
+        // ============================================
+        document.getElementById('addForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            if (!currentMainImage) {
+                alert('Veuillez sélectionner une image principale');
+                return false;
+            }
+            
+            const category = document.getElementById('productCategory').value;
+            const productType = document.getElementById('productType').value;
+            
+            // Collecter les ingrédients
+            const ingredients = [];
+            document.querySelectorAll('.ingredient-item input').forEach(input => {
+                if (input.value.trim()) {
+                    ingredients.push(input.value.trim());
+                }
+            });
+            
+            // Générer un ID unique
+            const productId = Date.now();
+            
+            // Sauvegarder les images
+            const mainImageKey = `image_${productId}_main`;
+            localStorage.setItem(mainImageKey, currentMainImage.data);
+            
+            let additionalImagesKeys = [];
+            currentAdditionalImages.forEach((image, index) => {
+                const imageKey = `image_${productId}_add_${index}`;
+                localStorage.setItem(imageKey, image.data);
+                additionalImagesKeys.push(imageKey);
+            });
+            
+            // Créer le nouveau gâteau
+            const newProduct = {
+                id: productId,
+                name: document.getElementById('productName').value,
+                price: document.getElementById('productPrice').value,
+                category: category,
+                type: productType || undefined,
+                imageKey: mainImageKey, // Clé de l'image stockée
+                additionalImageKeys: additionalImagesKeys, // Clés des images supplémentaires
+                description: document.getElementById('productDescription').value || 'Gâteau artisanal fait maison',
+                ingredients: ingredients,
+                allergens: document.getElementById('allergens').value || 'Aucun',
+                portions: parseInt(document.getElementById('portions').value) || 8,
+                createdAt: new Date().toISOString()
+            };
+            
+            loadProducts();
+            products.push(newProduct);
+            saveProducts();
+            
+            // Si c'est un nouveau type, initialiser la structure
+            if (productType && !productTypes[productType]) {
+                loadProductTypes();
+                productTypes[productType] = {
+                    name: getTypeName(productType),
+                    category: category,
+                    types: []
+                };
+                saveProductTypes();
+            }
+            
+            showMessage('addMessage', `✅ Gâteau "${newProduct.name}" ajouté avec succès !`, 'success');
+            
+            // Réinitialiser le formulaire
+            resetForm();
+            
+            // Mettre à jour les listes
+            loadTypeSelect();
+            loadProductSelect();
+            
+            return false;
+        };
+        
+        function resetForm() {
+            document.getElementById('addForm').reset();
+            document.getElementById('addMessage').innerHTML = '';
+            
+            // Réinitialiser les images
+            currentMainImage = null;
+            currentAdditionalImages = [];
+            
+            document.getElementById('mainImagePreview').style.display = 'none';
+            document.getElementById('mainImageInfo').style.display = 'none';
+            document.getElementById('additionalImagesPreview').style.display = 'none';
+            document.getElementById('additionalImagesPreview').innerHTML = '';
+            document.getElementById('mainImageFile').value = '';
+            document.getElementById('additionalImages').value = '';
+            
+            // Réinitialiser les ingrédients
+            document.querySelectorAll('.ingredient-item').forEach((item, index) => {
+                if (index > 0) item.remove();
+            });
+        }
+        
+        function addIngredientField() {
+            const container = document.querySelector('.ingredients-group');
+            const div = document.createElement('div');
+            div.className = 'ingredient-item';
+            div.innerHTML = `
+                <input type="text" class="form-control" placeholder="Ex: Crème fraîche">
+                <button type="button" onclick="removeIngredientField(this)" style="background: none; border: none; color: #FF6B8B; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.insertBefore(div, container.lastElementChild);
+        }
+        
+        function removeIngredientField(button) {
+            button.parentElement.remove();
+        }
+        
+        // ============================================
+        // SECTION ÉDITION GÂTEAUX
+        // ============================================
+        function loadProductsForEdit() {
+            loadProducts();
+            const container = document.getElementById('productsList');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <i class="fas fa-birthday-cake" style="font-size: 3em; margin-bottom: 20px;"></i>
+                        <h3>Aucun gâteau</h3>
+                        <p>Ajoutez votre premier gâteau dans la section "Ajouter un gâteau"</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            products.forEach(product => {
+                const categoryClass = `category-${product.category}`;
+                const categoryLabel = product.category === 'anniversaire' ? 'Anniversaire' : 
+                                   product.category === 'mariage' ? 'Mariage' : 'Quotidien';
+                
+                const typeLabel = product.type ? ` (${getTypeName(product.type)})` : '';
+                
+                // Récupérer l'image depuis localStorage
+                const imageData = localStorage.getItem(product.imageKey);
+                
+                html += `
+                    <div class="product-card">
+                        <span class="product-category ${categoryClass}">${categoryLabel}${typeLabel}</span>
+                        <h3>${product.name}</h3>
+                        
+                        <div class="image-preview">
+                            <img src="${imageData || 'https://via.placeholder.com/300x200/8B4513/ffffff?text=Gâteau'}" 
+                                 alt="${product.name}">
+                        </div>
+                        
+                        <div class="product-price" id="price-display-${product.id}">
+                            ${product.price}
+                        </div>
+                        
+                        <div style="color: #666; font-size: 0.9em; margin: 10px 0;">
+                            <div><i class="fas fa-utensils"></i> Pour ${product.portions || 8} personnes</div>
+                            ${product.allergens ? `<div><i class="fas fa-exclamation-triangle"></i> ${product.allergens}</div>` : ''}
+                        </div>
+                        
+                        <div class="form-group" style="margin: 15px 0;">
+                            <label>Modifier le prix:</label>
+                            <div class="input-group">
+                                <input type="text" id="edit-price-${product.id}" 
+                                       class="form-control" value="${product.price}">
+                                <button class="btn btn-success" onclick="updateProductPrice(${product.id})">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button class="btn" onclick="editProduct(${product.id})">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                            <button class="btn" style="background: #FF4081;" onclick="deleteProduct(${product.id})">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function updateProductPrice(productId) {
+            const newPrice = document.getElementById(`edit-price-${productId}`).value;
+            
+            if (!newPrice) {
+                alert('Prix invalide');
+                return;
+            }
+            
+            const productIndex = products.findIndex(p => p.id === productId);
+            if (productIndex !== -1) {
+                products[productIndex].price = newPrice;
+                saveProducts();
+                
+                document.getElementById(`price-display-${productId}`).textContent = newPrice;
+                showMessage('priceMessage', `✅ Prix mis à jour pour "${products[productIndex].name}"`, 'success');
+            }
+        }
+        
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Charger les données dans le formulaire
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productType').value = product.type || '';
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('allergens').value = product.allergens || '';
+            document.getElementById('portions').value = product.portions || 8;
+            
+            // Charger l'image principale
+            const mainImageData = localStorage.getItem(product.imageKey);
+            if (mainImageData) {
+                currentMainImage = {
+                    name: 'image_existante',
+                    data: mainImageData
+                };
+                
+                document.getElementById('mainPreviewImg').src = mainImageData;
+                document.getElementById('mainImagePreview').style.display = 'flex';
+                document.getElementById('selectedFileName').textContent = 'Image existante';
+                document.getElementById('mainImageInfo').style.display = 'block';
+            }
+            
+            // Charger les ingrédients
+            const ingredientsContainer = document.querySelector('.ingredients-group');
+            ingredientsContainer.innerHTML = '';
+            
+            if (product.ingredients && product.ingredients.length > 0) {
+                product.ingredients.forEach(ingredient => {
+                    const div = document.createElement('div');
+                    div.className = 'ingredient-item';
+                    div.innerHTML = `
+                        <input type="text" class="form-control" value="${ingredient}">
+                        <button type="button" onclick="removeIngredientField(this)" style="background: none; border: none; color: #FF6B8B; cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    ingredientsContainer.appendChild(div);
+                });
+            }
+            
+            const addButton = document.createElement('button');
+            addButton.type = 'button';
+            addButton.className = 'btn btn-secondary';
+            addButton.innerHTML = '<i class="fas fa-plus"></i> Ajouter un ingrédient';
+            addButton.style.width = '100%';
+            addButton.style.marginTop = '10px';
+            addButton.onclick = addIngredientField;
+            ingredientsContainer.appendChild(addButton);
+            
+            // Supprimer le produit de la liste pour la modification
+            const productIndex = products.findIndex(p => p.id === productId);
+            products.splice(productIndex, 1);
+            saveProducts();
+            
+            showMessage('addMessage', `📝 Modification du gâteau "${product.name}"`, 'info');
+            showSection('add');
+        }
+        
+        function deleteProduct(productId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce gâteau ?')) return;
+            
+            const productIndex = products.findIndex(p => p.id === productId);
+            const productName = products[productIndex].name;
+            
+            // Supprimer les images associées
+            const product = products[productIndex];
+            localStorage.removeItem(product.imageKey);
+            
+            if (product.additionalImageKeys) {
+                product.additionalImageKeys.forEach(key => {
+                    localStorage.removeItem(key);
+                });
+            }
+            
+            // Supprimer le produit
+            products.splice(productIndex, 1);
+            saveProducts();
+            loadProductsForEdit();
+            
+            showMessage('priceMessage', `🗑️ Gâteau "${productName}" supprimé`, 'success');
+        }
+        
+        // ============================================
+        // SECTION VARIANTES DE GÂTEAUX
+        // ============================================
+        function loadTypeSelect() {
+            loadProductTypes();
+            const select = document.getElementById('typeSelect');
+            
+            Object.keys(productTypes).forEach(typeKey => {
+                if (!Array.from(select.options).some(opt => opt.value === typeKey)) {
+                    const option = document.createElement('option');
+                    option.value = typeKey;
+                    option.textContent = productTypes[typeKey].name;
+                    select.appendChild(option);
+                }
+            });
+        }
+        
+        function loadTypeDetails() {
+            const typeKey = document.getElementById('typeSelect').value;
+            const container = document.getElementById('modelsContainer');
+            
+            if (!typeKey) {
+                container.style.display = 'none';
+                return;
+            }
+            
+            container.style.display = 'block';
+            loadExistingModels(typeKey);
+        }
+        
+        function loadExistingModels(typeKey) {
+            loadProductTypes();
+            const modelsList = document.getElementById('modelsList');
+            const typeData = productTypes[typeKey];
+            
+            if (!typeData || !typeData.types || typeData.types.length === 0) {
+                modelsList.innerHTML = '<p style="color: #666;">Aucune variante pour ce type.</p>';
+                return;
+            }
+            
+            let html = '';
+            typeData.types.forEach((model, index) => {
+                // Récupérer l'image depuis localStorage si elle existe
+                const imageSrc = model.imageKey ? (localStorage.getItem(model.imageKey) || 'https://via.placeholder.com/150x100/8B4513/ffffff?text=Variante') : 
+                                                  'https://via.placeholder.com/150x100/8B4513/ffffff?text=Variante';
+                
+                html += `
+                    <div class="model-item">
+                        <div class="model-info">
+                            <h5>${model.name}</h5>
+                            <div class="model-price">${model.price.toFixed(2)} DT</div>
+                            <div style="margin: 10px 0;">
+                                <img src="${imageSrc}" alt="${model.name}" style="width: 100px; height: auto; border-radius: 5px;">
+                            </div>
+                            <small style="color: #666;">${model.description.substring(0, 60)}...</small>
+                        </div>
+                        <div class="model-actions">
+                            <button class="btn" onclick="editModel('${typeKey}', ${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn" style="background: #FF4081;" onclick="deleteModel('${typeKey}', ${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            modelsList.innerHTML = html;
+        }
+        
+        function addModelToType() {
+            const typeKey = document.getElementById('typeSelect').value;
+            if (!typeKey) {
+                alert('Veuillez sélectionner un type');
+                return;
+            }
+            
+            const name = document.getElementById('modelName').value;
+            const price = parseFloat(document.getElementById('modelPrice').value);
+            const description = document.getElementById('modelDescription').value;
+            const specsInput = document.getElementById('modelSpecs').value;
+            
+            if (!name || isNaN(price) || !description || !currentModelImage) {
+                alert('Veuillez remplir tous les champs et sélectionner une image');
+                return;
+            }
+            
+            loadProductTypes();
+            
+            // Sauvegarder l'image
+            const modelId = Date.now();
+            const imageKey = `model_${modelId}_image`;
+            localStorage.setItem(imageKey, currentModelImage.data);
+            
+            const specs = {};
+            if (specsInput) {
+                specsInput.split(';').forEach(spec => {
+                    const [key, value] = spec.split(':').map(s => s.trim());
+                    if (key && value) {
+                        specs[key] = value;
+                    }
+                });
+            }
+            
+            const newModel = {
+                id: modelId,
+                name: name,
+                price: price,
+                description: description,
+                imageKey: imageKey,
+                specs: Object.keys(specs).length > 0 ? specs : {
+                    'Poids': '1.5kg',
+                    'Niveau de sucre': 'Modéré',
+                    'Conservation': '3 jours au frais'
+                }
+            };
+            
+            productTypes[typeKey].types.push(newModel);
+            saveProductTypes();
+            
+            // Réinitialiser le formulaire
+            document.getElementById('modelName').value = '';
+            document.getElementById('modelPrice').value = '';
+            document.getElementById('modelDescription').value = '';
+            document.getElementById('modelSpecs').value = '';
+            document.getElementById('modelImagePreview').style.display = 'none';
+            document.getElementById('modelImageFile').value = '';
+            currentModelImage = null;
+            
+            loadExistingModels(typeKey);
+            showMessage('priceMessage', `✅ Variante "${name}" ajoutée avec succès !`, 'success');
+        }
+        
+        function editModel(typeKey, index) {
+            loadProductTypes();
+            const typeData = productTypes[typeKey];
+            if (!typeData || !typeData.types[index]) return;
+            
+            const model = typeData.types[index];
+            
+            document.getElementById('modelName').value = model.name;
+            document.getElementById('modelPrice').value = model.price;
+            document.getElementById('modelDescription').value = model.description;
+            
+            if (model.specs) {
+                const specs = Object.entries(model.specs)
+                    .map(([key, value]) => `${key}: ${value}`)
+                    .join('; ');
+                document.getElementById('modelSpecs').value = specs;
+            }
+            
+            // Charger l'image si elle existe
+            if (model.imageKey) {
+                const imageData = localStorage.getItem(model.imageKey);
+                if (imageData) {
+                    currentModelImage = {
+                        name: 'image_existante',
+                        data: imageData
+                    };
+                    
+                    document.getElementById('modelPreviewImg').src = imageData;
+                    document.getElementById('modelImagePreview').style.display = 'flex';
+                }
+            }
+            
+            // Supprimer la variante pour la modification
+            typeData.types.splice(index, 1);
+            saveProductTypes();
+            loadExistingModels(typeKey);
+            
+            showMessage('priceMessage', `📝 Modification de la variante "${model.name}"`, 'info');
+        }
+        
+        function deleteModel(typeKey, index) {
+            if (!confirm('Supprimer cette variante ?')) return;
+            
+            loadProductTypes();
+            const typeData = productTypes[typeKey];
+            if (!typeData || !typeData.types[index]) return;
+            
+            const modelName = typeData.types[index].name;
+            
+            // Supprimer l'image associée
+            const model = typeData.types[index];
+            if (model.imageKey) {
+                localStorage.removeItem(model.imageKey);
+            }
+            
+            typeData.types.splice(index, 1);
+            saveProductTypes();
+            loadExistingModels(typeKey);
+            
+            showMessage('priceMessage', `🗑️ Variante "${modelName}" supprimée`, 'success');
+        }
+        
+        function getTypeName(typeKey) {
+            const typeMap = {
+                'chocolat': 'Chocolat',
+                'vanille': 'Vanille',
+                'fruit': 'Fruits',
+                'fromage': 'Cheesecake',
+                'carotte': 'Carotte',
+                'redvelvet': 'Red Velvet',
+                'noix': 'Noix',
+                'glace': 'Glacé'
+            };
+            return typeMap[typeKey] || typeKey;
+        }
+        
+        // ============================================
+        // SECTION IMAGES MULTIPLES
+        // ============================================
+        function loadProductSelect() {
+            loadProducts();
+            const select = document.getElementById('productSelect');
+            
+            select.innerHTML = '<option value="">Choisir un gâteau...</option>';
+            
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = `${product.name} (${product.category})`;
+                select.appendChild(option);
+            });
+        }
+        
+        function loadProductImages() {
+            const productId = parseInt(document.getElementById('productSelect').value);
+            if (!productId) return;
+            
+            selectedProductId = productId;
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const container = document.getElementById('productImagesContainer');
+            container.style.display = 'block';
+            
+            const imagesContainer = document.getElementById('currentImages');
+            imagesContainer.innerHTML = '';
+            
+            // Afficher l'image principale
+            const mainImageData = localStorage.getItem(product.imageKey);
+            if (mainImageData) {
+                const mainItem = document.createElement('div');
+                mainItem.className = 'image-item';
+                mainItem.innerHTML = `
+                    <div>
+                        <strong>Image principale:</strong>
+                        <div style="margin-top: 10px;">
+                            <img src="${mainImageData}" alt="Image principale" style="width: 80px; height: auto; border-radius: 5px;">
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="changeMainImage(${productId})" style="background: none; border: none; color: #FF4081; cursor: pointer;">
+                            <i class="fas fa-exchange-alt"></i> Changer
+                        </button>
+                    </div>
+                `;
+                imagesContainer.appendChild(mainItem);
+            }
+            
+            // Afficher les images supplémentaires
+            if (product.additionalImageKeys && product.additionalImageKeys.length > 0) {
+                product.additionalImageKeys.forEach((key, index) => {
+                    const imageData = localStorage.getItem(key);
+                    if (imageData) {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'image-item';
+                        imageItem.innerHTML = `
+                            <div>
+                                <strong>Image supplémentaire ${index + 1}:</strong>
+                                <div style="margin-top: 10px;">
+                                    <img src="${imageData}" alt="Image supplémentaire" style="width: 80px; height: auto; border-radius: 5px;">
+                                </div>
+                            </div>
+                            <div>
+                                <button onclick="removeAdditionalImage(${productId}, ${index})" style="background: none; border: none; color: #FF4081; cursor: pointer;">
+                                    <i class="fas fa-times"></i> Supprimer
+                                </button>
+                            </div>
+                        `;
+                        imagesContainer.appendChild(imageItem);
+                    }
+                });
+            }
+        }
+        
+        function addNewImages() {
+            if (!selectedProductId) {
+                alert('Veuillez sélectionner un gâteau');
+                return;
+            }
+            
+            const files = document.getElementById('newImagesInput').files;
+            if (files.length === 0) return;
+            
+            const product = products.find(p => p.id === selectedProductId);
+            if (!product) return;
+            
+            if (!product.additionalImageKeys) {
+                product.additionalImageKeys = [];
+            }
+            
+            Array.from(files).forEach((file, index) => {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert(`L'image "${file.name}" dépasse 2MB et a été ignorée`);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageKey = `image_${product.id}_add_${Date.now()}_${index}`;
+                    localStorage.setItem(imageKey, e.target.result);
+                    product.additionalImageKeys.push(imageKey);
+                    
+                    saveProducts();
+                    
+                    // Recharger la liste des images
+                    loadProductImages();
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            showMessage('priceMessage', `${files.length} image(s) ajoutée(s)`, 'success');
+            document.getElementById('newImagesInput').value = '';
+        }
+        
+        function changeMainImage(productId) {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.style.display = 'none';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('L\'image est trop volumineuse (max 2MB)');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const product = products.find(p => p.id === productId);
+                    if (!product) return;
+                    
+                    // Supprimer l'ancienne image
+                    localStorage.removeItem(product.imageKey);
+                    
+                    // Sauvegarder la nouvelle image
+                    const newImageKey = `image_${productId}_main_${Date.now()}`;
+                    localStorage.setItem(newImageKey, event.target.result);
+                    product.imageKey = newImageKey;
+                    
+                    saveProducts();
+                    loadProductImages();
+                    
+                    showMessage('priceMessage', '✅ Image principale changée', 'success');
+                };
+                reader.readAsDataURL(file);
+            };
+            
+            document.body.appendChild(input);
+            input.click();
+            document.body.removeChild(input);
+        }
+        
+        function removeAdditionalImage(productId, imageIndex) {
+            if (!confirm('Supprimer cette image ?')) return;
+            
+            const product = products.find(p => p.id === productId);
+            if (!product || !product.additionalImageKeys) return;
+            
+            // Supprimer l'image du localStorage
+            const imageKey = product.additionalImageKeys[imageIndex];
+            localStorage.removeItem(imageKey);
+            
+            // Supprimer la clé de la liste
+            product.additionalImageKeys.splice(imageIndex, 1);
+            saveProducts();
+            loadProductImages();
+            
+            showMessage('priceMessage', '🗑️ Image supprimée', 'success');
+        }
+        
+        // ============================================
+        // SECTION GESTION DES PRIX
+        // ============================================
+        function applyPercentageChange() {
+            const percentage = parseFloat(document.getElementById('pricePercentage').value);
+            const action = document.getElementById('priceAction').value;
+            
+            if (isNaN(percentage)) {
+                alert('Veuillez entrer un pourcentage valide');
+                return;
+            }
+            
+            loadProducts();
+            
+            products.forEach(product => {
+                let priceMatch = product.price.match(/(\d+\.?\d*)/);
+                if (priceMatch) {
+                    let numericPrice = parseFloat(priceMatch[0]);
+                    if (action === 'increase') {
+                        numericPrice = numericPrice * (1 + percentage / 100);
+                    } else {
+                        numericPrice = numericPrice * (1 - percentage / 100);
+                    }
+                    numericPrice = Math.round(numericPrice * 100) / 100;
+                    
+                    if (product.price.includes('À partir de')) {
+                        product.price = `À partir de ${numericPrice.toFixed(2)} DT`;
+                    } else {
+                        product.price = `${numericPrice.toFixed(2)} DT`;
+                    }
+                }
+            });
+            
+            saveProducts();
+            loadProductsForEdit();
+            
+            showMessage('priceMessage', 
+                `✅ Tous les prix ont été ${action === 'increase' ? 'augmentés' : 'diminués'} de ${percentage}%`, 
+                'success');
+        }
+        
+        function updateCategoryPrices() {
+            const category = document.getElementById('categorySelect').value;
+            const newPrice = document.getElementById('categoryPrice').value;
+            
+            if (!newPrice) {
+                alert('Prix invalide');
+                return;
+            }
+            
+            loadProducts();
+            let updatedCount = 0;
+            
+            products.forEach(product => {
+                if (product.category === category) {
+                    product.price = newPrice;
+                    updatedCount++;
+                }
+            });
+            
+            saveProducts();
+            loadProductsForEdit();
+            
+            showMessage('priceMessage', 
+                `✅ Prix mis à jour pour ${updatedCount} gâteau(x) de la catégorie ${category}`, 
+                'success');
+                
+            document.getElementById('categoryPrice').value = '';
+        }
+        
+        // ============================================
+        // FONCTIONS UTILITAIRES
+        // ============================================
+        function showMessage(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div class="status-message status-${type}">
+                    ${message}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                element.innerHTML = '';
+            }, 5000);
+        }
+        
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            loadProductTypes();
+            loadTypeSelect();
+            loadProductSelect();
+        });
+    </script>
+</body>
+</html>

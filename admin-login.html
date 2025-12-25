@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - SarSel</title>
+    <style>
+        :root {
+            --primary: #E63946;
+            --dark: #264653;
+            --light: #F8F9FA;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1A365D 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            background: var(--dark);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .login-header .logo {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary), #F4A261);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .login-body {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+        }
+        
+        .btn-login {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">Full Moon</div>
+            <p>Administration</p>
+        </div>
+        
+        <div class="login-body">
+            <div class="error-message" id="errorMessage">
+                Mot de passe incorrect
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Mot de passe administrateur</label>
+                    <input type="password" id="password" 
+                           placeholder="Entrez le mot de passe" 
+                           required autofocus>
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    Se connecter
+                </button>
+            </form>
+            
+            <a href="index.html" class="back-link">
+                ← Retour à la boutique
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Mot de passe - CHANGEZ-LE ICI
+        const ADMIN_PASSWORD = "fullmoon2024";
+        
+        // Fonction pour voir ce qui se passe dans l'URL
+        function debugURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectParam = urlParams.get('redirect');
+            const pageParam = urlParams.get('page');
+            
+            console.log("=== DEBUG ADMIN-LOGIN ===");
+            console.log("URL complète:", window.location.href);
+            console.log("Paramètre 'redirect':", redirectParam);
+            console.log("Paramètre 'page':", pageParam);
+            console.log("=========================");
+            
+            // Afficher aussi dans la page (optionnel)
+            if (redirectParam || pageParam) {
+                const infoDiv = document.createElement('div');
+                infoDiv.style.cssText = `
+                    background: #f0f8ff;
+                    padding: 10px;
+                    margin: 10px 0;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    color: #264653;
+                `;
+                infoDiv.innerHTML = `
+                    <strong>Info:</strong> 
+                    redirect="${redirectParam || 'none'}" 
+                    page="${pageParam || 'none'}"
+                `;
+                document.querySelector('.login-body').prepend(infoDiv);
+            }
+        }
+        
+        // Exécuter le débogage au chargement
+        window.onload = debugURL;
+        
+        // Gestion du formulaire
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            console.log("Mot de passe saisi:", password);
+            
+            if (password === ADMIN_PASSWORD) {
+                // Stocker la session
+                sessionStorage.setItem('FullMoon-admin', 'true');
+                
+                // Récupérer le paramètre d'URL
+                const urlParams = new URLSearchParams(window.location.search);
+                let targetPage = urlParams.get('redirect') || 
+                               urlParams.get('page') || 
+                               'orders';
+                
+                // Nettoyer et normaliser
+                targetPage = targetPage.toLowerCase().trim();
+                console.log("Page cible après nettoyage:", targetPage);
+                
+                // Décider où rediriger
+                let redirectURL = '';
+                
+                if (targetPage === 'products' || targetPage === 'produits') {
+                    redirectURL = 'admin.html';
+                } else if (targetPage === 'orders' || targetPage === 'commandes') {
+                    redirectURL = 'orders.html';
+                } else {
+                    redirectURL = 'orders.html'; // Par défaut
+                }
+                
+                console.log("Redirection vers:", redirectURL);
+                
+                // Rediriger
+                window.location.href = redirectURL;
+                
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+                console.log("Mot de passe incorrect!");
+            }
+            
+            return false;
+        };
+        
+        // Vérifier si déjà connecté
+        if (sessionStorage.getItem('fullMoon-admin') === 'true') {
+            console.log("Déjà connecté, redirection automatique...");
+            const urlParams = new URLSearchParams(window.location.search);
+            let targetPage = urlParams.get('redirect') || 
+                           urlParams.get('page') || 
+                           'orders';
+            targetPage = targetPage.toLowerCase().trim();
+            
+            if (targetPage === 'products' || targetPage === 'produits') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'orders.html';
+            }
+        }
+    </script>
+</body>
+</html>
