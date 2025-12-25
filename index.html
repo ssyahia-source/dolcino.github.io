@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <script src="js/app.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dolcino - Pâtisserie Fine & Gâteaux Maison</title>
@@ -13,9 +12,8 @@
     <meta name="geo.region" content="TN">
     <meta name="geo.placename" content="Tunis">
     
+    <!-- IMPORTANT: Chemins CORRIGÉS pour GitHub Pages -->
     <link rel="stylesheet" href="css/style.css">
-
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -26,19 +24,13 @@
         🚚 Livraison GRATUITE  Au Grand Tunis pour commandes > 100 DT | 📞 20 90 15 96
     </div>
     
-    <!-- LIENS ADMIN OPTIMISÉS -->
-    
-
-
-
-
     <!-- HEADER -->
     <header>
         <div class="header-top">
             <div class="logo-container">
-    <div class="logo">Dolcino</div>
-    <div class="slogan">Quand le gâteau devient design</div>
-</div>
+                <div class="logo">Dolcino</div>
+                <div class="slogan">Quand le gâteau devient design</div>
+            </div>
             
             <nav>
                 <a href="#home">Accueil</a>
@@ -75,9 +67,9 @@
             <!-- GÂTEAUX D'ANNIVERSAIRE -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                   <img src="/images/anniversaire/gateau-chocolat.jpg" 
-     alt="Gâteau Anniversaire Chocolat" 
-     class="collection-image">
+                    <img src="images/anniversaire/gateau-chocolat.jpg" 
+                         alt="Gâteau Anniversaire Chocolat" 
+                         class="collection-image">
                 </div>
                 <div class="collection-overlay">
                     <h3 class="collection-title">Anniversaires</h3>
@@ -295,7 +287,7 @@
             <div class="footer-contact">
                 <h4>Contact</h4>
                 <p>📧 contact@Dolcino.com</p>
-                <p>📞 +216 22 51 13 22</p>
+                <p>📞 +216 20 90 15 96</p>
                 <p>📍 Tunis, Tunisie</p>
                 <p>🕒 7j/7: 8h-20h</p>
                 <p style="margin-top: 15px; color: #FFD166;">
@@ -325,44 +317,33 @@
     </footer>
 
     <!-- BARRE DE CONTACT FIXE -->
-  <!-- REMPLACEZ VOTRE BARRE DE CONTACT PAR CE CODE -->
-<div class="quick-contact-bar">
-    <!-- Admin Commandes (gauche) -->
-    <a href="admin-login.html?page=orders" class="contact-btn admin-orders-btn" title="Gérer les commandes">
-        <i class="fas fa-clipboard-list"></i>
-        <span>Commandes</span>
-    </a>
-    
-    <!-- WhatsApp -->
-    <a href="https://wa.me/21620901596" class="contact-btn whatsapp-btn" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-        <span>WhatsApp</span>
-    </a>
-    
-    <!-- Appeler -->
-    <button class="contact-btn call-btn" onclick="callNow()">
-        <i class="fas fa-phone"></i>
-        <span>Appeler</span>
-    </button>
-    
-    <!-- Admin Gâteaux (droite) -->
-    <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" title="Gérer les gâteaux">
-        <i class="fas fa-birthday-cake"></i>
-        <span>Gâteaux</span>
-    </a>
-</div>
+    <div class="quick-contact-bar">
+        <!-- Admin Commandes (gauche) -->
+        <a href="admin-login.html?page=orders" class="contact-btn admin-orders-btn" title="Gérer les commandes">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Commandes</span>
+        </a>
+        
+        <!-- WhatsApp -->
+        <a href="https://wa.me/21620901596" class="contact-btn whatsapp-btn" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+        </a>
+        
+        <!-- Appeler -->
+        <button class="contact-btn call-btn" onclick="callNow()">
+            <i class="fas fa-phone"></i>
+            <span>Appeler</span>
+        </button>
+        
+        <!-- Admin Gâteaux (droite) -->
+        <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" title="Gérer les gâteaux">
+            <i class="fas fa-birthday-cake"></i>
+            <span>Gâteaux</span>
+        </a>
+    </div>
 
-
-
-
-
-
-   
-
+    <!-- IMPORTANT: Script CORRIGÉ avec defer pour éviter les erreurs -->
+    <script src="js/app.js" defer></script>
 </body>
-
 </html>
-
-
-
-
