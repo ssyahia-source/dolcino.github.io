@@ -237,10 +237,29 @@ function displayProducts() {
         `;
     });
     
-    container.innerHTML = html;
-    showCategory(currentCategory);
 }
+    showCategory(currentCategory);
 
+container.innerHTML = html;
+    
+    // FORÇAGE D'AFFICHAGE IMMÉDIAT
+    setTimeout(() => {
+        console.log("🚀 Forçage de l'affichage des produits");
+        showCategory('all');
+        
+        // Double vérification après 500ms
+        setTimeout(() => {
+            const hiddenCards = document.querySelectorAll('.product-card[style*="display: none"]');
+            if (hiddenCards.length > 0) {
+                console.log("⚠️ " + hiddenCards.length + " cartes encore cachées - correction");
+                hiddenCards.forEach(card => {
+                    card.style.display = 'block';
+                    card.style.opacity = '1';
+                });
+            }
+        }, 500);
+    }, 100);
+}
 // ============================================
 // FONCTION PRINCIPALE D'AFFICHAGE CATÉGORIE
 // ============================================
