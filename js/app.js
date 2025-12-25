@@ -244,17 +244,27 @@ function displayProducts() {
 // ============================================
 // FONCTION PRINCIPALE D'AFFICHAGE CATÉGORIE
 // ============================================
+
+
+
 function showCategory(category) {
+    console.log("🔘 Changement de catégorie:", category);
     currentCategory = category;
+    
     const productCards = document.querySelectorAll('.product-card');
     const filterButtons = document.querySelectorAll('.filter-btn');
     
+    console.log("📊 Cartes trouvées:", productCards.length);
+    console.log("📊 Boutons trouvés:", filterButtons.length);
+    
+    // 1. Gérer les boutons de filtre
     filterButtons.forEach(btn => {
         btn.classList.remove('active');
         const btnText = btn.textContent.toLowerCase();
         
         if (category === 'all' && btnText.includes('tous')) {
             btn.classList.add('active');
+            console.log("✅ Bouton 'Tous' activé");
         } else if (category === 'anniversaire' && btnText.includes('anniversaire')) {
             btn.classList.add('active');
         } else if (category === 'mariage' && btnText.includes('mariage')) {
@@ -264,13 +274,30 @@ function showCategory(category) {
         }
     });
     
+    // 2. Gérer l'affichage des produits
+    let visibleCount = 0;
     productCards.forEach(card => {
         if (category === 'all' || card.dataset.category === category) {
             card.style.display = 'block';
+            card.style.opacity = '1';
+            card.style.visibility = 'visible';
+            visibleCount++;
         } else {
             card.style.display = 'none';
         }
     });
+    
+    console.log("👁️ Produits visibles:", visibleCount + "/" + productCards.length);
+    
+    // 3. Si rien n'est visible, tout afficher (sécurité)
+    if (visibleCount === 0 && productCards.length > 0) {
+        console.log("⚠️ Rien visible - forçage de l'affichage");
+        productCards.forEach(card => {
+            card.style.display = 'block';
+            card.style.opacity = '1';
+            card.style.visibility = 'visible';
+        });
+    }
 }
 
 // Enregistrer la vraie fonction
