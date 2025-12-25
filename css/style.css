@@ -1435,3 +1435,29 @@ footer {
 .admin-products-btn:hover {
     opacity: 1;
 }
+/* SOLUTION URGENTE - FORCER L'AFFICHAGE */
+#products-container .product-card {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    animation: fadeInUp 0.6s ease forwards !important;
+}
+
+/* Désactiver le masquage par JavaScript */
+.product-card[style*="display: none"] {
+    display: block !important;
+    opacity: 0.8 !important;
+}
+
+/* S'assurer que la grille est visible */
+.products-grid {
+    display: grid !important;
+    visibility: visible !important;
+}
+
+/* Correction des boutons de filtre */
+.filter-btn.active {
+    background: var(--dark) !important;
+    color: white !important;
+    border-color: var(--dark) !important;
+}
