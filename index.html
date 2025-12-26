@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dolcino - Pâtisserie Fine & Gâteaux Maison</title>
     <meta name="description" content="Dolcino : Gâteaux artisanaux, pâtisseries fines et douceurs faites maison. Livraison dans toute la Tunisie.">
+    <!-- À ajouter après <title> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
     <!-- META TAGS POUR SEO TUNISIEN -->
     <meta name="keywords" content="pâtisserie Tunis, gâteaux Tunisie, anniversaire Tunis, mariage gâteau, livraison gâteaux Tunis, commande gâteau en ligne Tunisie">
     <meta name="author" content="Sweet Delights">
@@ -12,7 +15,7 @@
     <meta name="geo.placename" content="Tunis">
     
     <style>
-        /* THÈME PÂTISSERIE DOUX ET APPÉTISSANT - EXACTEMENT VOTRE DESIGN PC */
+        /* THÈME PÂTISSERIE DOUX ET APPÉTISSANT */
         :root {
             --primary: #FF6B8B; /* Rose pâtissier */
             --secondary: #FFB74D; /* Orange doux */
@@ -96,6 +99,21 @@
             color: white;
         }
         
+        /* Responsive pour mobile */
+        @media (max-width: 768px) {
+            .admin-floating-buttons {
+                bottom: 80px;
+                right: 10px;
+                gap: 8px;
+            }
+            
+            .admin-btn {
+                padding: 10px 16px;
+                font-size: 0.85em;
+                min-width: 120px;
+            }
+        }
+        
         /* BARRE DE CONTACT FIXE - OPTIMISÉE */
         .quick-contact-bar {
             position: fixed;
@@ -112,6 +130,7 @@
             border-top: 2px solid var(--accent);
         }
 
+       
         .quick-contact-btn {
             background: transparent;
             border: 2px solid var(--accent);
@@ -143,7 +162,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
-        /* HEADER - Design gourmand - EXACTEMENT VOTRE DESIGN PC */
+        /* HEADER - Design gourmand */
         header {
             background: linear-gradient(135deg, var(--dark) 0%, #A0522D 100%);
             color: white;
@@ -265,7 +284,7 @@
             font-weight: bold;
         }
         
-        /* HERO SECTION - EXACTEMENT VOTRE DESIGN PC */
+        /* HERO SECTION */
         .hero {
             height: 500px;
             background: linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.9)),
@@ -327,7 +346,7 @@
             transform: translateY(-3px);
         }
         
-        /* CATÉGORIES SECTION - EXACTEMENT VOTRE DESIGN PC */
+        /* CATÉGORIES SECTION */
         .collections-section {
             padding: 60px 20px;
             text-align: center;
@@ -449,7 +468,7 @@
             box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
         }
         
-        /* PRODUCTS SECTION - EXACTEMENT VOTRE DESIGN PC */
+        /* PRODUCTS SECTION */
         .products-section {
             padding: 60px 20px;
             background: white;
@@ -901,6 +920,176 @@
             max-height: calc(85vh - 200px);
         }
         
+        .order-summary {
+            background: #FFF8F0;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #FFE4CC;
+        }
+        
+        .order-summary h4 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #order-summary-items {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 10px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #FFE4CC;
+            color: #8B4513;
+            font-size: 0.95em;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--dark);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary);
+            background: linear-gradient(to right, transparent, rgba(255, 107, 139, 0.05), transparent);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h4 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FFE4CC;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #FFE4CC;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #FFE4CC;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: rgba(255, 107, 139, 0.03);
+        }
+        
+        .payment-method input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-info strong {
+            display: block;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .payment-info small {
+            color: #A0522D;
+            font-size: 0.9em;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #FFE4CC;
+        }
+        
+        .btn-cancel {
+            background: #FFF8F0;
+            color: var(--dark);
+            border: 2px solid #FFE4CC;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+        
+        .btn-cancel:hover {
+            background: #FFE4CC;
+            border-color: #FFD166;
+            transform: translateY(-2px);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, #FF4081 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 2;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 139, 0.3);
+        }
+        
         /* MODALE DE CONFIRMATION */
         .confirmation-modal {
             display: none;
@@ -951,7 +1140,7 @@
             font-weight: 800;
         }
         
-        /* FOOTER - EXACTEMENT VOTRE DESIGN PC */
+        /* FOOTER */
         footer {
             background: var(--dark);
             color: white;
@@ -1048,186 +1237,116 @@
         }
         
         /* =================================================== */
-        /* ========== UNIQUEMENT CORRECTIONS MOBILE ========== */
+        /* ========== OPTIMISATIONS MOBILE UNIQUEMENT ========= */
         /* =================================================== */
         @media (max-width: 768px) {
-            /* CORRECTION ESPACE SUPÉRIEUR/INFÉRIEUR */
+            /* CORRECTION ESPACE SUPÉRIEUR */
             body {
                 padding-top: 0 !important;
+                padding-bottom: 100px !important;
             }
             
-            /* Réduire légèrement la bannière */
-            .delivery-banner {
-                padding: 8px 15px;
-                font-size: 1em;
-            }
-            
-            /* Header légèrement plus compact */
+            /* Réduire un peu le header sur mobile */
             header {
-                padding: 10px 15px;
-                position: sticky;
-                top: 0;
+                padding: 12px 15px !important;
+                position: sticky !important;
+                top: 0 !important;
             }
             
             .logo {
-                font-size: 2.2em;
+                font-size: 2.2em !important;
             }
             
             .slogan {
-                font-size: 0.9em;
+                font-size: 0.9em !important;
             }
             
-            /* Navigation PC reste visible mais ajustée */
-            nav {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-top: 10px;
-            }
-            
-            nav a {
-                font-size: 0.95em;
-                padding: 5px;
-            }
-            
-            /* Hero légèrement réduit */
+            /* Hero réduit sur mobile */
             .hero {
-                height: 350px;
-                padding: 20px;
+                height: 350px !important;
+                padding: 20px !important;
             }
             
             .hero h1 {
-                font-size: 2.5em;
+                font-size: 2.2em !important;
             }
             
             .hero p {
-                font-size: 1.2em;
+                font-size: 1.1em !important;
             }
             
             /* Collections : 1 colonne sur mobile */
             .collections-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
             }
             
             .collection-image-container {
-                height: 250px;
+                height: 250px !important;
             }
             
             /* Products : 2 colonnes sur mobile */
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+                gap: 15px !important;
             }
             
             .product-image-container {
-                height: 180px;
+                height: 180px !important;
             }
             
             /* Optimiser les images pour mobile */
+            img {
+                max-width: 100% !important;
+                height: auto !important;
+                display: block !important;
+            }
+            
             .collection-image,
             .product-img {
                 width: 100% !important;
                 height: 100% !important;
                 object-fit: cover !important;
+                object-position: center !important;
             }
             
-            /* Réduire les paddings */
-            .collections-section,
-            .products-section {
-                padding: 40px 15px;
-            }
-            
-            .section-title {
-                font-size: 2em;
-                margin-bottom: 30px;
-            }
-            
-            /* Barre contact optimisée pour mobile */
+            /* Barre contact mobile optimisée */
             .quick-contact-bar {
-                padding: 10px 15px;
-                gap: 10px;
+                padding: 10px 15px !important;
+                gap: 10px !important;
             }
             
             .quick-contact-btn {
-                padding: 8px 12px;
-                font-size: 0.85em;
-                gap: 5px;
-                flex: 1;
+                padding: 8px 12px !important;
+                font-size: 0.85em !important;
+                gap: 5px !important;
+                flex: 1 !important;
+                min-width: 0 !important;
             }
             
-            /* Footer mobile */
-            footer {
-                padding: 30px 15px 15px;
-                margin-top: 30px;
+            /* Réduire les sections */
+            .collections-section,
+            .products-section {
+                padding: 40px 15px !important;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            /* Panier mobile */
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
-            }
-            
-            /* Boutons admin mobile */
-            .admin-floating-buttons {
-                bottom: 80px;
-                right: 10px;
-                gap: 8px;
-            }
-            
-            .admin-btn {
-                padding: 10px 15px;
-                font-size: 0.85em;
-                min-width: 120px;
+            .section-title {
+                font-size: 2em !important;
+                margin-bottom: 30px !important;
             }
         }
         
         /* Pour très petits écrans */
         @media (max-width: 480px) {
-            .logo {
-                font-size: 1.8em;
-            }
-            
-            .slogan {
-                display: none;
-            }
-            
-            nav {
-                gap: 10px;
-            }
-            
-            nav a {
-                font-size: 0.85em;
-            }
-            
             .hero {
-                height: 300px;
+                height: 300px !important;
             }
             
             .hero h1 {
-                font-size: 2em;
+                font-size: 1.8em !important;
             }
             
-            .hero p {
-                font-size: 1em;
-            }
-            
-            /* Barre contact ultra-compacte */
-            .quick-contact-bar {
-                padding: 8px 10px;
-                gap: 5px;
-            }
-            
-            .quick-contact-btn span {
-                font-size: 0.8em;
-            }
-            
-            /* Cache texte sur boutons admin si vraiment petit */
+            /* Cache texte boutons admin si trop petit */
             .admin-btn span {
                 display: none;
             }
@@ -1238,7 +1357,9 @@
                 justify-content: center;
             }
         }
-        
+
+        /* AJOUTEZ CE CSS À LA FIN DE VOTRE <style> */
+
         /* ========== BARRE DE CONTACT UNIFIÉE ========== */
         .quick-contact-bar {
             position: fixed;
@@ -1255,10 +1376,11 @@
             border-top: 2px solid var(--accent);
             gap: 8px;
         }
-        
+
+        /* Style UNIFIÉ pour TOUS les boutons */
         .contact-btn {
             padding: 10px 18px;
-            border-radius: 50px;
+            border-radius: 50px; /* OVALE comme vos autres boutons */
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -1275,30 +1397,96 @@
             cursor: pointer;
             text-align: center;
         }
-        
+
+        /* WhatsApp - Garde sa couleur originale */
         .whatsapp-btn {
             background: linear-gradient(135deg, #25D366, #128C7E);
             border-color: #25D366;
         }
-        
+
+        /* Appeler - Garde sa couleur originale */
         .call-btn {
             background: linear-gradient(135deg, var(--primary), #FF4081);
             border-color: var(--primary);
         }
-        
+
+        /* Admin Commandes - NOUVELLE COULEUR (orange) */
         .admin-orders-btn {
             background: linear-gradient(135deg, var(--secondary), #FF9800);
             border-color: var(--secondary);
+            opacity: 0.9;
         }
-        
+
+        /* Admin Gâteaux - NOUVELLE COULEUR (rose foncé) */
         .admin-products-btn {
             background: linear-gradient(135deg, #E91E63, #C2185B);
             border-color: #E91E63;
+            opacity: 0.9;
         }
-        
+
+        /* Effet hover pour TOUS les boutons */
         .contact-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 1;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .quick-contact-bar {
+                padding: 8px 10px;
+                gap: 6px;
+            }
+            
+            .contact-btn {
+                padding: 8px 12px;
+                font-size: 0.85em;
+                gap: 6px;
+            }
+            
+            /* Sur petits écrans, cacher le texte des boutons admin */
+            @media (max-width: 480px) {
+                .admin-orders-btn span,
+                .admin-products-btn span {
+                    display: none;
+                }
+                
+                .admin-orders-btn,
+                .admin-products-btn {
+                    padding: 10px;
+                    width: 44px;
+                    justify-content: center;
+                }
+                
+                .whatsapp-btn span,
+                .call-btn span {
+                    display: inline; /* Garde le texte pour les boutons principaux */
+                }
+            }
+        }
+
+        /* Pour écrans moyens */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .contact-btn {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* ========== AJUSTEMENT PANIER ========== */
+        /* S'assurer que le panier a assez d'espace */
+        .cart-sidebar {
+            padding-bottom: 85px !important;
+        }
+
+        /* Les boutons admin doivent être légèrement plus transparents par défaut */
+        .admin-orders-btn,
+        .admin-products-btn {
+            opacity: 0.85;
+        }
+
+        .admin-orders-btn:hover,
+        .admin-products-btn:hover {
             opacity: 1;
         }
     </style>
@@ -1323,13 +1511,13 @@
         </a>
     </div>
 
-    <!-- HEADER - EXACTEMENT VOTRE DESIGN PC -->
+    <!-- HEADER -->
     <header>
         <div class="header-top">
             <div class="logo-container">
-                <div class="logo">Dolcino</div>
-                <div class="slogan">Quand le gâteau devient design</div>
-            </div>
+    <div class="logo">Dolcino</div>
+    <div class="slogan">Quand le gâteau devient design</div>
+</div>
             
             <nav>
                 <a href="#home">Accueil</a>
@@ -1347,7 +1535,7 @@
         </div>
     </header>
 
-    <!-- HERO SECTION - EXACTEMENT VOTRE DESIGN PC -->
+    <!-- HERO SECTION -->
     <section class="hero" id="home">
         <div class="hero-content fade-in">
             <h1>
@@ -1359,16 +1547,16 @@
         </div>
     </section>
 
-    <!-- CATÉGORIES SECTION - EXACTEMENT VOTRE DESIGN PC -->
+    <!-- CATÉGORIES SECTION -->
     <section class="collections-section">
         <h2 class="section-title">Nos Catégories</h2>
         <div class="collections-grid">
             <!-- GÂTEAUX D'ANNIVERSAIRE -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                         alt="Gâteau Anniversaire" 
-                         class="collection-image">
+                   <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+     alt="Gâteau Anniversaire Chocolat" 
+     class="collection-image">
                 </div>
                 <div class="collection-overlay">
                     <h3 class="collection-title">Anniversaires</h3>
@@ -1394,7 +1582,7 @@
             <!-- GÂTEAUX QUOTIDIENS -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                    <img src="https://images.unsplash.com/photo-1519861531473-920034658307?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
                          alt="Gâteaux du quotidien" 
                          class="collection-image">
                 </div>
@@ -1407,7 +1595,7 @@
         </div>
     </section>
 
-    <!-- PRODUCTS SECTION - EXACTEMENT VOTRE DESIGN PC -->
+    <!-- PRODUCTS SECTION -->
     <section class="products-section" id="products">
         <h2 class="section-title">Nos Gâteaux</h2>
         
@@ -1463,7 +1651,7 @@
                 <span>Total:</span>
                 <span id="cart-total">0.00 DT</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">
+            <button class="checkout-btn">
                 <i class="fas fa-shopping-bag"></i> Passer la commande
             </button>
         </div>
@@ -1555,7 +1743,7 @@
         </div>
     </div>
 
-    <!-- FOOTER - EXACTEMENT VOTRE DESIGN PC -->
+    <!-- FOOTER -->
     <footer id="contact">
         <div class="footer-content">
             <div class="footer-brand">
@@ -1617,29 +1805,609 @@
 
     <!-- BARRE DE CONTACT FIXE -->
     <div class="quick-contact-bar">
+        <!-- Admin Commandes (gauche) -->
         <a href="admin-login.html?page=orders" class="contact-btn admin-orders-btn" title="Gérer les commandes">
             <i class="fas fa-clipboard-list"></i>
             <span>Commandes</span>
         </a>
         
+        <!-- WhatsApp -->
         <a href="https://wa.me/21620901596" class="contact-btn whatsapp-btn" target="_blank">
             <i class="fab fa-whatsapp"></i>
             <span>WhatsApp</span>
         </a>
         
+        <!-- Appeler -->
         <button class="contact-btn call-btn" onclick="callNow()">
             <i class="fas fa-phone"></i>
             <span>Appeler</span>
         </button>
         
+        <!-- Admin Gâteaux (droite) -->
         <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" title="Gérer les gâteaux">
             <i class="fas fa-birthday-cake"></i>
             <span>Gâteaux</span>
         </a>
     </div>
 
-    <!-- AJOUTEZ ICI VOTRE SCRIPT JAVASCRIPT COMPLET -->
-    <!-- (Copiez-collez exactement votre code JavaScript existant) -->
+    <script>
+        // ============================================
+        // CORRECTION POUR CHARGER LES IMAGES LOCALES
+        // ============================================
+        
+        // Fonction pour vérifier si une image existe
+        function imageExists(image_url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = image_url;
+            });
+        }
+        
+        // Fonction pour obtenir le chemin correct des images
+        function getImagePath(imagePath) {
+            // Si c'est déjà une URL complète, la garder
+            if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
+                return imagePath;
+            }
+            
+            // Vérifier si l'image existe dans le dossier images/
+            const possiblePaths = [
+                imagePath,
+                `./${imagePath}`,
+                `images/${imagePath}`,
+                `./images/${imagePath}`,
+                `../images/${imagePath}`,
+                `https://ssyahia-source.github.io/dolcino.github.io/${imagePath}`,
+                `https://ssyahia-source.github.io/dolcino.github.io/images/${imagePath}`
+            ];
+            
+            // Retourner le premier chemin qui pourrait fonctionner
+            return possiblePaths[0];
+        }
+        
+        // Fonction pour charger les produits avec images corrigées
+        async function loadProductsWithImages() {
+            console.log("🔍 Chargement des produits avec images...");
+            
+            const keys = ['delices-gateaux', 'sarsel-products', 'gateaux', 'products'];
+            
+            for (let key of keys) {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    console.log(`✅ Trouvé avec clé: ${key}`);
+                    try {
+                        let products = JSON.parse(stored);
+                        
+                        // Corriger les chemins d'images
+                        products = products.map(product => {
+                            // Si l'image commence par ./images/, corriger le chemin
+                            let imagePath = product.image;
+                            
+                            if (imagePath && imagePath.includes('./images/')) {
+                                // Enlever le ./ pour GitHub Pages
+                                imagePath = imagePath.replace('./', '');
+                            }
+                            
+                            // Vérifier les chemins communs
+                            if (imagePath && !imagePath.startsWith('http') && !imagePath.startsWith('data:')) {
+                                // Ajouter le chemin de base pour GitHub Pages
+                                imagePath = `https://ssyahia-source.github.io/dolcino.github.io/${imagePath}`;
+                            }
+                            
+                            return {
+                                ...product,
+                                image: imagePath || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
+                            };
+                        });
+                        
+                        console.log(`${products.length} produits chargés avec images corrigées`);
+                        return products;
+                    } catch (e) {
+                        console.error(`❌ Erreur parsing ${key}:`, e);
+                    }
+                }
+            }
+            
+            // Si aucun produit n'est trouvé, retourner des produits par défaut
+            return [
+                {
+                    id: 1,
+                    name: "Gâteau Démo Chocolat",
+                    price: "49.99 DT",
+                    category: "anniversaire",
+                    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                    description: "Gâteau artisanal au chocolat belge"
+                }
+            ];
+        }
+        
+        // ============================================
+        // VARIABLES GLOBALES OPTIMISÉES
+        // ============================================
+        let products = [];
+        let cart = JSON.parse(localStorage.getItem('delices-cart')) || [];
+        let currentCategory = 'all';
+        let productsLoaded = false;
+        let productsHash = '';
 
+        // ============================================
+        // FONCTIONS DE NAVIGATION OPTIMISÉES
+        // ============================================
+        function scrollToProductsAndShowAll() {
+            console.log("🎯 Défilement vers les produits...");
+            
+            showCategory('all');
+            
+            setTimeout(() => {
+                const productsSection = document.getElementById('products');
+                if (productsSection) {
+                    productsSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100);
+        }
+
+        function showCategoryWithScroll(category) {
+            showCategory(category);
+            
+            setTimeout(() => {
+                const productsSection = document.getElementById('products');
+                if (productsSection) {
+                    productsSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 50);
+        }
+
+        // ============================================
+        // CHARGEMENT INTELLIGENT DES PRODUITS (CORRIGÉ)
+        // ============================================
+        async function loadProducts() {
+            if (productsLoaded && products.length > 0) {
+                return products;
+            }
+            
+            console.log("🔍 Chargement des produits depuis localStorage...");
+            
+            // Charger les produits avec images corrigées
+            products = await loadProductsWithImages();
+            
+            // Si pas de produits, créer des données par défaut
+            if (products.length === 0) {
+                console.log("🆕 Création de produits par défaut...");
+                
+                products = [
+                    {
+                        id: 1,
+                        name: "Gâteau Chocolat Anniversaire",
+                        price: "45.00 DT",
+                        category: "anniversaire",
+                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Gâteau au chocolat belge"
+                    },
+                    {
+                        id: 2,
+                        name: "Gâteau Mariage Élégant",
+                        price: "120.00 DT",
+                        category: "mariage",
+                        image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Élégant pour mariage"
+                    },
+                    {
+                        id: 3,
+                        name: "Gâteau Quotidien Carotte",
+                        price: "25.00 DT",
+                        category: "quotidien",
+                        image: "https://images.unsplash.com/photo-1519861531473-920034658307?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Parfait quotidien"
+                    }
+                ];
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('delices-gateaux', JSON.stringify(products));
+            }
+            
+            productsLoaded = true;
+            productsHash = btoa(JSON.stringify(products)).substring(0, 20);
+            console.log(`${products.length} produits chargés`);
+            
+            return products;
+        }
+
+        // ============================================
+        // AFFICHAGE DES PRODUITS OPTIMISÉ (CORRIGÉ)
+        // ============================================
+        async function displayProducts() {
+            await loadProducts();
+
+            const container = document.getElementById('products-container');
+            if (!container) return;
+            
+            let html = '';
+            products.forEach((product, index) => {
+                let badgeClass = 'badge-anniversaire';
+                let categoryName = 'Anniversaire';
+                
+                if (product.category === 'mariage') {
+                    badgeClass = 'badge-mariage';
+                    categoryName = 'Mariage';
+                } else if (product.category === 'quotidien') {
+                    badgeClass = 'badge-quotidien';
+                    categoryName = 'Quotidien';
+                }
+                
+                let imageSrc = product.image;
+                
+                // Si l'image est stockée dans localStorage (base64)
+                if (product.imageKey) {
+                    const imageData = localStorage.getItem(product.imageKey);
+                    if (imageData && imageData.startsWith('data:image')) {
+                        imageSrc = imageData;
+                    }
+                }
+                
+                // Gestion des erreurs d'image
+                const imgErrorHandler = `this.onerror=null; this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';`;
+                
+                html += `
+                    <div class="product-card" data-category="${product.category}" data-id="${product.id}" style="animation-delay: ${index * 0.1}s">
+                        <div class="product-badge ${badgeClass}">${categoryName}</div>
+                        <div class="image-container product-image-container">
+                            <img src="${imageSrc}" 
+                                 alt="${product.name}" 
+                                 class="product-img"
+                                 loading="lazy"
+                                 onerror="${imgErrorHandler}">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="product-desc">${product.description}</p>
+                            <div class="product-meta">
+                                <div class="product-price">${product.price}</div>
+                                <button class="add-to-cart" onclick="addToCart(${product.id})">Ajouter</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            showCategory(currentCategory);
+        }
+
+        // ============================================
+        // FONCTION PRINCIPALE D'AFFICHAGE CATÉGORIE
+        // ============================================
+        function showCategory(category) {
+            currentCategory = category;
+            const productCards = document.querySelectorAll('.product-card');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                const btnText = btn.textContent.toLowerCase();
+                
+                if (category === 'all' && btnText.includes('tous')) {
+                    btn.classList.add('active');
+                } else if (category === 'anniversaire' && btnText.includes('anniversaire')) {
+                    btn.classList.add('active');
+                } else if (category === 'mariage' && btnText.includes('mariage')) {
+                    btn.classList.add('active');
+                } else if (category === 'quotidien' && btnText.includes('quotidien')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            productCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // ============================================
+        // FONCTIONS DU PANIER OPTIMISÉES
+        // ============================================
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image,
+                    category: product.category
+                });
+            }
+            
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+            showNotification(`✅ ${product.name} ajouté au panier !`);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                const numericPrice = priceMatch ? parseFloat(priceMatch[0]) : 0;
+                const itemTotal = numericPrice * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">
+                        <img src="${item.image}" 
+                             alt="${item.name}"
+                             loading="lazy"
+                             onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'">
+                    </div>
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <div class="cart-item-price">${item.price}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
+                            <span class="quantity-value">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${index})">✕</button>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            cartTotal.textContent = total.toFixed(2) + ' DT';
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">🍰</div>
+                        <h4>Votre panier est vide</h4>
+                        <p>Ajoutez des gâteaux pour commencer</p>
+                    </div>
+                `;
+            }
+            
+            // Ajouter l'événement au bouton "Passer la commande"
+            document.querySelector('.checkout-btn').onclick = checkout;
+        }
+
+        function updateQuantity(itemIndex, newQuantity) {
+            if (newQuantity < 1) {
+                removeFromCart(itemIndex);
+                return;
+            }
+            cart[itemIndex].quantity = newQuantity;
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            const itemName = cart[index].name;
+            cart.splice(index, 1);
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+            showNotification(`🗑️ ${itemName} retiré du panier`);
+        }
+
+        function toggleCart() {
+            const overlay = document.getElementById('cart-overlay');
+            const sidebar = document.getElementById('cart-sidebar');
+            
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                setTimeout(() => overlay.style.display = 'none', 400);
+            } else {
+                updateCart();
+                overlay.style.display = 'block';
+                setTimeout(() => sidebar.classList.add('active'), 10);
+            }
+        }
+
+        // ============================================
+        // FONCTION CHECKOUT (PASSER LA COMMANDE)
+        // ============================================
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('🛒 Votre panier est vide !');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
+            }, 0);
+            
+            const orderNumber = 'DL-' + Date.now().toString().slice(-6);
+            
+            const orderSummary = document.getElementById('order-summary-items');
+            orderSummary.innerHTML = '';
+            
+            cart.forEach(item => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                const itemTotal = (priceMatch ? parseFloat(priceMatch[0]) : 0) * item.quantity;
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'summary-item';
+                summaryItem.innerHTML = `
+                    <span>${item.quantity} × ${item.name}</span>
+                    <span>${itemTotal.toFixed(2)} DT</span>
+                `;
+                orderSummary.appendChild(summaryItem);
+            });
+            
+            document.getElementById('order-total').textContent = total.toFixed(2) + ' DT';
+            document.getElementById('order-number').textContent = orderNumber;
+            
+            document.getElementById('order-form-modal').style.display = 'flex';
+        }
+
+        function closeOrderForm() {
+            document.getElementById('order-form-modal').style.display = 'none';
+        }
+
+        function showConfirmationModal() {
+            const orderNumber = document.getElementById('order-number').textContent;
+            document.getElementById('confirmation-number').textContent = orderNumber;
+            
+            closeOrderForm();
+            document.getElementById('confirmation-modal').style.display = 'flex';
+            
+            const order = {
+                orderNumber: orderNumber,
+                date: new Date().toISOString(),
+                items: [...cart],
+                total: cart.reduce((sum, item) => {
+                    const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                    return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
+                }, 0),
+                name: document.getElementById('customer-name').value || 'Client',
+                phone: document.getElementById('customer-phone').value || '',
+                email: document.getElementById('customer-email').value || '',
+                address: document.getElementById('customer-address').value || '',
+                notes: document.getElementById('customer-notes').value || 'Aucune note',
+                paymentMethod: document.querySelector('input[name="payment"]:checked').value || 'cash',
+                status: 'En attente'
+            };
+            
+            let orders = JSON.parse(localStorage.getItem('delices-commandes')) || [];
+            orders.push(order);
+            localStorage.setItem('delices-commandes', JSON.stringify(orders));
+            
+            cart = [];
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+            
+            showNotification(`🎉 Commande ${orderNumber} confirmée !`);
+            
+            document.getElementById('customer-form').reset();
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
+        // ============================================
+        // FONCTIONS UTILITAIRES
+        // ============================================
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function callNow() {
+            if (confirm('Appeler Dolcino au 20 90 15 96 ?')) {
+                window.open('tel:+21620901596');
+            }
+        }
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 Dolcino - Site chargé");
+            
+            displayProducts();
+            updateCart();
+            
+            document.getElementById('customer-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showConfirmationModal();
+            });
+            
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            setTimeout(() => {
+                if (!localStorage.getItem('welcome-shown')) {
+                    showNotification('🎂 Bienvenue chez Dolcino !');
+                    localStorage.setItem('welcome-shown', 'true');
+                }
+            }, 1000);
+            
+            // Vérifier et initialiser les données si nécessaire
+            initializeDefaultData();
+        });
+        
+        // Initialiser les données par défaut si localStorage est vide
+        async function initializeDefaultData() {
+            const storedProducts = localStorage.getItem('delices-gateaux');
+            if (!storedProducts) {
+                console.log("🆕 Initialisation des données par défaut...");
+                
+                const defaultProducts = [
+                    {
+                        id: Date.now() + 1,
+                        name: "Gâteau Chocolat Fondant",
+                        price: "45.00 DT",
+                        category: "anniversaire",
+                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Gâteau au chocolat belge avec cœur fondant"
+                    },
+                    {
+                        id: Date.now() + 2,
+                        name: "Gâteau Fraise Passion",
+                        price: "38.50 DT",
+                        category: "anniversaire",
+                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Fraise fraîche et crème passion"
+                    },
+                    {
+                        id: Date.now() + 3,
+                        name: "Gâteau de Mariage Classique",
+                        price: "120.00 DT",
+                        category: "mariage",
+                        image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Élégant gâteau à étages pour mariage"
+                    }
+                ];
+                
+                localStorage.setItem('delices-gateaux', JSON.stringify(defaultProducts));
+                productsLoaded = false;
+                await displayProducts();
+            }
+        }
+    </script>
 </body>
 </html>
