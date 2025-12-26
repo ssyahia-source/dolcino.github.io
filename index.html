@@ -1950,23 +1950,172 @@
         // ============================================
         function displayProducts() {
             loadProducts();
+
+// ============================================
+// INITIALISATION URGENTE - localStorage VIDE
+// ============================================
+console.log("🔍 Vérification initialisation...");
+
+// Vérifier si localStorage est vide
+const checkStorage = () => {
+    const hasData = localStorage.getItem('delices-gateaux') || 
+                    localStorage.getItem('sarsel-products') || 
+                    localStorage.getItem('gateaux');
+    
+    if (!hasData) {
+        console.log("🆕 CREATION de données initiales...");
+        
+        const initialProducts = [
+            // ========== ANNIVERSAIRES ==========
+            {
+                id: Date.now() + 1,
+                name: "Gâteau Chocolat Fondant",
+                price: "45.00 DT",
+                category: "anniversaire", // TRÈS IMPORTANT
+                image: "./images/anniversaire/gateau-chocolat.jpg",
+                description: "Gâteau au chocolat belge avec cœur fondant"
+            },
+            {
+                id: Date.now() + 2,
+                name: "Gâteau Fraise Passion",
+                price: "38.50 DT",
+                category: "anniversaire", // MÊME CATÉGORIE
+                image: "./images/anniversaire/gateau-fraise.jpg", // Créez ce fichier
+                description: "Fraise fraîche et crème passion"
+            },
+            
+            // ========== MARIAGES ==========
+            {
+                id: Date.now() + 3,
+                name: "Gâteau de Mariage Classique",
+                price: "120.00 DT",
+                category: "mariage", // EXACTEMENT "mariage"
+                image: "./images/mariage/gateau-mariage-1.jpg", // Créez ce fichier
+                description: "Élégant gâteau à étages pour mariage"
+            },
+            {
+                id: Date.now() + 4,
+                name: "Gâteau Royal Blanc",
+                price: "150.00 DT",
+                category: "mariage", // EXACTEMENT "mariage"
+                image: "./images/mariage/gateau-mariage-2.jpg", // Créez ce fichier
+                description: "Blanc pur avec décorations en sucre"
+            },
+            
+            // ========== QUOTIDIEN ==========
+            {
+                id: Date.now() + 5,
+                name: "Gâteau Carotte Quotidien",
+                price: "25.00 DT",
+                category: "quotidien", // EXACTEMENT "quotidien"
+                image: "./images/quotidien/gateau-carotte.jpg", // Créez ce fichier
+                description: "Parfait pour le goûter familial"
+            },
+            {
+                id: Date.now() + 6,
+                name: "Gâteau Vanille Noisette",
+                price: "28.00 DT",
+                category: "quotidien", // EXACTEMENT "quotidien"
+                image: "./images/quotidien/gateau-vanille.jpg", // Créez ce fichier
+                description: "Vanille de Madagascar et noisettes grillées"
+            }
+        ];
+        
+        // Sauvegarder
+        localStorage.setItem('delices-gateaux', JSON.stringify(initialProducts));
+        console.log(`✅ ${initialProducts.length} produits initiaux créés`);
+        
+        // Vider le cache pour forcer le rechargement
+        products = [];
+        productsLoaded = false;
+        
+        return true;
+    }
+    return false;
+};
+
+// Exécuter l'initialisation
+const wasInitialized = checkStorage();
+if (wasInitialized) {
+    console.log("🔄 Redémarrage nécessaire...");
+    // Forcer le rechargement des produits
+    setTimeout(() => {
+        if (typeof loadProducts === 'function') {
+            loadProducts();
+            if (typeof displayProducts === 'function') {
+                displayProducts();
+            }
+        }
+    }, 100);
+}
+
+            
             
             const container = document.getElementById('products-container');
             if (!container) return;
             
-            if (products.length === 0) {
-                container.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px;">
-                        <h3 style="color: #8B4513;">🍰 Aucun gâteau disponible</h3>
-                        <p style="margin: 20px 0;">Ajoutez des gâteaux depuis l'administration</p>
-                        <button onclick="window.location.href='admin-login.html'" 
-                                style="background: #FF6B8B; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer;">
-                            Aller à l'admin
-                        </button>
-                    </div>
-                `;
-                return;
+            // Dans loadProducts(), cherchez :
+if (products.length === 0) {
+    console.log("⚠️ Aucun produit trouvé - produits par défaut");
+    products = [
+        {
+            id: 1,
+            name: "Gâteau Démo Chocolat",
+            price: "49.99 DT",
+            category: "anniversaire", // CATÉGORIE CORRECTE
+            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+            description: "Gâteau artisanal au chocolat belge"
+        }
+    ];
+    productsLoaded = true;
+}
+
+// REMPLACEZ PAR :
+if (products.length === 0) {
+    console.log("⚠️ Aucun produit trouvé - vérification localStorage...");
+    
+    // Vérifier à nouveau localStorage
+    const stored = localStorage.getItem('delices-gateaux');
+    if (stored) {
+        try {
+            const parsed = JSON.parse(stored);
+            products = parsed;
+            console.log(`✅ ${products.length} produits chargés depuis localStorage`);
+        } catch (e) {
+            console.error("❌ Erreur parsing:", e);
+            products = createDefaultProducts();
+        }
+    } else {
+        console.log("🆕 Création produits par défaut avec catégories variées");
+        products = [
+            {
+                id: 1,
+                name: "Gâteau Chocolat Anniversaire",
+                price: "45.00 DT",
+                category: "anniversaire", // CORRECT
+                image: "./images/anniversaire/gateau-chocolat.jpg",
+                description: "Gâteau au chocolat belge"
+            },
+            {
+                id: 2,
+                name: "Gâteau Mariage Élégant",
+                price: "120.00 DT",
+                category: "mariage", // CORRECT
+                image: "./images/mariage/gateau-mariage-1.jpg",
+                description: "Élégant pour mariage"
+            },
+            {
+                id: 3,
+                name: "Gâteau Quotidien Carotte",
+                price: "25.00 DT",
+                category: "quotidien", // CORRECT
+                image: "./images/quotidien/gateau-carotte.jpg",
+                description: "Parfait quotidien"
             }
+        ];
+    }
+    productsLoaded = true;
+}
             
             let html = '';
             products.forEach((product, index) => {
@@ -2353,3 +2502,4 @@
 
 </body>
 </html>
+
