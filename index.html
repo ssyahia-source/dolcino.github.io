@@ -1904,7 +1904,7 @@
                     console.log(`✅ Trouvé avec clé: ${key}`);
                     try {
                         const newProducts = JSON.parse(stored);
-                        productsHash = btoa(stored).substring(0, 20);
+                        productsHash = btoa(encodeURIComponent(stored)).substring(0, 20);
                         
                         products = newProducts.map(product => {
                             return {
@@ -2502,4 +2502,5 @@ if (products.length === 0) {
 
 </body>
 </html>
+
 
