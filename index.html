@@ -1489,6 +1489,288 @@
         .admin-products-btn:hover {
             opacity: 1;
         }
+   /* =================================================== */
+/* ========== OPTIMISATIONS MOBILE SEULEMENT ========= */
+/* =================================================== */
+
+@media (max-width: 768px) {
+    /* CORRECTION ESPACE SUPÉRIEUR/INFÉRIEUR */
+    body {
+        padding-top: 0 !important;
+        padding-bottom: 100px !important;
+        overflow-x: hidden;
+    }
+    
+    /* Optimiser le header pour mobile */
+    header {
+        padding: 10px 15px !important;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    
+    .header-top {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px;
+    }
+    
+    .logo {
+        font-size: 2em !important;
+        letter-spacing: 1px !important;
+    }
+    
+    .slogan {
+        font-size: 0.9em !important;
+        display: none; /* Cache sur mobile pour gagner de l'espace */
+    }
+    
+    /* Menu navigation - garde mais ajuste */
+    nav {
+        gap: 10px !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    nav a {
+        font-size: 0.9em !important;
+        padding: 5px !important;
+    }
+    
+    /* Hero section réduite */
+    .hero {
+        height: 350px !important;
+        padding: 20px !important;
+        margin-top: 0 !important;
+    }
+    
+    .hero h1 {
+        font-size: 2.2em !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .hero p {
+        font-size: 1.1em !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .hero button {
+        padding: 10px 25px !important;
+        font-size: 0.9em !important;
+    }
+    
+    /* Réduire les sections */
+    .collections-section,
+    .products-section {
+        padding: 40px 15px !important;
+    }
+    
+    .section-title {
+        font-size: 1.8em !important;
+        margin-bottom: 30px !important;
+    }
+    
+    /* Collections : 1 colonne sur mobile */
+    .collections-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .collection-image-container {
+        height: 250px !important;
+    }
+    
+    /* Products : 2 colonnes sur mobile */
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+        gap: 15px !important;
+    }
+    
+    .product-image-container {
+        height: 180px !important;
+    }
+    
+    /* Optimiser les images pour mobile */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+    }
+    
+    .collection-image,
+    .product-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    
+    /* Réduire les informations produit */
+    .product-info {
+        padding: 12px !important;
+    }
+    
+    .product-title {
+        font-size: 1.1em !important;
+    }
+    
+    .product-price {
+        font-size: 1.2em !important;
+    }
+    
+    .add-to-cart {
+        padding: 6px 15px !important;
+        font-size: 0.85em !important;
+    }
+    
+    /* Filtres optimisés pour mobile */
+    .filters {
+        gap: 8px !important;
+        margin-bottom: 25px !important;
+    }
+    
+    .filter-btn {
+        padding: 8px 15px !important;
+        font-size: 0.85em !important;
+        flex: 1;
+        min-width: calc(50% - 8px);
+    }
+    
+    /* Barre de contact mobile optimisée */
+    .quick-contact-bar {
+        padding: 8px 10px !important;
+        gap: 6px !important;
+    }
+    
+    .contact-btn {
+        padding: 8px 10px !important;
+        font-size: 0.75em !important;
+        gap: 5px !important;
+    }
+    
+    /* Footer mobile */
+    footer {
+        padding: 30px 15px 15px !important;
+        margin-top: 30px !important;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    /* Panier mobile */
+    .cart-sidebar {
+        width: 100% !important;
+        right: -100% !important;
+    }
+    
+    /* Payment section mobile */
+    .payment-methods-tunisia {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+    
+    .payment-method-card {
+        min-width: 100% !important;
+        padding: 15px !important;
+    }
+    
+    /* Boutons admin mobile */
+    .admin-floating-buttons {
+        bottom: 80px !important;
+        right: 10px !important;
+        gap: 8px !important;
+    }
+    
+    .admin-btn {
+        padding: 10px 15px !important;
+        font-size: 0.85em !important;
+        min-width: 120px !important;
+    }
+}
+
+/* Pour très petits écrans */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.6em !important;
+    }
+    
+    .slogan {
+        display: none !important;
+    }
+    
+    nav {
+        gap: 8px !important;
+    }
+    
+    nav a {
+        font-size: 0.8em !important;
+    }
+    
+    .hero {
+        height: 300px !important;
+    }
+    
+    .hero h1 {
+        font-size: 1.8em !important;
+    }
+    
+    .hero p {
+        font-size: 1em !important;
+    }
+    
+    /* Barre contact ultra-compacte */
+    .quick-contact-bar {
+        padding: 6px 8px !important;
+        gap: 4px !important;
+    }
+    
+    .contact-btn {
+        padding: 6px 8px !important;
+        font-size: 0.7em !important;
+    }
+    
+    .contact-btn span {
+        font-size: 0.8em !important;
+    }
+    
+    /* Cache texte sur boutons admin si très petit */
+    .admin-orders-btn span,
+    .admin-products-btn span {
+        display: none !important;
+    }
+    
+    .admin-orders-btn,
+    .admin-products-btn {
+        padding: 10px !important;
+        width: 40px !important;
+        justify-content: center !important;
+    }
+    
+    /* Assurer que les boutons sont touchables */
+    button, .contact-btn, .add-to-cart {
+        min-height: 44px !important;
+    }
+}
+
+/* Pour les tablettes */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .collections-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    }
+    
+    .contact-btn {
+        padding: 10px 16px !important;
+        font-size: 0.9em !important;
+    }
+}
+    
     </style>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -2411,3 +2693,4 @@
     </script>
 </body>
 </html>
+
