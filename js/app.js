@@ -103,14 +103,18 @@ function createDefaultProducts() {
             image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
             description: "Élégant gâteau à étages pour mariage"
         },
-        {
-            id: 3,
-            name: "Gâteau Carotte Quotidien",
-            price: "25.00 DT",
-            category: "quotidien",
-            image: "https://images.unsplash.com/photo-1596223575327-99a5d1b5c58e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-            description: "Parfait pour le goûter familial"
-        }
+       // Dans createDefaultProducts(), modifiez le 3ème produit :
+{
+    id: 3,
+    name: "Gâteau Carotte Quotidien",
+    price: "25.00 DT",
+    category: "quotidien",
+    // REMPLACEZ cette ligne :
+    // image: "https://images.unsplash.com/photo-1596223575327-99a5d1b5c58e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+    // PAR :
+    image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+    description: "Parfait pour le goûter familial"
+}
     ];
 }
 
