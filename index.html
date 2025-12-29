@@ -1430,7 +1430,7 @@
             <!-- GÂTEAUX DE MARIAGE -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                    <img src="./images/mariage/gateau-mariage-1.jpg" 
+                    <img src="./images/mariages/gateau-mariage-1.jpg" 
                          alt="Gâteaux de mariage" 
                          class="collection-image"
                          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\" viewBox=\"0 0 400 300\"><rect width=\"400\" height=\"300\" fill=\"%23FFD166\"/><text x=\"200\" y=\"150\" font-family=\"Arial\" font-size=\"24\" fill=\"%238B4513\" text-anchor=\"middle\">💒 Mariages</text></svg>'">
@@ -1466,7 +1466,7 @@
         <div class="filters">
             <button class="filter-btn active" onclick="showCategory('all')">Tous les gâteaux</button>
             <button class="filter-btn" onclick="showCategory('anniversaire')">🎂 Anniversaires</button>
-            <button class="filter-btn" onclick="showCategory('mariage')">💒 Mariages</button>
+            <button class="filter-btn" onclick="showCategory('mariages')">💒 Mariages</button>
             <button class="filter-btn" onclick="showCategory('quotidien')">🍰 Quotidien</button>
         </div>
         
@@ -1735,7 +1735,7 @@
                         if (img.closest('.collection-card')) {
                             if (img.alt.includes('Anniversaire') || img.src.includes('anniversaire')) {
                                 category = 'anniversaire';
-                            } else if (img.alt.includes('Mariage') || img.src.includes('mariage')) {
+                            } else if (img.alt.includes('Mariages') || img.src.includes('mariages')) {
                                 category = 'mariage';
                             } else if (img.alt.includes('Quotidien') || img.src.includes('quotidien')) {
                                 category = 'quotidien';
@@ -1763,7 +1763,7 @@
                         if (this.alt.includes('Anniversaire') || this.src.includes('anniversaire')) {
                             fallbackCategory = 'anniversaire';
                         } else if (this.alt.includes('Mariage') || this.src.includes('mariage')) {
-                            fallbackCategory = 'mariage';
+                            fallbackCategory = 'mariages';
                         } else if (this.alt.includes('Quotidien') || this.src.includes('quotidien')) {
                             fallbackCategory = 'quotidien';
                         }
@@ -1895,8 +1895,8 @@
                         id: 3,
                         name: "Gâteau de Mariage Classique",
                         price: "120.00 DT",
-                        category: "mariage",
-                        image: "./images/mariage/gateau-mariage-1.jpg",
+                        category: "mariages",
+                        image: "./images/mariages/gateau-mariage-1.jpg",
                         description: "Élégant gâteau à étages pour mariage"
                     },
                     {
@@ -1904,7 +1904,7 @@
                         name: "Gâteau Royal Blanc",
                         price: "150.00 DT",
                         category: "mariage",
-                        image: "./images/mariage/gateau-mariage-2.jpg",
+                        image: "./images/mariages/gateau-mariage-2.jpg",
                         description: "Blanc pur avec décorations en sucre"
                     },
                     {
@@ -1946,7 +1946,7 @@
                 let badgeClass = 'badge-anniversaire';
                 let categoryName = 'Anniversaire';
                 
-                if (product.category === 'mariage') {
+                if (product.category === 'mariages') {
                     badgeClass = 'badge-mariage';
                     categoryName = 'Mariage';
                 } else if (product.category === 'quotidien') {
@@ -2019,7 +2019,7 @@
                     btn.classList.add('active');
                 } else if (category === 'anniversaire' && btnText.includes('anniversaire')) {
                     btn.classList.add('active');
-                } else if (category === 'mariage' && btnText.includes('mariage')) {
+                } else if (category === 'mariages' && btnText.includes('mariages')) {
                     btn.classList.add('active');
                 } else if (category === 'quotidien' && btnText.includes('quotidien')) {
                     btn.classList.add('active');
@@ -2352,3 +2352,4 @@
     </script>
 </body>
 </html>
+
