@@ -1695,189 +1695,181 @@
     </div>
 
 
-
-
-
-
 <script>
     // ============================================
     // VARIABLES GLOBALES
     // ============================================
     let products = [];
-    let cart = JSON.parse(localStorage.getItem('dolcino-cart')) || [];
+    let cart = JSON.parse(localStorage.getItem('delices-cart')) || [];
     let currentCategory = 'all';
     let productsLoaded = false;
+    let lastSyncTime = 0;
 
     // ============================================
-    // CLÉS DE SYNCHRONISATION (TRÈS IMPORTANT !)
+    // CONFIGURATION DE SYNCHRO AVEC L'ADMIN
     // ============================================
-    const PRODUCT_KEYS = {
-        PRIMARY: 'dolcino-gateaux',        // Clé PRINCIPALE que les deux pages doivent utiliser
-        SECONDARY: 'delices-gateaux',      // Ancienne clé (compatibilité)
-        ADMIN: 'admin-products',           // Clé de l'admin
-        BACKUP: 'gateaux-data'             // Clé de backup
+    const ADMIN_STORAGE_KEYS = {
+        PRIMARY: 'delices-gateaux',        // CLAIR : clé utilisée par l'admin
+        BACKUP: 'dolcino-gateaux',         // Clé de backup
+        LEGACY: 'sarsel-products'          // Ancienne clé
     };
 
     // ============================================
-    // FONCTION DE SYNCHRONISATION UNIFIÉE
+    // FONCTION DE SYNCHRONISATION AVEC L'ADMIN
     // ============================================
-    function synchronizeProducts() {
-        console.log("🔄 Synchronisation des produits...");
+    function syncWithAdmin() {
+        console.log("🔄 Synchronisation avec l'admin...");
         
-        // 1. COLLECTER TOUTES LES DONNÉES DISPONIBLES
-        const allData = {};
+        // 1. VÉRIFIER LA CLÉ PRINCIPALE DE L'ADMIN
+        let adminProducts = [];
+        let source = ADMIN_STORAGE_KEYS.PRIMARY;
         
-        // Vérifier TOUTES les clés possibles
-        Object.values(PRODUCT_KEYS).forEach(key => {
-            const stored = localStorage.getItem(key);
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        allData[key] = parsed;
-                        console.log(`📦 ${parsed.length} produits trouvés dans "${key}"`);
+        const storedData = localStorage.getItem(ADMIN_STORAGE_KEYS.PRIMARY);
+        
+        if (storedData) {
+            try {
+                adminProducts = JSON.parse(storedData);
+                console.log(`✅ ${adminProducts.length} produits trouvés dans "${ADMIN_STORAGE_KEYS.PRIMARY}" (clé admin)`);
+            } catch (e) {
+                console.error("❌ Erreur parsing admin data:", e);
+            }
+        }
+        
+        // 2. SI VIDE, CHERCHER DANS LES AUTRES CLÉS
+        if (adminProducts.length === 0) {
+            console.log("🔍 Recherche dans les autres clés...");
+            
+            const backupKeys = [ADMIN_STORAGE_KEYS.BACKUP, ADMIN_STORAGE_KEYS.LEGACY, 'gateaux', 'products'];
+            
+            for (const key of backupKeys) {
+                const backupData = localStorage.getItem(key);
+                if (backupData) {
+                    try {
+                        adminProducts = JSON.parse(backupData);
+                        if (adminProducts.length > 0) {
+                            source = key;
+                            console.log(`🔄 ${adminProducts.length} produits trouvés dans "${key}" - migration vers clé admin`);
+                            
+                            // Migrer vers la clé admin
+                            localStorage.setItem(ADMIN_STORAGE_KEYS.PRIMARY, backupData);
+                            break;
+                        }
+                    } catch (e) {
+                        console.warn(`⚠️ Erreur avec "${key}":`, e);
                     }
-                } catch (e) {
-                    console.warn(`⚠️ Erreur parsing "${key}":`, e);
                 }
             }
-        });
-        
-        // 2. DÉTERMINER LA MEILLEURE SOURCE
-        let bestSource = null;
-        let bestData = [];
-        
-        // Priorité 1: Clé principale (doit être utilisée par l'admin)
-        if (allData[PRODUCT_KEYS.PRIMARY]) {
-            bestSource = PRODUCT_KEYS.PRIMARY;
-            bestData = allData[PRODUCT_KEYS.PRIMARY];
-        }
-        // Priorité 2: Ancienne clé
-        else if (allData[PRODUCT_KEYS.SECONDARY]) {
-            bestSource = PRODUCT_KEYS.SECONDARY;
-            bestData = allData[PRODUCT_KEYS.SECONDARY];
-        }
-        // Priorité 3: Clé admin
-        else if (allData[PRODUCT_KEYS.ADMIN]) {
-            bestSource = PRODUCT_KEYS.ADMIN;
-            bestData = allData[PRODUCT_KEYS.ADMIN];
         }
         
-        // 3. SI AUCUNE DONNÉE, CRÉER DES EXEMPLES
-        if (bestData.length === 0) {
-            console.log("🆕 Aucun produit trouvé - création d'exemples");
-            bestData = createSampleProducts();
-            bestSource = PRODUCT_KEYS.PRIMARY;
+        // 3. SI TOUJOURS VIDE, CRÉER DES EXEMPLES
+        if (adminProducts.length === 0) {
+            console.log("🆕 Aucun produit admin - création d'exemples");
+            
+            adminProducts = [
+                {
+                    id: Date.now() + 1,
+                    name: "Gâteau Chocolat",
+                    price: "45.00 DT",
+                    category: "anniversaire",
+                    description: "Gâteau au chocolat belge"
+                },
+                {
+                    id: Date.now() + 2,
+                    name: "Gâteau Mariage",
+                    price: "120.00 DT",
+                    category: "mariage",
+                    description: "Élégant gâteau de mariage"
+                },
+                {
+                    id: Date.now() + 3,
+                    name: "Gâteau Carotte",
+                    price: "25.00 DT",
+                    category: "quotidien",
+                    description: "Gâteau carotte maison"
+                }
+            ];
+            
+            localStorage.setItem(ADMIN_STORAGE_KEYS.PRIMARY, JSON.stringify(adminProducts));
+            source = ADMIN_STORAGE_KEYS.PRIMARY;
         }
         
-        // 4. SYNCHRONISER TOUTES LES CLÉS
-        // Copier les données dans TOUTES les clés pour garantir la synchro
-        Object.values(PRODUCT_KEYS).forEach(key => {
-            if (key !== bestSource) {
-                localStorage.setItem(key, JSON.stringify(bestData));
-                console.log(`✅ Synchronisé vers "${key}"`);
-            }
-        });
-        
-        // 5. NORMALISER LES PRODUITS
-        products = bestData.map(product => ({
+        // 4. NORMALISER LES PRODUITS (compatibilité)
+        products = adminProducts.map(product => ({
             id: product.id || 'prod_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
             name: product.name || 'Nouveau Gâteau',
             price: product.price || '0.00 DT',
             category: product.category || 'quotidien',
-            image: product.image || getDefaultImage(product.category),
+            image: product.image || getProductImage(product),
+            imageKey: product.imageKey,
             description: product.description || 'Gâteau artisanal fait maison',
             createdAt: product.createdAt || new Date().toISOString(),
             inStock: product.inStock !== undefined ? product.inStock : true,
-            // Garder toutes les autres propriétés
+            // Garder toutes les propriétés originales
             ...product
         }));
         
-        // 6. SAUVEGARDER DANS LA CLÉ PRINCIPALE
-        localStorage.setItem(PRODUCT_KEYS.PRIMARY, JSON.stringify(products));
-        
-        console.log(`📊 Synchronisation terminée: ${products.length} produits`);
-        console.log(`📍 Source: ${bestSource}`);
-        
-        // 7. NOTIFIER L'UTILISATEUR SI BESOIN
-        if (products.length > 0 && !localStorage.getItem('synchro-done')) {
-            showNotification(`✅ ${products.length} gâteaux synchronisés`);
-            localStorage.setItem('synchro-done', 'true');
-        }
-        
+        // 5. SAUVEGARDER DANS NOTRE VARIABLE
         productsLoaded = true;
+        lastSyncTime = Date.now();
+        
+        console.log(`📊 Synchronisation terminée: ${products.length} produits (source: ${source})`);
+        console.log(`📈 Répartition: ${getCategoryDistribution()}`);
+        
         return products;
     }
 
     // ============================================
-    // FONCTIONS UTILITAIRES
+    // FONCTIONS UTILITAIRES POUR LES IMAGES
     // ============================================
-    function createSampleProducts() {
-        return [
-            {
-                id: 'prod_anniv_1',
-                name: "Gâteau Chocolat Exemple",
-                price: "45.00 DT",
-                category: "anniversaire",
-                image: "./images/anniversaire/gateau-chocolat.jpg",
-                description: "Exemple de gâteau d'anniversaire"
-            },
-            {
-                id: 'prod_mariage_1',
-                name: "Gâteau Mariage Exemple",
-                price: "120.00 DT",
-                category: "mariage",
-                image: "./images/mariage/gateau-mariage-1.jpg",
-                description: "Exemple de gâteau de mariage"
-            },
-            {
-                id: 'prod_quot_1',
-                name: "Gâteau Quotidien Exemple",
-                price: "25.00 DT",
-                category: "quotidien",
-                image: "./images/quotidien/gateau-carotte.jpg",
-                description: "Exemple de gâteau quotidien"
+    function getProductImage(product) {
+        // Si le produit a une image stockée dans localStorage
+        if (product.imageKey) {
+            const storedImage = localStorage.getItem(product.imageKey);
+            if (storedImage && storedImage.startsWith('data:image')) {
+                return storedImage;
             }
-        ];
-    }
-
-    function getDefaultImage(category) {
+        }
+        
+        // Sinon, utiliser une image par défaut selon la catégorie
         const defaultImages = {
-            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🎂 Anniversaire</text></svg>',
-            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">💒 Mariage</text></svg>',
-            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🍰 Quotidien</text></svg>'
+            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🎂 ' + (product.name || 'Anniversaire') + '</text></svg>',
+            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">💒 ' + (product.name || 'Mariage') + '</text></svg>',
+            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🍰 ' + (product.name || 'Quotidien') + '</text></svg>'
         };
-        return defaultImages[category] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>';
+        
+        return defaultImages[product.category] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>';
+    }
+
+    function getCategoryDistribution() {
+        const counts = { anniversaire: 0, mariage: 0, quotidien: 0, autres: 0 };
+        products.forEach(p => counts[p.category] ? counts[p.category]++ : counts.autres++);
+        return `Anniv: ${counts.anniversaire} | Mariage: ${counts.mariage} | Quotidien: ${counts.quotidien} | Autres: ${counts.autres}`;
     }
 
     // ============================================
-    // SURVEILLANCE EN TEMPS RÉEL
+    // SURVEILLANCE EN TEMPS RÉEL DES CHANGEMENTS
     // ============================================
-    function setupRealtimeSync() {
-        console.log("🔄 Configuration de la synchronisation temps réel...");
+    function setupAdminSyncListener() {
+        console.log("👁️ Configuration surveillance admin...");
         
         let lastProductCount = products.length;
-        let lastUpdate = Date.now();
         
-        // Surveiller CHANGEMENTS localStorage
+        // 1. Écouter les changements de localStorage
         window.addEventListener('storage', function(e) {
-            // Ignorer les changements trop rapides
-            const now = Date.now();
-            if (now - lastUpdate < 500) return;
+            // Ignorer si trop récent
+            if (Date.now() - lastSyncTime < 1000) return;
             
-            // Si une clé produit est modifiée
+            // Vérifier si c'est une clé qui nous intéresse
             if (e.key && (
-                e.key.includes('gateau') || 
-                e.key.includes('product') ||
-                Object.values(PRODUCT_KEYS).includes(e.key)
+                e.key === ADMIN_STORAGE_KEYS.PRIMARY ||
+                e.key.includes('gateau') ||
+                e.key.includes('delices')
             )) {
                 console.log(`🔄 Changement détecté dans "${e.key}"`);
-                lastUpdate = now;
                 
-                // Resynchroniser
                 const oldCount = products.length;
                 productsLoaded = false;
-                synchronizeProducts();
+                syncWithAdmin();
                 
                 const newCount = products.length;
                 
@@ -1885,57 +1877,59 @@
                     console.log(`📈 Produits: ${oldCount} → ${newCount}`);
                     displayProducts();
                     
-                    // Notification seulement si changement significatif
                     if (Math.abs(newCount - oldCount) > 0) {
                         showNotification(`🔄 ${newCount} gâteaux disponibles`);
                     }
                 } else {
-                    console.log("✅ Produits synchronisés (même quantité)");
+                    console.log("✅ Produits synchronisés");
                     displayProducts(); // Rafraîchir quand même
                 }
                 
                 lastProductCount = newCount;
+                lastSyncTime = Date.now();
             }
         });
         
-        // Rafraîchissement automatique toutes les 10 secondes
+        // 2. Rafraîchissement automatique
         setInterval(() => {
-            const stored = localStorage.getItem(PRODUCT_KEYS.PRIMARY);
+            const stored = localStorage.getItem(ADMIN_STORAGE_KEYS.PRIMARY);
             if (stored) {
                 try {
                     const currentProducts = JSON.parse(stored);
                     if (currentProducts.length !== products.length) {
                         console.log(`🔄 Sync auto: ${products.length} → ${currentProducts.length} produits`);
                         productsLoaded = false;
-                        synchronizeProducts();
+                        syncWithAdmin();
                         displayProducts();
+                        lastSyncTime = Date.now();
                     }
                 } catch (e) {
                     console.warn("⚠️ Erreur sync auto:", e);
                 }
             }
-        }, 10000); // 10 secondes
+        }, 15000); // Toutes les 15 secondes
         
-        // Sync quand la page redevient visible
+        // 3. Sync quand la page redevient visible
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
                 console.log("👁️ Page visible - resynchronisation...");
                 setTimeout(() => {
                     productsLoaded = false;
-                    synchronizeProducts();
+                    syncWithAdmin();
                     displayProducts();
+                    lastSyncTime = Date.now();
                 }, 300);
             }
         });
         
-        // Bouton de sync manuelle (pour debug)
+        // 4. Bouton de sync manuel (debug)
         if (window.location.hash === '#debug') {
             const syncBtn = document.createElement('button');
-            syncBtn.innerHTML = '🔄 Sync';
-            syncBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:99999;padding:10px;background:#FF6B8B;color:white;border:none;border-radius:5px;cursor:pointer;';
+            syncBtn.innerHTML = '🔄 Sync Admin';
+            syncBtn.style.cssText = 'position:fixed;top:60px;right:10px;z-index:99999;padding:10px;background:#8B4513;color:white;border:none;border-radius:5px;cursor:pointer;';
             syncBtn.onclick = () => {
                 productsLoaded = false;
-                synchronizeProducts();
+                syncWithAdmin();
                 displayProducts();
                 showNotification('🔄 Synchronisation manuelle effectuée');
             };
@@ -1944,24 +1938,25 @@
     }
 
     // ============================================
-    // AFFICHAGE DES PRODUITS
+    // AFFICHAGE DES PRODUITS (SYNCHRONISÉ)
     // ============================================
     function displayProducts() {
         if (!productsLoaded) {
-            synchronizeProducts();
+            syncWithAdmin();
         }
         
         const container = document.getElementById('products-container');
         if (!container) return;
         
+        // Si aucun produit
         if (products.length === 0) {
             container.innerHTML = `
                 <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
                     <div style="font-size:4em;">🍰</div>
                     <h3 style="color:var(--dark);margin:20px 0;">Aucun gâteau disponible</h3>
-                    <p>Utilisez la page d'administration pour ajouter des gâteaux</p>
-                    <a href="admin-login.html?page=products" 
-                       style="display:inline-block;margin-top:20px;padding:12px 25px;background:var(--primary);color:white;border-radius:25px;text-decoration:none;">
+                    <p>Ajoutez des gâteaux depuis l'administration</p>
+                    <a href="admin.html" 
+                       style="display:inline-block;margin-top:20px;padding:12px 25px;background:linear-gradient(135deg, var(--primary), #FF4081);color:white;border-radius:25px;text-decoration:none;">
                        👨‍💼 Aller à l'administration
                     </a>
                 </div>
@@ -1978,22 +1973,27 @@
                 quotidien: 'Quotidien'
             };
             
+            const categoryName = categoryNames[product.category] || product.category;
+            
+            // Obtenir l'image du produit
+            const productImage = getProductImage(product);
+            
             html += `
                 <div class="product-card" data-category="${product.category}" data-id="${product.id}">
-                    <div class="product-badge ${badgeClass}">${categoryNames[product.category] || product.category}</div>
+                    <div class="product-badge ${badgeClass}">${categoryName}</div>
                     <div class="image-container product-image-container">
-                        <img src="${product.image}" 
+                        <img src="${productImage}" 
                              alt="${product.name}"
                              class="product-img"
                              loading="lazy"
-                             onerror="this.src='${getDefaultImage(product.category)}';this.style.objectFit='contain';this.style.padding='15px';this.style.backgroundColor='#FFE4CC';">
+                             onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\" viewBox=\"0 0 400 300\"><rect width=\"400\" height=\"300\" fill=\"%23FFE4CC\"/><text x=\"200\" y=\"150\" font-family=\"Arial\" font-size=\"20\" fill=\"%238B4513\" text-anchor=\"middle\">${product.name}</text></svg>';this.style.objectFit='contain';this.style.padding='15px';this.style.backgroundColor='#FFE4CC';">
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${product.name}</h3>
                         <p class="product-desc">${product.description}</p>
                         <div class="product-meta">
                             <div class="product-price">${product.price}</div>
-                            <button class="add-to-cart" onclick="addToCart('${product.id}')">Ajouter</button>
+                            <button class="add-to-cart" onclick="addToCart(${product.id})">Ajouter</button>
                         </div>
                     </div>
                 </div>
@@ -2001,55 +2001,360 @@
         });
         
         container.innerHTML = html;
+        
+        // Appliquer les filtres
         showCategory(currentCategory);
         
-        // Mettre à jour le titre avec le compteur
+        // Mettre à jour le titre
         const title = document.querySelector('#products .section-title');
         if (title) {
             title.textContent = `Nos Gâteaux (${products.length})`;
         }
         
-        console.log(`✅ ${products.length} produits affichés`);
+        console.log(`✅ ${products.length} produits affichés (synchronisés avec admin)`);
     }
 
     // ============================================
-    // [RESTE DU CODE SIMILAIRE À L'AVANT...]
-    // (Les fonctions showCategory, addToCart, updateCart, etc.)
+    // FONCTIONS DE FILTRE ET CATÉGORIE
     // ============================================
+    function showCategory(category) {
+        currentCategory = category;
+        const productCards = document.querySelectorAll('.product-card');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        
+        // Boutons actifs
+        filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+            const btnText = btn.textContent.toLowerCase();
+            
+            if (category === 'all' && btnText.includes('tous')) {
+                btn.classList.add('active');
+            } else if (category === 'anniversaire' && btnText.includes('anniversaire')) {
+                btn.classList.add('active');
+            } else if (category === 'mariage' && btnText.includes('mariage')) {
+                btn.classList.add('active');
+            } else if (category === 'quotidien' && btnText.includes('quotidien')) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // Filtrer les produits
+        let visibleCount = 0;
+        productCards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = 'block';
+                visibleCount++;
+                card.style.animation = 'fadeInUp 0.5s ease forwards';
+                card.style.animationDelay = (visibleCount * 0.03) + 's';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        console.log(`👁️ ${visibleCount}/${products.length} produits dans "${category}"`);
+    }
+
+    function showCategoryWithScroll(category) {
+        showCategory(category);
+        setTimeout(() => {
+            const productsSection = document.getElementById('products');
+            if (productsSection) {
+                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }
+
+    function scrollToProductsAndShowAll() {
+        showCategory('all');
+        setTimeout(() => {
+            const productsSection = document.getElementById('products');
+            if (productsSection) {
+                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }
+
+    // ============================================
+    // GESTION DU PANIER (SIMPLIFIÉE)
+    // ============================================
+    function addToCart(productId) {
+        const product = products.find(p => p.id == productId);
+        if (!product) {
+            showNotification('❌ Produit non trouvé');
+            return;
+        }
+        
+        const existingItem = cart.find(item => item.id == productId);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+            showNotification(`✅ ${product.name} - Quantité augmentée`);
+        } else {
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: getProductImage(product),
+                category: product.category
+            });
+            showNotification(`🛒 ${product.name} ajouté au panier !`);
+        }
+        
+        localStorage.setItem('delices-cart', JSON.stringify(cart));
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCount = document.getElementById('cart-count');
+        
+        if (!cartItems || !cartTotal || !cartCount) return;
+        
+        cartItems.innerHTML = '';
+        let total = 0;
+        
+        if (cart.length === 0) {
+            cartItems.innerHTML = `
+                <div style="text-align:center;padding:40px 20px;color:#666;">
+                    <div style="font-size:3em;margin-bottom:20px;">🍰</div>
+                    <h4>Votre panier est vide</h4>
+                    <p>Ajoutez des gâteaux pour commencer</p>
+                </div>
+            `;
+            cartTotal.textContent = '0.00 DT';
+            cartCount.textContent = '0';
+            return;
+        }
+        
+        cart.forEach((item, index) => {
+            const priceMatch = item.price.match(/(\d+\.?\d*)/);
+            const numericPrice = priceMatch ? parseFloat(priceMatch[0]) : 0;
+            const itemTotal = numericPrice * item.quantity;
+            total += itemTotal;
+            
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            cartItem.innerHTML = `
+                <div class="cart-item-image">
+                    <img src="${item.image}" 
+                         alt="${item.name}"
+                         loading="lazy"
+                         onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" viewBox=\"0 0 60 60\"><rect width=\"60\" height=\"60\" fill=\"%23FFE4CC\"/><text x=\"30\" y=\"30\" font-family=\"Arial\" font-size=\"14\" fill=\"%238B4513\" text-anchor=\"middle\">🎂</text></svg>'">
+                </div>
+                <div class="cart-item-info">
+                    <h4>${item.name}</h4>
+                    <div class="cart-item-price">${item.price}</div>
+                    <div class="cart-item-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
+                        <span class="quantity-value">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
+                    </div>
+                </div>
+                <button class="remove-item" onclick="removeFromCart(${index})" title="Retirer">✕</button>
+            `;
+            
+            cartItems.appendChild(cartItem);
+        });
+        
+        cartTotal.textContent = total.toFixed(2) + ' DT';
+        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    function updateQuantity(index, newQuantity) {
+        if (newQuantity < 1) {
+            removeFromCart(index);
+            return;
+        }
+        cart[index].quantity = newQuantity;
+        localStorage.setItem('delices-cart', JSON.stringify(cart));
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        const itemName = cart[index].name;
+        cart.splice(index, 1);
+        localStorage.setItem('delices-cart', JSON.stringify(cart));
+        updateCart();
+        showNotification(`🗑️ ${itemName} retiré du panier`);
+    }
+
+    function toggleCart() {
+        const overlay = document.getElementById('cart-overlay');
+        const sidebar = document.getElementById('cart-sidebar');
+        
+        if (sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+            setTimeout(() => overlay.style.display = 'none', 400);
+        } else {
+            updateCart();
+            overlay.style.display = 'block';
+            setTimeout(() => sidebar.classList.add('active'), 10);
+        }
+    }
+
+    // ============================================
+    // COMMANDE ET FORMULAIRES
+    // ============================================
+    function checkout() {
+        if (cart.length === 0) {
+            showNotification('🛒 Votre panier est vide !');
+            return;
+        }
+        
+        const total = cart.reduce((sum, item) => {
+            const priceMatch = item.price.match(/(\d+\.?\d*)/);
+            return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
+        }, 0);
+        
+        const orderNumber = 'DOL-' + Date.now().toString().slice(-8);
+        
+        const orderSummary = document.getElementById('order-summary-items');
+        const orderTotal = document.getElementById('order-total');
+        const orderNumberDisplay = document.getElementById('order-number');
+        
+        if (!orderSummary || !orderTotal || !orderNumberDisplay) return;
+        
+        orderSummary.innerHTML = '';
+        
+        cart.forEach(item => {
+            const priceMatch = item.price.match(/(\d+\.?\d*)/);
+            const itemTotal = (priceMatch ? parseFloat(priceMatch[0]) : 0) * item.quantity;
+            const summaryItem = document.createElement('div');
+            summaryItem.className = 'summary-item';
+            summaryItem.innerHTML = `
+                <span>${item.quantity} × ${item.name}</span>
+                <span>${itemTotal.toFixed(2)} DT</span>
+            `;
+            orderSummary.appendChild(summaryItem);
+        });
+        
+        orderTotal.textContent = total.toFixed(2) + ' DT';
+        orderNumberDisplay.textContent = orderNumber;
+        document.getElementById('confirmation-number').textContent = orderNumber;
+        
+        document.getElementById('order-form-modal').style.display = 'flex';
+    }
+
+    function closeOrderForm() {
+        document.getElementById('order-form-modal').style.display = 'none';
+    }
+
+    function showConfirmationModal() {
+        const orderNumber = document.getElementById('order-number').textContent;
+        
+        const order = {
+            orderNumber: orderNumber,
+            date: new Date().toISOString(),
+            items: [...cart],
+            total: cart.reduce((sum, item) => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
+            }, 0),
+            customer: {
+                name: document.getElementById('customer-name').value || 'Client',
+                phone: document.getElementById('customer-phone').value || '',
+                email: document.getElementById('customer-email').value || '',
+                address: document.getElementById('customer-address').value || ''
+            },
+            notes: document.getElementById('customer-notes').value || 'Aucune note',
+            paymentMethod: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
+            status: 'En attente'
+        };
+        
+        let orders = JSON.parse(localStorage.getItem('delices-commandes')) || [];
+        orders.push(order);
+        localStorage.setItem('delices-commandes', JSON.stringify(orders));
+        
+        cart = [];
+        localStorage.setItem('delices-cart', JSON.stringify(cart));
+        updateCart();
+        
+        closeOrderForm();
+        document.getElementById('confirmation-modal').style.display = 'flex';
+        
+        showNotification(`🎉 Commande ${orderNumber} confirmée !`);
+        document.getElementById('customer-form').reset();
+    }
+
+    function closeConfirmationModal() {
+        document.getElementById('confirmation-modal').style.display = 'none';
+        toggleCart();
+    }
+
+    // ============================================
+    // UTILITAIRES
+    // ============================================
+    function showNotification(message) {
+        document.querySelectorAll('.notification').forEach(n => n.remove());
+        
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.innerHTML = `<span>${message}</span>`;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 10);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    function callNow() {
+        if (confirm('Appeler Dolcino au 20 90 15 96 ?')) {
+            window.open('tel:+21620901596');
+        }
+    }
 
     // ============================================
     // INITIALISATION
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
         console.log("=".repeat(60));
-        console.log("🚀 DOLCINO - SYSTÈME DE SYNCHRONISATION");
+        console.log("🚀 DOLCINO - INITIALISATION AVEC SYNCHRO ADMIN");
         console.log("=".repeat(60));
         
-        // 1. Synchronisation initiale
-        synchronizeProducts();
+        // 1. Synchronisation avec l'admin
+        syncWithAdmin();
         
-        // 2. Affichage
+        // 2. Affichage des produits
         displayProducts();
         
-        // 3. Panier
+        // 3. Mise à jour du panier
         updateCart();
         
-        // 4. Surveillance temps réel
-        setupRealtimeSync();
+        // 4. Configuration de la surveillance
+        setupAdminSyncListener();
         
-        // 5. Formulaire
+        // 5. Formulaire de commande
         const form = document.getElementById('customer-form');
-        if (form) form.addEventListener('submit', (e) => {
+        if (form) form.addEventListener('submit', function(e) {
             e.preventDefault();
             showConfirmationModal();
         });
         
-        // 6. Rapport
+        // 6. Navigation
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        
+        // 7. Rapport final
         setTimeout(() => {
             console.log("=".repeat(60));
             console.log("📊 SYNCHRONISATION RÉUSSIE");
-            console.log(`✅ ${products.length} produits synchronisés`);
-            console.log(`🔑 Clé principale: ${PRODUCT_KEYS.PRIMARY}`);
+            console.log(`✅ ${products.length} produits chargés depuis l'admin`);
+            console.log(`🔑 Clé utilisée: ${ADMIN_STORAGE_KEYS.PRIMARY}`);
             console.log("=".repeat(60));
             
             showNotification(`🎂 ${products.length} gâteaux disponibles`);
@@ -2059,15 +2364,27 @@
     // ============================================
     // FONCTIONS GLOBALES
     // ============================================
-    // [Garder toutes les fonctions globales existantes]
     window.addToCart = addToCart;
+    window.updateQuantity = updateQuantity;
+    window.removeFromCart = removeFromCart;
+    window.toggleCart = toggleCart;
+    window.checkout = checkout;
+    window.closeOrderForm = closeOrderForm;
+    window.showConfirmationModal = showConfirmationModal;
+    window.closeConfirmationModal = closeConfirmationModal;
     window.showCategory = showCategory;
-    // ... etc.
-
+    window.showCategoryWithScroll = showCategoryWithScroll;
+    window.scrollToProductsAndShowAll = scrollToProductsAndShowAll;
+    window.callNow = callNow;
 </script>
+
+
+
+
     
 </body>
 </html>
+
 
 
 
