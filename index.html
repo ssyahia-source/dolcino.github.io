@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dolcino - Pâtisserie Fine & Gâteaux Maison</title>
     <meta name="description" content="Dolcino : Gâteaux artisanaux, pâtisseries fines et douceurs faites maison. Livraison dans toute la Tunisie.">
-    <!-- À ajouter après <title> -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
+    
     <!-- META TAGS POUR SEO TUNISIEN -->
     <meta name="keywords" content="pâtisserie Tunis, gâteaux Tunisie, anniversaire Tunis, mariage gâteau, livraison gâteaux Tunis, commande gâteau en ligne Tunisie">
     <meta name="author" content="Sweet Delights">
@@ -15,1220 +13,90 @@
     <meta name="geo.placename" content="Tunis">
     
     <style>
-        /* THÈME PÂTISSERIE DOUX ET APPÉTISSANT */
-        :root {
-            --primary: #FF6B8B; /* Rose pâtissier */
-            --secondary: #FFB74D; /* Orange doux */
-            --accent: #FFD166; /* Jaune crème */
-            --dark: #8B4513; /* Brun chocolat */
-            --light: #FFF8F0; /* Crème très claire */
-            --text: #5D4037; /* Brun foncé */
-            --gold: #D4AF37;
-        }
+        /* VOTRE CSS EXISTANT - NE PAS MODIFIER */
+        /* ... tout votre CSS actuel reste ici ... */
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
-            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" fill="none" stroke="%23FFD166" stroke-width="0.5" opacity="0.1"/></svg>');
-            padding-bottom: 80px; /* Pour la barre fixe en bas */
-        }
-        
-        /* BANNIÈRE DE LIVRAISON TUNIS */
-        .delivery-banner {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 12px 20px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1em;
-            position: relative;
-            z-index: 999;
-            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.2);
-        }
-        
-      
-        /* Responsive pour mobile */
-        @media (max-width: 768px) {
-            .admin-floating-buttons {
-                bottom: 80px;
-                right: 10px;
-                gap: 8px;
-            }
-            
-            .admin-btn {
-                padding: 10px 16px;
-                font-size: 0.85em;
-                min-width: 120px;
-            }
-        }
-        
-        /* BARRE DE CONTACT FIXE - OPTIMISÉE */
-        .quick-contact-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, var(--dark), #FA8E78);
-            color: Black;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-around;
-            z-index: 9999;
-            box-shadow: 0 -3px 15px rgba(0,0,0,0.9);
-            border-top: 2px solid var(--accent);
-        }
+        /* =================================================== */
+        /* ========== OPTIMISATIONS MOBILE SEULEMENT ========= */
+        /* =================================================== */
 
-       
-        .quick-contact-btn {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95em;
-        }
-        
-        .quick-contact-btn.whatsapp {
-            background: #25D366;
-            border-color: #25D366;
-        }
-        
-        .quick-contact-btn.call {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .quick-contact-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        /* HEADER - Design gourmand */
-        header {
-            background: linear-gradient(135deg, var(--dark) 0%, #A0522D 100%);
-            color: white;
-            padding: 15px 30px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
-            border-bottom: 3px solid var(--accent);
-        }
-        
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo {
-            font-size: 2.8em;
-            font-weight: 900;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 3px;
-            position: relative;
-        }
-        
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), transparent);
-        }
-        
-        .slogan {
-            font-size: 1.1em;
-            font-style: italic;
-            color: var(--accent);
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-        
-        nav {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05em;
-            padding: 8px 0;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-        
-        nav a:hover::after {
-            width: 100%;
-        }
-        
-        nav a:hover {
-            color: var(--accent);
-        }
-        
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 1.5em;
-            padding: 10px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        
-        .cart-icon:hover {
-            background: var(--primary);
-            transform: rotate(15deg);
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            padding: 3px 8px;
-            font-size: 0.8em;
-            font-weight: bold;
-        }
-        
-        /* HERO SECTION */
-        .hero {
-            height: 500px;
-            background: linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.9)),
-                        url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-        }
-        
-        .hero h1 {
-            font-size: 3.5em;
-            color: white;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            font-weight: 300;
-        }
-        
-        .hero .brand-name {
-            font-weight: 900;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-size: 1.2em;
-        }
-        
-        .hero p {
-            font-size: 1.5em;
-            color: var(--accent);
-            font-style: italic;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-        
-        .hero button {
-            background: transparent;
-            color: white;
-            border: 2px solid var(--accent);
-            padding: 12px 35px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 30px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        
-        .hero button:hover {
-            background: var(--accent);
-            color: var(--dark);
-            transform: translateY(-3px);
-        }
-        
-        /* CATÉGORIES SECTION */
-        .collections-section {
-            padding: 60px 20px;
-            text-align: center;
-            background: var(--light);
-        }
-        
-        .section-title {
-            font-size: 2.5em;
-            color: var(--dark);
-            margin-bottom: 50px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-        
-        .collections-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .collection-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-        }
-        
-        .collection-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.15);
-        }
-        
-        .image-container {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(45deg, #FFF8F0, #FFE4CC);
-        }
-        
-        .collection-image-container {
-            width: 100%;
-            height: 300px;
-        }
-        
-        .collection-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.6s ease;
-            display: block;
-        }
-        
-        .collection-card:hover .collection-image {
-            transform: scale(1.1);
-        }
-        
-        .collection-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(139, 69, 19, 0.8), transparent);
-            padding: 30px 20px 20px;
-            color: white;
-            transform: translateY(10px);
-            transition: transform 0.3s ease;
-        }
-        
-        .collection-card:hover .collection-overlay {
-            transform: translateY(0);
-        }
-        
-        .collection-title {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: white;
-        }
-        
-        .collection-description {
-            font-size: 1em;
-            opacity: 0.9;
-            margin-bottom: 20px;
-            color: rgba(255,255,255,0.9);
-        }
-        
-        .collection-button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 1em;
-            display: inline-block;
-        }
-        
-        .collection-button:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
-        }
-        
-        /* PRODUCTS SECTION */
-        .products-section {
-            padding: 60px 20px;
-            background: white;
-        }
-        
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-btn {
-            padding: 10px 25px;
-            border: 2px solid var(--dark);
-            background: transparent;
-            color: var(--dark);
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.95em;
-        }
-        
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: var(--dark);
-            color: white;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.05);
-            transition: all 0.3s ease;
-            position: relative;
-            border: 1px solid rgba(139, 69, 19, 0.05);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s ease forwards;
-        }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(139, 69, 19, 0.1);
-        }
-        
-        .product-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            color: white;
-            z-index: 10;
-        }
-        
-        .badge-anniversaire { background: var(--primary); }
-        .badge-mariage { background: var(--dark); }
-        .badge-quotidien { background: var(--secondary); }
-        
-        .product-image-container {
-            width: 100%;
-            height: 250px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            display: block;
-        }
-        
-        .product-card:hover .product-img {
-            transform: scale(1.05);
-        }
-        
-        .product-info {
-            padding: 18px;
-        }
-        
-        .product-title {
-            font-size: 1.3em;
-            color: var(--dark);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        
-        .product-desc {
-            color: #666;
-            margin-bottom: 12px;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-        
-        .product-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 12px;
-        }
-        
-        .product-price {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .add-to-cart {
-            background: var(--dark);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.9em;
-        }
-        
-        .add-to-cart:hover {
-            background: var(--primary);
-            transform: scale(1.05);
-        }
-        
-        /* SECTION PAIEMENT TUNISIEN */
-        .tunisian-payment {
-            background: linear-gradient(135deg, #FFF8F0 0%, #FFE4CC 100%);
-            padding: 40px 20px;
-            margin: 30px 0;
-            border-radius: 15px;
-            text-align: center;
-        }
-        
-        .payment-methods-tunisia {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .payment-method-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            min-width: 200px;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .payment-method-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .payment-icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        /* CART */
-        .cart-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(139, 69, 19, 0.5);
-            z-index: 1001;
-        }
-        
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -380px;
-            width: 380px;
-            height: 100%;
-            background: white;
-            box-shadow: -5px 0 30px rgba(139, 69, 19, 0.2);
-            transition: right 0.4s ease;
-            z-index: 1002;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .cart-sidebar.active {
-            right: 0;
-        }
-        
-        .cart-header {
-            background: var(--dark);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .cart-header h3 {
-            font-size: 1.6em;
-        }
-        
-        .close-cart {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-        
-        .cart-items {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 12px;
-            background: var(--light);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            gap: 15px;
-        }
-        
-        .cart-item-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 5px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        
-        .cart-item-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .cart-item-info {
-            flex: 1;
-        }
-        
-        .cart-item-info h4 {
-            color: var(--dark);
-            margin-bottom: 5px;
-            font-size: 1em;
-        }
-        
-        .cart-item-price {
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        
-        .quantity-btn {
-            background: #FFE4CC;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .quantity-btn:hover {
-            background: #FFD166;
-        }
-        
-        .quantity-value {
-            font-weight: bold;
-            min-width: 25px;
-            text-align: center;
-        }
-        
-        .remove-item {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 1.1em;
-            transition: color 0.3s ease;
-            padding: 5px;
-        }
-        
-        .remove-item:hover {
-            color: var(--primary);
-        }
-        
-        .cart-footer {
-            padding: 20px;
-            border-top: 1px solid #FFE4CC;
-        }
-        
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.4em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        /* BOUTON "PASSER LA COMMANDE" TRÈS VISIBLE */
-        .checkout-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, #FF4081 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            width: 100%;
-            border-radius: 10px;
-            font-size: 1.2em;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(255, 107, 139, 0.4);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .checkout-btn:hover {
-            background: linear-gradient(135deg, var(--dark) 0%, #8B4513 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
-        }
-        
-        /* FORMULAIRE DE COMMANDE */
-        .order-form-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(139, 69, 19, 0.85);
-            z-index: 2000;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        
-        .order-form-content {
-            background: white;
-            max-width: 500px;
-            max-height: 85vh;
-            margin: 30px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            animation: slideUp 0.4s ease;
-            box-shadow: 0 20px 60px rgba(139, 69, 19, 0.3);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .order-form-header {
-            background: linear-gradient(135deg, var(--dark) 0%, #A0522D 100%);
-            color: white;
-            padding: 25px;
-            text-align: center;
-            position: relative;
-            flex-shrink: 0;
-        }
-        
-        .order-form-header h3 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .order-number {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-        }
-        
-        .close-order-form {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            font-size: 1.3em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .close-order-form:hover {
-            background: var(--primary);
-            transform: rotate(90deg);
-        }
-        
-        .order-form-body {
-            padding: 30px;
-            flex: 1;
-            overflow-y: auto;
-            max-height: calc(85vh - 200px);
-        }
-        
-        .order-summary {
-            background: #FFF8F0;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border: 1px solid #FFE4CC;
-        }
-        
-        .order-summary h4 {
-            color: var(--dark);
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        #order-summary-items {
-            max-height: 150px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding-right: 10px;
-        }
-        
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #FFE4CC;
-            color: #8B4513;
-            font-size: 0.95em;
-        }
-        
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.4em;
-            font-weight: bold;
-            color: var(--dark);
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid var(--primary);
-            background: linear-gradient(to right, transparent, rgba(255, 107, 139, 0.05), transparent);
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .form-section {
-            margin-bottom: 30px;
-        }
-        
-        .form-section h4 {
-            color: var(--dark);
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #FFE4CC;
-        }
-        
-        input, textarea {
-            width: 100%;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border: 2px solid #FFE4CC;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-        
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .payment-methods {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .payment-method {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border: 2px solid #FFE4CC;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .payment-method:hover {
-            border-color: var(--primary);
-            background: rgba(255, 107, 139, 0.03);
-        }
-        
-        .payment-method input[type="radio"] {
-            margin-right: 15px;
-            width: 20px;
-            height: 20px;
-        }
-        
-        .payment-info {
-            flex: 1;
-        }
-        
-        .payment-info strong {
-            display: block;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-        
-        .payment-info small {
-            color: #A0522D;
-            font-size: 0.9em;
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #FFE4CC;
-        }
-        
-        .btn-cancel {
-            background: #FFF8F0;
-            color: var(--dark);
-            border: 2px solid #FFE4CC;
-            padding: 15px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            flex: 1;
-            transition: all 0.3s ease;
-            font-size: 1em;
-        }
-        
-        .btn-cancel:hover {
-            background: #FFE4CC;
-            border-color: #FFD166;
-            transform: translateY(-2px);
-        }
-        
-        .btn-submit {
-            background: linear-gradient(135deg, var(--primary) 0%, #FF4081 100%);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            flex: 2;
-            transition: all 0.3s ease;
-            font-size: 1em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 139, 0.3);
-        }
-        
-        /* MODALE DE CONFIRMATION */
-        .confirmation-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(139, 69, 19, 0.95);
-            z-index: 3000;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        
-        .confirmation-content {
-            background: white;
-            max-width: 800px;
-            margin: 30px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            animation: slideUp 0.4s ease;
-            box-shadow: 0 25px 50px rgba(139, 69, 19, 0.3);
-        }
-        
-        .confirmation-header {
-            background: linear-gradient(135deg, var(--secondary) 0%, #FF9800 100%);
-            color: white;
-            padding: 40px 30px 30px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .confirmation-header .icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            animation: bounce 1s ease infinite alternate;
-        }
-        
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
-        }
-        
-        .confirmation-header h2 {
-            margin: 0 0 10px 0;
-            font-size: 2.2em;
-            font-weight: 800;
-        }
-        
-        /* FOOTER */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 40px 20px 20px;
-            margin-top: 50px;
-        }
-        
-        .footer-content {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 30px;
-        }
-        
-        .footer-logo {
-            font-size: 2.2em;
-            font-weight: 900;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 10px;
-        }
-        
-        .footer-slogan {
-            color: var(--accent);
-            font-style: italic;
-            font-size: 1em;
-            margin-bottom: 15px;
-        }
-        
-        .footer-links h4,
-        .footer-contact h4 {
-            color: white;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-        
-        .footer-links ul {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 8px;
-        }
-        
-        .footer-links a {
-            color: #FFD166;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 0.95em;
-        }
-        
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 209, 102, 0.1);
-            color: #FFD166;
-            font-size: 0.85em;
-        }
-        
-        /* NOTIFICATIONS */
-        .notification {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: var(--secondary);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            z-index: 1003;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
-            animation: slideIn 0.3s ease;
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease forwards;
-        }
-        
-        /* =================================================== */
-        /* ========== OPTIMISATIONS MOBILE UNIQUEMENT ========= */
-        /* =================================================== */
         @media (max-width: 768px) {
-            /* CORRECTION ESPACE SUPÉRIEUR */
+            /* CORRECTION ESPACE SUPÉRIEUR/INFÉRIEUR */
             body {
                 padding-top: 0 !important;
                 padding-bottom: 100px !important;
+                overflow-x: hidden;
             }
             
-            /* Réduire un peu le header sur mobile */
+            /* Optimiser le header pour mobile */
             header {
-                padding: 12px 15px !important;
-                position: sticky !important;
-                top: 0 !important;
+                padding: 10px 15px !important;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+            }
+            
+            .header-top {
+                flex-direction: row !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                gap: 10px;
             }
             
             .logo {
-                font-size: 2.2em !important;
+                font-size: 2em !important;
+                letter-spacing: 1px !important;
             }
             
             .slogan {
                 font-size: 0.9em !important;
+                display: none; /* Cache sur mobile pour gagner de l'espace */
             }
             
-            /* Hero réduit sur mobile */
+            /* Menu navigation - garde mais ajuste */
+            nav {
+                gap: 10px !important;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            
+            nav a {
+                font-size: 0.9em !important;
+                padding: 5px !important;
+            }
+            
+            /* Hero section réduite */
             .hero {
                 height: 350px !important;
                 padding: 20px !important;
+                margin-top: 0 !important;
             }
             
             .hero h1 {
                 font-size: 2.2em !important;
+                margin-bottom: 15px !important;
             }
             
             .hero p {
                 font-size: 1.1em !important;
+                margin-bottom: 20px !important;
+            }
+            
+            .hero button {
+                padding: 10px 25px !important;
+                font-size: 0.9em !important;
+            }
+            
+            /* Réduire les sections */
+            .collections-section,
+            .products-section {
+                padding: 40px 15px !important;
+            }
+            
+            .section-title {
+                font-size: 1.8em !important;
+                margin-bottom: 30px !important;
             }
             
             /* Collections : 1 colonne sur mobile */
@@ -1263,37 +131,98 @@
                 width: 100% !important;
                 height: 100% !important;
                 object-fit: cover !important;
-                object-position: center !important;
             }
             
-            /* Barre contact mobile optimisée */
-            .quick-contact-bar {
-                padding: 10px 15px !important;
-                gap: 10px !important;
+            /* Réduire les informations produit */
+            .product-info {
+                padding: 12px !important;
             }
             
-            .quick-contact-btn {
-                padding: 8px 12px !important;
+            .product-title {
+                font-size: 1.1em !important;
+            }
+            
+            .product-price {
+                font-size: 1.2em !important;
+            }
+            
+            .add-to-cart {
+                padding: 6px 15px !important;
                 font-size: 0.85em !important;
+            }
+            
+            /* Filtres optimisés pour mobile */
+            .filters {
+                gap: 8px !important;
+                margin-bottom: 25px !important;
+            }
+            
+            .filter-btn {
+                padding: 8px 15px !important;
+                font-size: 0.85em !important;
+                flex: 1;
+                min-width: calc(50% - 8px);
+            }
+            
+            /* Barre de contact mobile optimisée */
+            .quick-contact-bar {
+                padding: 8px 10px !important;
+                gap: 6px !important;
+            }
+            
+            .contact-btn {
+                padding: 8px 10px !important;
+                font-size: 0.75em !important;
                 gap: 5px !important;
-                flex: 1 !important;
-                min-width: 0 !important;
             }
             
-            /* Réduire les sections */
-            .collections-section,
-            .products-section {
-                padding: 40px 15px !important;
+            /* Footer mobile */
+            footer {
+                padding: 30px 15px 15px !important;
+                margin-top: 30px !important;
             }
             
-            .section-title {
-                font-size: 2em !important;
-                margin-bottom: 30px !important;
+            .footer-content {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            
+            /* Panier mobile */
+            .cart-sidebar {
+                width: 100% !important;
+                right: -100% !important;
+            }
+            
+            /* Payment section mobile */
+            .payment-methods-tunisia {
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+            
+            .payment-method-card {
+                min-width: 100% !important;
+                padding: 15px !important;
             }
         }
-        
+
         /* Pour très petits écrans */
         @media (max-width: 480px) {
+            .logo {
+                font-size: 1.6em !important;
+            }
+            
+            .slogan {
+                display: none !important;
+            }
+            
+            nav {
+                gap: 8px !important;
+            }
+            
+            nav a {
+                font-size: 0.8em !important;
+            }
+            
             .hero {
                 height: 300px !important;
             }
@@ -1302,431 +231,46 @@
                 font-size: 1.8em !important;
             }
             
-            /* Cache texte boutons admin si trop petit */
-            .admin-btn span {
-                display: none;
+            .hero p {
+                font-size: 1em !important;
             }
             
-            .admin-btn {
-                padding: 12px;
-                width: 44px;
-                justify-content: center;
-            }
-        }
-
-        /* AJOUTEZ CE CSS À LA FIN DE VOTRE <style> */
-
-        /* ========== BARRE DE CONTACT UNIFIÉE ========== */
-        .quick-contact-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, var(--dark), #A0522D);
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 9999;
-            box-shadow: 0 -3px 15px rgba(0,0,0,0.9);
-            border-top: 2px solid var(--accent);
-            gap: 8px;
-        }
-
-        /* Style UNIFIÉ pour TOUS les boutons */
-        .contact-btn {
-            padding: 10px 18px;
-            border-radius: 50px; /* OVALE comme vos autres boutons */
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            font-size: 0.9em;
-            flex: 1;
-            min-width: 0;
-            max-width: 180px;
-            color: white;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        /* WhatsApp - Garde sa couleur originale */
-        .whatsapp-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            border-color: #25D366;
-        }
-
-        /* Appeler - Garde sa couleur originale */
-        .call-btn {
-            background: linear-gradient(135deg, var(--primary), #FF4081);
-            border-color: var(--primary);
-        }
-
-        /* Admin Commandes - NOUVELLE COULEUR (orange) */
-        .admin-orders-btn {
-            background: linear-gradient(135deg, var(--secondary), #FF9800);
-            border-color: var(--secondary);
-            opacity: 0.9;
-        }
-
-        /* Admin Gâteaux - NOUVELLE COULEUR (rose foncé) */
-        .admin-products-btn {
-            background: linear-gradient(135deg, #E91E63, #C2185B);
-            border-color: #E91E63;
-            opacity: 0.9;
-        }
-
-        /* Effet hover pour TOUS les boutons */
-        .contact-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            opacity: 1;
-        }
-
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
+            /* Barre contact ultra-compacte */
             .quick-contact-bar {
-                padding: 8px 10px;
-                gap: 6px;
+                padding: 6px 8px !important;
+                gap: 4px !important;
             }
             
             .contact-btn {
-                padding: 8px 12px;
-                font-size: 0.85em;
-                gap: 6px;
+                padding: 6px 8px !important;
+                font-size: 0.7em !important;
             }
             
-            /* Sur petits écrans, cacher le texte des boutons admin */
-            @media (max-width: 480px) {
-                .admin-orders-btn span,
-                .admin-products-btn span {
-                    display: none;
-                }
-                
-                .admin-orders-btn,
-                .admin-products-btn {
-                    padding: 10px;
-                    width: 44px;
-                    justify-content: center;
-                }
-                
-                .whatsapp-btn span,
-                .call-btn span {
-                    display: inline; /* Garde le texte pour les boutons principaux */
-                }
+            .contact-btn span {
+                font-size: 0.8em !important;
+            }
+            
+            /* Assurer que les boutons sont touchables */
+            button, .contact-btn, .add-to-cart {
+                min-height: 44px !important;
             }
         }
 
-        /* Pour écrans moyens */
+        /* Pour les tablettes */
         @media (min-width: 769px) and (max-width: 1024px) {
+            .collections-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+            }
+            
             .contact-btn {
-                padding: 10px 16px;
-                font-size: 0.9em;
+                padding: 10px 16px !important;
+                font-size: 0.9em !important;
             }
         }
-
-        /* ========== AJUSTEMENT PANIER ========== */
-        /* S'assurer que le panier a assez d'espace */
-        .cart-sidebar {
-            padding-bottom: 85px !important;
-        }
-
-        /* Les boutons admin doivent être légèrement plus transparents par défaut */
-        .admin-orders-btn,
-        .admin-products-btn {
-            opacity: 0.85;
-        }
-
-        .admin-orders-btn:hover,
-        .admin-products-btn:hover {
-            opacity: 1;
-        }
-   /* =================================================== */
-/* ========== OPTIMISATIONS MOBILE SEULEMENT ========= */
-/* =================================================== */
-
-@media (max-width: 768px) {
-    /* CORRECTION ESPACE SUPÉRIEUR/INFÉRIEUR */
-    body {
-        padding-top: 0 !important;
-        padding-bottom: 100px !important;
-        overflow-x: hidden;
-    }
-    
-    /* Optimiser le header pour mobile */
-    header {
-        padding: 10px 15px !important;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-    
-    .header-top {
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 10px;
-    }
-    
-    .logo {
-        font-size: 2em !important;
-        letter-spacing: 1px !important;
-    }
-    
-    .slogan {
-        font-size: 0.9em !important;
-        display: none; /* Cache sur mobile pour gagner de l'espace */
-    }
-    
-    /* Menu navigation - garde mais ajuste */
-    nav {
-        gap: 10px !important;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 10px;
-    }
-    
-    nav a {
-        font-size: 0.9em !important;
-        padding: 5px !important;
-    }
-    
-    /* Hero section réduite */
-    .hero {
-        height: 350px !important;
-        padding: 20px !important;
-        margin-top: 0 !important;
-    }
-    
-    .hero h1 {
-        font-size: 2.2em !important;
-        margin-bottom: 15px !important;
-    }
-    
-    .hero p {
-        font-size: 1.1em !important;
-        margin-bottom: 20px !important;
-    }
-    
-    .hero button {
-        padding: 10px 25px !important;
-        font-size: 0.9em !important;
-    }
-    
-    /* Réduire les sections */
-    .collections-section,
-    .products-section {
-        padding: 40px 15px !important;
-    }
-    
-    .section-title {
-        font-size: 1.8em !important;
-        margin-bottom: 30px !important;
-    }
-    
-    /* Collections : 1 colonne sur mobile */
-    .collections-grid {
-        grid-template-columns: 1fr !important;
-        gap: 20px !important;
-    }
-    
-    .collection-image-container {
-        height: 250px !important;
-    }
-    
-    /* Products : 2 colonnes sur mobile */
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
-        gap: 15px !important;
-    }
-    
-    .product-image-container {
-        height: 180px !important;
-    }
-    
-    /* Optimiser les images pour mobile */
-    img {
-        max-width: 100% !important;
-        height: auto !important;
-        display: block !important;
-    }
-    
-    .collection-image,
-    .product-img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-    }
-    
-    /* Réduire les informations produit */
-    .product-info {
-        padding: 12px !important;
-    }
-    
-    .product-title {
-        font-size: 1.1em !important;
-    }
-    
-    .product-price {
-        font-size: 1.2em !important;
-    }
-    
-    .add-to-cart {
-        padding: 6px 15px !important;
-        font-size: 0.85em !important;
-    }
-    
-    /* Filtres optimisés pour mobile */
-    .filters {
-        gap: 8px !important;
-        margin-bottom: 25px !important;
-    }
-    
-    .filter-btn {
-        padding: 8px 15px !important;
-        font-size: 0.85em !important;
-        flex: 1;
-        min-width: calc(50% - 8px);
-    }
-    
-    /* Barre de contact mobile optimisée */
-    .quick-contact-bar {
-        padding: 8px 10px !important;
-        gap: 6px !important;
-    }
-    
-    .contact-btn {
-        padding: 8px 10px !important;
-        font-size: 0.75em !important;
-        gap: 5px !important;
-    }
-    
-    /* Footer mobile */
-    footer {
-        padding: 30px 15px 15px !important;
-        margin-top: 30px !important;
-    }
-    
-    .footer-content {
-        grid-template-columns: 1fr !important;
-        gap: 20px !important;
-    }
-    
-    /* Panier mobile */
-    .cart-sidebar {
-        width: 100% !important;
-        right: -100% !important;
-    }
-    
-    /* Payment section mobile */
-    .payment-methods-tunisia {
-        flex-direction: column !important;
-        gap: 15px !important;
-    }
-    
-    .payment-method-card {
-        min-width: 100% !important;
-        padding: 15px !important;
-    }
-    
-    /* Boutons admin mobile */
-    .admin-floating-buttons {
-        bottom: 80px !important;
-        right: 10px !important;
-        gap: 8px !important;
-    }
-    
-    .admin-btn {
-        padding: 10px 15px !important;
-        font-size: 0.85em !important;
-        min-width: 120px !important;
-    }
-}
-
-/* Pour très petits écrans */
-@media (max-width: 480px) {
-    .logo {
-        font-size: 1.6em !important;
-    }
-    
-    .slogan {
-        display: none !important;
-    }
-    
-    nav {
-        gap: 8px !important;
-    }
-    
-    nav a {
-        font-size: 0.8em !important;
-    }
-    
-    .hero {
-        height: 300px !important;
-    }
-    
-    .hero h1 {
-        font-size: 1.8em !important;
-    }
-    
-    .hero p {
-        font-size: 1em !important;
-    }
-    
-    /* Barre contact ultra-compacte */
-    .quick-contact-bar {
-        padding: 6px 8px !important;
-        gap: 4px !important;
-    }
-    
-    .contact-btn {
-        padding: 6px 8px !important;
-        font-size: 0.7em !important;
-    }
-    
-    .contact-btn span {
-        font-size: 0.8em !important;
-    }
-    
-    /* Cache texte sur boutons admin si très petit */
-    .admin-orders-btn span,
-    .admin-products-btn span {
-        display: none !important;
-    }
-    
-    .admin-orders-btn,
-    .admin-products-btn {
-        padding: 10px !important;
-        width: 40px !important;
-        justify-content: center !important;
-    }
-    
-    /* Assurer que les boutons sont touchables */
-    button, .contact-btn, .add-to-cart {
-        min-height: 44px !important;
-    }
-}
-
-/* Pour les tablettes */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .collections-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
-    }
-    
-    .contact-btn {
-        padding: 10px 16px !important;
-        font-size: 0.9em !important;
-    }
-}
-    
     </style>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1738,15 +282,14 @@
     <div class="delivery-banner">
         🚚 Livraison GRATUITE  Au Grand Tunis pour commandes > 100 DT | 📞 20 90 15 96
     </div>
-    
-    
+
     <!-- HEADER -->
     <header>
         <div class="header-top">
             <div class="logo-container">
-    <div class="logo">Dolcino</div>
-    <div class="slogan">Quand le gâteau devient design</div>
-</div>
+                <div class="logo">Dolcino</div>
+                <div class="slogan">Quand le gâteau devient design</div>
+            </div>
             
             <nav>
                 <a href="#home">Accueil</a>
@@ -1776,16 +319,17 @@
         </div>
     </section>
 
-    <!-- CATÉGORIES SECTION -->
+    <!-- CATÉGORIES SECTION - IMAGES CORRIGÉES POUR GITHUB PAGES -->
     <section class="collections-section">
         <h2 class="section-title">Nos Catégories</h2>
         <div class="collections-grid">
             <!-- GÂTEAUX D'ANNIVERSAIRE -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                   <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                   <img src="https://ssyahia-source.github.io/dolcino.github.io/images/anniversaire/gateau-chocolat.jpg" 
      alt="Gâteau Anniversaire Chocolat" 
-     class="collection-image">
+     class="collection-image"
+     onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
                 </div>
                 <div class="collection-overlay">
                     <h3 class="collection-title">Anniversaires</h3>
@@ -2059,299 +603,56 @@
         </a>
     </div>
 
+    <!-- ============================================ -->
+    <!-- ========== JAVASCRIPT CORRIGÉ ============= -->
+    <!-- ============================================ -->
+    
     <script>
-
-
-// ============================================
-// CORRECTION DES CHEMINS D'IMAGES POUR MOBILE
-// ============================================
-
-// Fonction pour corriger les chemins d'images pour GitHub Pages
-function correctImagePath(imagePath) {
-    // Si c'est déjà une URL complète (Unsplash), la garder
-    if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
-        return imagePath;
-    }
-    
-    // Si l'image commence par ./images/, corriger pour GitHub Pages
-    if (imagePath.startsWith('./images/')) {
-        // Enlever le ./ pour avoir un chemin relatif correct
-        return imagePath.substring(2); // Retire "./"
-    }
-    
-    // Si l'image commence juste par images/, la garder
-    if (imagePath.startsWith('images/')) {
-        return imagePath;
-    }
-    
-    // Pour les autres cas, essayer différentes options
-    const baseUrl = 'https://ssyahia-source.github.io/dolcino.github.io/';
-    
-    // Essayer différents chemins possibles
-    const possiblePaths = [
-        imagePath,
-        `images/${imagePath}`,
-        `./images/${imagePath}`,
-        `${baseUrl}${imagePath}`,
-        `${baseUrl}images/${imagePath}`,
-        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80' // Fallback
-    ];
-    
-    return possiblePaths[0];
-}
-
-// Fonction pour tester si une image existe
-function testImage(url) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = url;
-    });
-}
-
-// Modifiez la fonction displayProducts() pour inclure cette correction
-async function displayProductsWithCorrectedImages() {
-    loadProducts();
-    
-    const container = document.getElementById('products-container');
-    if (!container) return;
-    
-    let html = '';
-    
-    for (let i = 0; i < products.length; i++) {
-        const product = products[i];
-        let badgeClass = 'badge-anniversaire';
-        let categoryName = 'Anniversaire';
-        
-        if (product.category === 'mariage') {
-            badgeClass = 'badge-mariage';
-            categoryName = 'Mariage';
-        } else if (product.category === 'quotidien') {
-            badgeClass = 'badge-quotidien';
-            categoryName = 'Quotidien';
-        }
-        
-        let imageSrc = product.image;
-        
-        // CORRECTION IMPORTANTE : Corriger le chemin de l'image
-        imageSrc = correctImagePath(imageSrc);
-        
-        // Si l'image est stockée dans localStorage (base64)
-        if (product.imageKey) {
-            const imageData = localStorage.getItem(product.imageKey);
-            if (imageData && imageData.startsWith('data:image')) {
-                imageSrc = imageData;
-            }
-        }
-        
-        // Gestion des erreurs d'image améliorée
-        const imgErrorHandler = `
-            this.onerror=null; 
-            this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';
-            this.alt='Image non disponible';
-        `;
-        
-        html += `
-            <div class="product-card" data-category="${product.category}" data-id="${product.id}" style="animation-delay: ${i * 0.1}s">
-                <div class="product-badge ${badgeClass}">${categoryName}</div>
-                <div class="image-container product-image-container">
-                    <img src="${imageSrc}" 
-                         alt="${product.name}" 
-                         class="product-img"
-                         loading="lazy"
-                         onerror="${imgErrorHandler}">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">${product.name}</h3>
-                    <p class="product-desc">${product.description}</p>
-                    <div class="product-meta">
-                        <div class="product-price">${product.price}</div>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">Ajouter</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-    
-    container.innerHTML = html;
-    showCategory(currentCategory);
-}
-
-// ============================================
-// CORRECTION DES IMAGES DANS LA SECTION CATÉGORIES
-// ============================================
-
-// Ajoutez cette fonction pour corriger les images des catégories
-function correctCategoryImages() {
-    // Corriger l'image de la catégorie Anniversaire
-    const annivImage = document.querySelector('.collection-card:nth-child(1) .collection-image');
-    if (annivImage && annivImage.src.includes('./images/')) {
-        annivImage.src = annivImage.src.replace('./images/', 'images/');
-        annivImage.onerror = function() {
-            this.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
-        };
-    }
-    
-    // Les autres images (mariage et quotidien) utilisent déjà Unsplash, donc OK
-}
-
-// ============================================
-// REMPLACEZ L'APPEL À displayProducts()
-// ============================================
-
-// Dans votre fonction d'initialisation, remplacez :
-// displayProducts(); 
-// par :
-async function initializeSite() {
-    console.log("🚀 Dolcino - Site chargé");
-    
-    // Charger et afficher les produits avec images corrigées
-    await displayProductsWithCorrectedImages();
-    
-    // Corriger les images des catégories
-    correctCategoryImages();
-    
-    updateCart();
-    setupSmartRefresh();
-    
-    // ... le reste de votre code d'initialisation ...
-}
-
-// Puis modifiez votre event listener DOMContentLoaded :
-document.addEventListener('DOMContentLoaded', function() {
-    initializeSite();
-    
-    document.getElementById('customer-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        showConfirmationModal();
-    });
-    
-    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    setTimeout(() => {
-        if (!localStorage.getItem('welcome-shown')) {
-            showNotification('🎂 Bienvenue chez Dolcino !');
-            localStorage.setItem('welcome-shown', 'true');
-        }
-    }, 1000);
-});
-
-
-
-
-
-        
-        
-        
-        
-        
         // ============================================
-        // CORRECTION POUR CHARGER LES IMAGES LOCALES
+        // CORRECTION SPÉCIALE POUR GITHUB PAGES
         // ============================================
         
-        // Fonction pour vérifier si une image existe
-        function imageExists(image_url) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = image_url;
-            });
-        }
-        
-        // Fonction pour obtenir le chemin correct des images
-        function getImagePath(imagePath) {
-            // Si c'est déjà une URL complète, la garder
+        // Fonction pour corriger les URLs d'images pour GitHub Pages
+        function correctImageForGitHub(imagePath) {
+            // Si déjà une URL complète, garder
             if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
                 return imagePath;
             }
             
-            // Vérifier si l'image existe dans le dossier images/
-            const possiblePaths = [
-                imagePath,
-                `./${imagePath}`,
-                `images/${imagePath}`,
-                `./images/${imagePath}`,
-                `../images/${imagePath}`,
-                `https://ssyahia-source.github.io/dolcino.github.io/${imagePath}`,
-                `https://ssyahia-source.github.io/dolcino.github.io/images/${imagePath}`
-            ];
+            // Base URL de votre site GitHub
+            const GITHUB_BASE = 'https://ssyahia-source.github.io/dolcino.github.io/';
             
-            // Retourner le premier chemin qui pourrait fonctionner
-            return possiblePaths[0];
-        }
-        
-        // Fonction pour charger les produits avec images corrigées
-        async function loadProductsWithImages() {
-            console.log("🔍 Chargement des produits avec images...");
-            
-            const keys = ['delices-gateaux', 'sarsel-products', 'gateaux', 'products'];
-            
-            for (let key of keys) {
-                const stored = localStorage.getItem(key);
-                if (stored) {
-                    console.log(`✅ Trouvé avec clé: ${key}`);
-                    try {
-                        let products = JSON.parse(stored);
-                        
-                        // Corriger les chemins d'images
-                        products = products.map(product => {
-                            // Si l'image commence par ./images/, corriger le chemin
-                            let imagePath = product.image;
-                            
-                            if (imagePath && imagePath.includes('./images/')) {
-                                // Enlever le ./ pour GitHub Pages
-                                imagePath = imagePath.replace('./', '');
-                            }
-                            
-                            // Vérifier les chemins communs
-                            if (imagePath && !imagePath.startsWith('http') && !imagePath.startsWith('data:')) {
-                                // Ajouter le chemin de base pour GitHub Pages
-                                imagePath = `https://ssyahia-source.github.io/dolcino.github.io/${imagePath}`;
-                            }
-                            
-                            return {
-                                ...product,
-                                image: imagePath || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'
-                            };
-                        });
-                        
-                        console.log(`${products.length} produits chargés avec images corrigées`);
-                        return products;
-                    } catch (e) {
-                        console.error(`❌ Erreur parsing ${key}:`, e);
-                    }
-                }
+            // Si le chemin commence par ./, l'enlever
+            let cleanPath = imagePath;
+            if (cleanPath.startsWith('./')) {
+                cleanPath = cleanPath.substring(2);
             }
             
-            // Si aucun produit n'est trouvé, retourner des produits par défaut
-            return [
-                {
-                    id: 1,
-                    name: "Gâteau Démo Chocolat",
-                    price: "49.99 DT",
-                    category: "anniversaire",
-                    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                    description: "Gâteau artisanal au chocolat belge"
-                }
+            // Si le chemin contient 'images/', utiliser directement
+            if (cleanPath.includes('images/')) {
+                return GITHUB_BASE + cleanPath;
+            }
+            
+            // Sinon, chercher dans les dossiers d'images
+            const possiblePaths = [
+                `images/anniversaire/${cleanPath}`,
+                `images/mariage/${cleanPath}`,
+                `images/quotidien/${cleanPath}`,
+                `images/${cleanPath}`,
+                cleanPath
             ];
+            
+            // Retourner le premier chemin possible
+            for (let path of possiblePaths) {
+                const fullUrl = GITHUB_BASE + path;
+                console.log(`🖼️ Test image: ${fullUrl}`);
+                return fullUrl;
+            }
+            
+            // Fallback vers Unsplash
+            return 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';
         }
-        
+
         // ============================================
         // VARIABLES GLOBALES OPTIMISÉES
         // ============================================
@@ -2395,66 +696,86 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // ============================================
-        // CHARGEMENT INTELLIGENT DES PRODUITS (CORRIGÉ)
+        // CHARGEMENT INTELLIGENT DES PRODUITS
         // ============================================
-        async function loadProducts() {
-            if (productsLoaded && products.length > 0) {
-                return products;
+        function loadProducts() {
+            if (productsLoaded) {
+                const currentStored = localStorage.getItem('delices-gateaux');
+                const newHash = currentStored ? btoa(currentStored).substring(0, 20) : '';
+                
+                if (newHash === productsHash) {
+                    console.log("📦 Utilisation du cache produits");
+                    return products;
+                }
             }
             
-            console.log("🔍 Chargement des produits depuis localStorage...");
+            console.log("🔍 Chargement des produits...");
             
-            // Charger les produits avec images corrigées
-            products = await loadProductsWithImages();
+            const keys = ['delices-gateaux', 'sarsel-products', 'gateaux', 'products'];
             
-            // Si pas de produits, créer des données par défaut
+            for (let key of keys) {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    console.log(`✅ Trouvé avec clé: ${key}`);
+                    try {
+                        const newProducts = JSON.parse(stored);
+                        productsHash = btoa(encodeURIComponent(stored)).substring(0, 20);
+                        
+                        products = newProducts.map(product => {
+                            // CORRECTION DES IMAGES POUR GITHUB
+                            let imageUrl = product.image;
+                            if (window.location.hostname.includes('github.io')) {
+                                imageUrl = correctImageForGitHub(product.image);
+                            }
+                            
+                            return {
+                                id: product.id || Date.now() + Math.random(),
+                                name: product.name || 'Gâteau',
+                                price: product.price || '0 DT',
+                                category: product.category || 'quotidien',
+                                image: imageUrl, // URL corrigée
+                                description: product.description || 'Gâteau artisanal fait maison',
+                                imageKey: product.imageKey
+                            };
+                        });
+                        
+                        console.log(`${products.length} produits chargés`);
+                        productsLoaded = true;
+                        return products;
+                    } catch (e) {
+                        console.error(`❌ Erreur parsing ${key}:`, e);
+                    }
+                }
+            }
+            
             if (products.length === 0) {
-                console.log("🆕 Création de produits par défaut...");
-                
+                console.log("⚠️ Aucun produit trouvé - produits par défaut");
                 products = [
                     {
                         id: 1,
-                        name: "Gâteau Chocolat Anniversaire",
-                        price: "45.00 DT",
+                        name: "Gâteau Démo Chocolat",
+                        price: "49.99 DT",
                         category: "anniversaire",
                         image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Gâteau au chocolat belge"
-                    },
-                    {
-                        id: 2,
-                        name: "Gâteau Mariage Élégant",
-                        price: "120.00 DT",
-                        category: "mariage",
-                        image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Élégant pour mariage"
-                    },
-                    {
-                        id: 3,
-                        name: "Gâteau Quotidien Carotte",
-                        price: "25.00 DT",
-                        category: "quotidien",
-                        image: "https://images.unsplash.com/photo-1519861531473-920034658307?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Parfait quotidien"
+                        description: "Gâteau artisanal au chocolat belge"
                     }
                 ];
-                
-                // Sauvegarder dans localStorage
-                localStorage.setItem('delices-gateaux', JSON.stringify(products));
+                productsLoaded = true;
             }
-            
-            productsLoaded = true;
-            productsHash = btoa(JSON.stringify(products)).substring(0, 20);
-            console.log(`${products.length} produits chargés`);
             
             return products;
         }
 
         // ============================================
-        // AFFICHAGE DES PRODUITS OPTIMISÉ (CORRIGÉ)
+        // AFFICHAGE DES PRODUITS AVEC IMAGES CORRIGÉES
         // ============================================
-        async function displayProducts() {
-            await loadProducts();
-
+        function displayProducts() {
+            loadProducts();
+            
+            // Vérifier si on est sur GitHub Pages
+            const isGitHub = window.location.hostname.includes('github.io');
+            console.log(`🌐 Site: ${window.location.hostname}, GitHub: ${isGitHub}`);
+            
             const container = document.getElementById('products-container');
             if (!container) return;
             
@@ -2481,8 +802,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
-                // Gestion des erreurs d'image
-                const imgErrorHandler = `this.onerror=null; this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';`;
+                // Gestion d'erreur pour les images
+                const imgErrorHandler = `
+                    this.onerror=null; 
+                    console.error('Image non chargée:', this.src);
+                    this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';
+                `;
                 
                 html += `
                     <div class="product-card" data-category="${product.category}" data-id="${product.id}" style="animation-delay: ${index * 0.1}s">
@@ -2758,14 +1083,64 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+         // ============================================
+        // RAFRAÎCHISSEMENT INTELLIGENT
+        // ============================================
+        function setupSmartRefresh() {
+            console.log("🚀 Configuration du rafraîchissement intelligent");
+            
+            let lastUpdate = Date.now();
+            let isRefreshing = false;
+            
+            const refreshIfNeeded = () => {
+                if (isRefreshing) return;
+                
+                const now = Date.now();
+                if (now - lastUpdate < 5000) return;
+                
+                isRefreshing = true;
+                
+                const storedProducts = localStorage.getItem('delices-gateaux');
+                const storedHash = storedProducts ? btoa(storedProducts).substring(0, 20) : '';
+                
+                if (storedHash !== productsHash) {
+                    console.log("🔄 Changement détecté, mise à jour des produits");
+                    lastUpdate = now;
+                    productsLoaded = false;
+                    displayProducts();
+                }
+                
+                isRefreshing = false;
+            };
+            
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'delices-gateaux' || e.key === 'sarsel-products') {
+                    console.log("📦 Changement détecté dans localStorage");
+                    setTimeout(refreshIfNeeded, 500);
+                }
+            });
+            
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    console.log("👁️ Page redevenue visible");
+                    setTimeout(refreshIfNeeded, 1000);
+                }
+            });
+            
+            setInterval(refreshIfNeeded, 30000);
+        }
+
         // ============================================
         // INITIALISATION
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             console.log("🚀 Dolcino - Site chargé");
+            console.log(`🌍 URL: ${window.location.href}`);
+            console.log(`🏠 Hostname: ${window.location.hostname}`);
             
             displayProducts();
             updateCart();
+            setupSmartRefresh();
             
             document.getElementById('customer-form').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -2794,53 +1169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('welcome-shown', 'true');
                 }
             }, 1000);
-            
-            // Vérifier et initialiser les données si nécessaire
-            initializeDefaultData();
         });
-        
-        // Initialiser les données par défaut si localStorage est vide
-        async function initializeDefaultData() {
-            const storedProducts = localStorage.getItem('delices-gateaux');
-            if (!storedProducts) {
-                console.log("🆕 Initialisation des données par défaut...");
-                
-                const defaultProducts = [
-                    {
-                        id: Date.now() + 1,
-                        name: "Gâteau Chocolat Fondant",
-                        price: "45.00 DT",
-                        category: "anniversaire",
-                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Gâteau au chocolat belge avec cœur fondant"
-                    },
-                    {
-                        id: Date.now() + 2,
-                        name: "Gâteau Fraise Passion",
-                        price: "38.50 DT",
-                        category: "anniversaire",
-                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Fraise fraîche et crème passion"
-                    },
-                    {
-                        id: Date.now() + 3,
-                        name: "Gâteau de Mariage Classique",
-                        price: "120.00 DT",
-                        category: "mariage",
-                        image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Élégant gâteau à étages pour mariage"
-                    }
-                ];
-                
-                localStorage.setItem('delices-gateaux', JSON.stringify(defaultProducts));
-                productsLoaded = false;
-                await displayProducts();
-            }
-        }
     </script>
 </body>
 </html>
-
-
-
-
