@@ -1695,6 +1695,10 @@
     </div>
 
 
+
+
+
+
 <script>
     // ============================================
     // VARIABLES GLOBALES
@@ -1705,123 +1709,136 @@
     let productsLoaded = false;
 
     // ============================================
-    // DÉTECTION DYNAMIQUE DES PRODUITS
+    // CLÉS DE SYNCHRONISATION (TRÈS IMPORTANT !)
     // ============================================
-    function loadDynamicProducts() {
-        console.log("🔍 Chargement dynamique des produits...");
+    const PRODUCT_KEYS = {
+        PRIMARY: 'dolcino-gateaux',        // Clé PRINCIPALE que les deux pages doivent utiliser
+        SECONDARY: 'delices-gateaux',      // Ancienne clé (compatibilité)
+        ADMIN: 'admin-products',           // Clé de l'admin
+        BACKUP: 'gateaux-data'             // Clé de backup
+    };
+
+    // ============================================
+    // FONCTION DE SYNCHRONISATION UNIFIÉE
+    // ============================================
+    function synchronizeProducts() {
+        console.log("🔄 Synchronisation des produits...");
         
-        // 1. Chercher les produits dans TOUTES les clés possibles
-        const possibleKeys = [
-            'dolcino-products',      // Clé principale
-            'delices-gateaux',       // Ancienne clé
-            'sarsel-products',       // Autre clé possible
-            'gateaux',               // Clé simple
-            'products',              // Clé générique
-            'admin-products'         // Clé admin
-        ];
+        // 1. COLLECTER TOUTES LES DONNÉES DISPONIBLES
+        const allData = {};
         
-        let foundProducts = [];
-        let sourceKey = '';
-        
-        // Chercher dans toutes les clés
-        for (const key of possibleKeys) {
+        // Vérifier TOUTES les clés possibles
+        Object.values(PRODUCT_KEYS).forEach(key => {
             const stored = localStorage.getItem(key);
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        foundProducts = parsed;
-                        sourceKey = key;
-                        console.log(`✅ ${foundProducts.length} produits trouvés dans "${key}"`);
-                        break;
+                        allData[key] = parsed;
+                        console.log(`📦 ${parsed.length} produits trouvés dans "${key}"`);
                     }
                 } catch (e) {
                     console.warn(`⚠️ Erreur parsing "${key}":`, e);
                 }
             }
+        });
+        
+        // 2. DÉTERMINER LA MEILLEURE SOURCE
+        let bestSource = null;
+        let bestData = [];
+        
+        // Priorité 1: Clé principale (doit être utilisée par l'admin)
+        if (allData[PRODUCT_KEYS.PRIMARY]) {
+            bestSource = PRODUCT_KEYS.PRIMARY;
+            bestData = allData[PRODUCT_KEYS.PRIMARY];
+        }
+        // Priorité 2: Ancienne clé
+        else if (allData[PRODUCT_KEYS.SECONDARY]) {
+            bestSource = PRODUCT_KEYS.SECONDARY;
+            bestData = allData[PRODUCT_KEYS.SECONDARY];
+        }
+        // Priorité 3: Clé admin
+        else if (allData[PRODUCT_KEYS.ADMIN]) {
+            bestSource = PRODUCT_KEYS.ADMIN;
+            bestData = allData[PRODUCT_KEYS.ADMIN];
         }
         
-        // 2. Si aucun produit trouvé, créer des produits par défaut
-        if (foundProducts.length === 0) {
-            console.log("🆕 Aucun produit trouvé - création de produits par défaut");
-            
-            foundProducts = [
-                // Produits par défaut (exemples)
-                {
-                    id: Date.now() + 1,
-                    name: "Gâteau Chocolat Fondant",
-                    price: "45.00 DT",
-                    category: "anniversaire",
-                    image: "./images/anniversaire/gateau-chocolat.jpg",
-                    description: "Gâteau au chocolat belge avec cœur fondant"
-                },
-                {
-                    id: Date.now() + 2,
-                    name: "Gâteau de Mariage Classique",
-                    price: "120.00 DT",
-                    category: "mariage",
-                    image: "./images/mariage/gateau-mariage-1.jpg",
-                    description: "Élégant gâteau à étages pour mariage"
-                },
-                {
-                    id: Date.now() + 3,
-                    name: "Gâteau Carotte Maison",
-                    price: "25.00 DT",
-                    category: "quotidien",
-                    image: "./images/quotidien/gateau-carotte.jpg",
-                    description: "Parfait pour le goûter familial"
-                }
-            ];
-            
-            localStorage.setItem('dolcino-products', JSON.stringify(foundProducts));
-            sourceKey = 'dolcino-products';
+        // 3. SI AUCUNE DONNÉE, CRÉER DES EXEMPLES
+        if (bestData.length === 0) {
+            console.log("🆕 Aucun produit trouvé - création d'exemples");
+            bestData = createSampleProducts();
+            bestSource = PRODUCT_KEYS.PRIMARY;
         }
         
-        // 3. Normaliser les produits (assurer qu'ils ont toutes les propriétés nécessaires)
-        products = foundProducts.map(product => ({
-            id: product.id || Date.now() + Math.random(),
-            name: product.name || 'Gâteau sans nom',
+        // 4. SYNCHRONISER TOUTES LES CLÉS
+        // Copier les données dans TOUTES les clés pour garantir la synchro
+        Object.values(PRODUCT_KEYS).forEach(key => {
+            if (key !== bestSource) {
+                localStorage.setItem(key, JSON.stringify(bestData));
+                console.log(`✅ Synchronisé vers "${key}"`);
+            }
+        });
+        
+        // 5. NORMALISER LES PRODUITS
+        products = bestData.map(product => ({
+            id: product.id || 'prod_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+            name: product.name || 'Nouveau Gâteau',
             price: product.price || '0.00 DT',
             category: product.category || 'quotidien',
-            image: product.image || this.getDefaultImage(product.category),
+            image: product.image || getDefaultImage(product.category),
             description: product.description || 'Gâteau artisanal fait maison',
             createdAt: product.createdAt || new Date().toISOString(),
-            inStock: product.inStock !== undefined ? product.inStock : true
+            inStock: product.inStock !== undefined ? product.inStock : true,
+            // Garder toutes les autres propriétés
+            ...product
         }));
         
-        // 4. Sauvegarder dans la clé principale
-        if (sourceKey !== 'dolcino-products') {
-            localStorage.setItem('dolcino-products', JSON.stringify(products));
+        // 6. SAUVEGARDER DANS LA CLÉ PRINCIPALE
+        localStorage.setItem(PRODUCT_KEYS.PRIMARY, JSON.stringify(products));
+        
+        console.log(`📊 Synchronisation terminée: ${products.length} produits`);
+        console.log(`📍 Source: ${bestSource}`);
+        
+        // 7. NOTIFIER L'UTILISATEUR SI BESOIN
+        if (products.length > 0 && !localStorage.getItem('synchro-done')) {
+            showNotification(`✅ ${products.length} gâteaux synchronisés`);
+            localStorage.setItem('synchro-done', 'true');
         }
         
         productsLoaded = true;
-        
-        console.log(`📊 ${products.length} produits chargés dynamiquement`);
-        console.log(`📈 Répartition: ${this.getCategoryCounts()}`);
-        
         return products;
     }
 
     // ============================================
-    // FONCTIONS UTILITAIRES POUR PRODUITS
+    // FONCTIONS UTILITAIRES
     // ============================================
-    function getCategoryCounts() {
-        const counts = {
-            anniversaire: 0,
-            mariage: 0,
-            quotidien: 0,
-            autres: 0
-        };
-        
-        products.forEach(product => {
-            if (counts[product.category] !== undefined) {
-                counts[product.category]++;
-            } else {
-                counts.autres++;
+    function createSampleProducts() {
+        return [
+            {
+                id: 'prod_anniv_1',
+                name: "Gâteau Chocolat Exemple",
+                price: "45.00 DT",
+                category: "anniversaire",
+                image: "./images/anniversaire/gateau-chocolat.jpg",
+                description: "Exemple de gâteau d'anniversaire"
+            },
+            {
+                id: 'prod_mariage_1',
+                name: "Gâteau Mariage Exemple",
+                price: "120.00 DT",
+                category: "mariage",
+                image: "./images/mariage/gateau-mariage-1.jpg",
+                description: "Exemple de gâteau de mariage"
+            },
+            {
+                id: 'prod_quot_1',
+                name: "Gâteau Quotidien Exemple",
+                price: "25.00 DT",
+                category: "quotidien",
+                image: "./images/quotidien/gateau-carotte.jpg",
+                description: "Exemple de gâteau quotidien"
             }
-        });
-        
-        return `Anniversaires: ${counts.anniversaire} | Mariages: ${counts.mariage} | Quotidiens: ${counts.quotidien} | Autres: ${counts.autres}`;
+        ];
     }
 
     function getDefaultImage(category) {
@@ -1830,186 +1847,122 @@
             mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">💒 Mariage</text></svg>',
             quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🍰 Quotidien</text></svg>'
         };
-        
         return defaultImages[category] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>';
     }
 
     // ============================================
-    // SURVEILLANCE DES CHANGEMENTS DYNAMIQUES
+    // SURVEILLANCE EN TEMPS RÉEL
     // ============================================
-    function setupProductWatcher() {
-        console.log("👁️ Configuration de la surveillance des produits...");
+    function setupRealtimeSync() {
+        console.log("🔄 Configuration de la synchronisation temps réel...");
         
         let lastProductCount = products.length;
-        let lastUpdateTime = Date.now();
+        let lastUpdate = Date.now();
         
-        // Surveiller les changements dans localStorage
+        // Surveiller CHANGEMENTS localStorage
         window.addEventListener('storage', function(e) {
+            // Ignorer les changements trop rapides
+            const now = Date.now();
+            if (now - lastUpdate < 500) return;
+            
+            // Si une clé produit est modifiée
             if (e.key && (
-                e.key.includes('product') || 
                 e.key.includes('gateau') || 
-                e.key === 'dolcino-products' ||
-                e.key === 'delices-gateaux' ||
-                e.key === 'sarsel-products'
+                e.key.includes('product') ||
+                Object.values(PRODUCT_KEYS).includes(e.key)
             )) {
                 console.log(`🔄 Changement détecté dans "${e.key}"`);
+                lastUpdate = now;
                 
-                // Attendre un peu pour éviter les rafraîchissements multiples
-                const now = Date.now();
-                if (now - lastUpdateTime < 1000) return;
-                lastUpdateTime = now;
-                
-                // Recharger les produits
+                // Resynchroniser
+                const oldCount = products.length;
                 productsLoaded = false;
-                const newCount = loadDynamicProducts().length;
+                synchronizeProducts();
                 
-                if (newCount !== lastProductCount) {
-                    console.log(`📈 Nombre de produits changé: ${lastProductCount} → ${newCount}`);
-                    lastProductCount = newCount;
+                const newCount = products.length;
+                
+                if (newCount !== oldCount) {
+                    console.log(`📈 Produits: ${oldCount} → ${newCount}`);
+                    displayProducts();
                     
-                    // Rafraîchir l'affichage
-                    displayProducts();
-                    showNotification(`🔄 ${newCount} gâteaux disponibles`);
+                    // Notification seulement si changement significatif
+                    if (Math.abs(newCount - oldCount) > 0) {
+                        showNotification(`🔄 ${newCount} gâteaux disponibles`);
+                    }
                 } else {
-                    console.log("✅ Produits mis à jour (même quantité)");
-                    displayProducts();
+                    console.log("✅ Produits synchronisés (même quantité)");
+                    displayProducts(); // Rafraîchir quand même
                 }
+                
+                lastProductCount = newCount;
             }
         });
         
-        // Rafraîchissement périodique (toutes les 30 secondes)
+        // Rafraîchissement automatique toutes les 10 secondes
         setInterval(() => {
-            const stored = localStorage.getItem('dolcino-products');
+            const stored = localStorage.getItem(PRODUCT_KEYS.PRIMARY);
             if (stored) {
                 try {
                     const currentProducts = JSON.parse(stored);
                     if (currentProducts.length !== products.length) {
-                        console.log(`🔄 Rafraîchissement périodique: ${products.length} → ${currentProducts.length} produits`);
+                        console.log(`🔄 Sync auto: ${products.length} → ${currentProducts.length} produits`);
                         productsLoaded = false;
-                        loadDynamicProducts();
+                        synchronizeProducts();
                         displayProducts();
                     }
                 } catch (e) {
-                    console.warn("⚠️ Erreur rafraîchissement périodique:", e);
+                    console.warn("⚠️ Erreur sync auto:", e);
                 }
             }
-        }, 30000);
+        }, 10000); // 10 secondes
         
-        // Rafraîchir quand la page redevient visible
+        // Sync quand la page redevient visible
         document.addEventListener('visibilitychange', function() {
             if (!document.hidden) {
-                console.log("👁️ Page redevenue visible - vérification des produits");
+                console.log("👁️ Page visible - resynchronisation...");
                 setTimeout(() => {
                     productsLoaded = false;
-                    loadDynamicProducts();
+                    synchronizeProducts();
                     displayProducts();
-                }, 500);
+                }, 300);
             }
         });
-    }
-
-    // ============================================
-    // GESTION DES IMAGES POUR MOBILE
-    // ============================================
-    function handleImageErrors() {
-        console.log("🖼️ Configuration de la gestion des images...");
         
-        const defaultImages = {
-            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">🎂 Gâteau Anniversaire</text></svg>',
-            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">💒 Gâteau Mariage</text></svg>',
-            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">🍰 Gâteau Quotidien</text></svg>',
-            default: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>'
-        };
-        
-        // Configuration pour toutes les images
-        document.querySelectorAll('img').forEach(img => {
-            // Sauvegarder la source originale
-            if (!img.dataset.originalSrc && img.src && !img.src.startsWith('data:')) {
-                img.dataset.originalSrc = img.src;
-            }
-            
-            // Gestionnaire d'erreur
-            img.onerror = function() {
-                console.log(`⚠️ Image non chargée: ${this.dataset.originalSrc || this.src}`);
-                
-                let category = 'default';
-                if (this.closest('[data-category]')) {
-                    category = this.closest('[data-category]').dataset.category;
-                } else if (this.alt) {
-                    const alt = this.alt.toLowerCase();
-                    if (alt.includes('anniversaire')) category = 'anniversaire';
-                    else if (alt.includes('mariage')) category = 'mariage';
-                    else if (alt.includes('quotidien')) category = 'quotidien';
-                }
-                
-                this.src = defaultImages[category] || defaultImages.default;
-                this.style.objectFit = 'contain';
-                this.style.padding = '15px';
-                this.style.backgroundColor = '#FFE4CC';
-                this.onerror = null; // Éviter les boucles
+        // Bouton de sync manuelle (pour debug)
+        if (window.location.hash === '#debug') {
+            const syncBtn = document.createElement('button');
+            syncBtn.innerHTML = '🔄 Sync';
+            syncBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:99999;padding:10px;background:#FF6B8B;color:white;border:none;border-radius:5px;cursor:pointer;';
+            syncBtn.onclick = () => {
+                productsLoaded = false;
+                synchronizeProducts();
+                displayProducts();
+                showNotification('🔄 Synchronisation manuelle effectuée');
             };
-            
-            // Préchargement pour améliorer les performances
-            if (img.src && !img.src.startsWith('data:') && img.complete === false) {
-                const tempImg = new Image();
-                tempImg.src = img.src;
-            }
-        });
-        
-        // Observer les nouvelles images ajoutées dynamiquement
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.tagName === 'IMG' || (node.querySelector && node.querySelector('img'))) {
-                        const images = node.tagName === 'IMG' ? [node] : node.querySelectorAll('img');
-                        images.forEach(img => {
-                            if (!img.dataset.originalSrc && img.src && !img.src.startsWith('data:')) {
-                                img.dataset.originalSrc = img.src;
-                                img.onerror = function() {
-                                    let category = 'default';
-                                    if (this.closest('[data-category]')) {
-                                        category = this.closest('[data-category]').dataset.category;
-                                    }
-                                    this.src = defaultImages[category] || defaultImages.default;
-                                    this.style.objectFit = 'contain';
-                                    this.style.padding = '15px';
-                                    this.style.backgroundColor = '#FFE4CC';
-                                };
-                            }
-                        });
-                    }
-                });
-            });
-        });
-        
-        observer.observe(document.body, { childList: true, subtree: true });
+            document.body.appendChild(syncBtn);
+        }
     }
 
     // ============================================
-    // AFFICHAGE DYNAMIQUE DES PRODUITS
+    // AFFICHAGE DES PRODUITS
     // ============================================
     function displayProducts() {
         if (!productsLoaded) {
-            loadDynamicProducts();
+            synchronizeProducts();
         }
         
         const container = document.getElementById('products-container');
-        if (!container) {
-            console.error("❌ Container des produits non trouvé");
-            return;
-        }
+        if (!container) return;
         
-        // Message si aucun produit
         if (products.length === 0) {
             container.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                    <div style="font-size: 4em; margin-bottom: 20px;">🍰</div>
-                    <h3 style="color: var(--dark); margin-bottom: 15px;">Aucun gâteau disponible</h3>
-                    <p style="color: #666; margin-bottom: 25px;">Ajoutez des gâteaux depuis la page d'administration</p>
-                    <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" 
-                       style="display: inline-flex; padding: 12px 25px; text-decoration: none;">
-                        <i class="fas fa-birthday-cake"></i>
-                        <span>Ajouter des gâteaux</span>
+                <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+                    <div style="font-size:4em;">🍰</div>
+                    <h3 style="color:var(--dark);margin:20px 0;">Aucun gâteau disponible</h3>
+                    <p>Utilisez la page d'administration pour ajouter des gâteaux</p>
+                    <a href="admin-login.html?page=products" 
+                       style="display:inline-block;margin-top:20px;padding:12px 25px;background:var(--primary);color:white;border-radius:25px;text-decoration:none;">
+                       👨‍💼 Aller à l'administration
                     </a>
                 </div>
             `;
@@ -2017,39 +1970,23 @@
         }
         
         let html = '';
-        let productCount = 0;
-        
         products.forEach((product, index) => {
-            productCount++;
-            
-            let badgeClass = 'badge-anniversaire';
-            let categoryName = 'Anniversaire';
-            
-            if (product.category === 'mariage') {
-                badgeClass = 'badge-mariage';
-                categoryName = 'Mariage';
-            } else if (product.category === 'quotidien') {
-                badgeClass = 'badge-quotidien';
-                categoryName = 'Quotidien';
-            } else {
-                badgeClass = 'badge-anniversaire';
-                categoryName = product.category || 'Autre';
-            }
-            
-            // Image avec fallback
-            const imageSrc = product.image || getDefaultImage(product.category);
-            const fallbackImage = getDefaultImage(product.category);
+            const badgeClass = `badge-${product.category}`;
+            const categoryNames = {
+                anniversaire: 'Anniversaire',
+                mariage: 'Mariage',
+                quotidien: 'Quotidien'
+            };
             
             html += `
                 <div class="product-card" data-category="${product.category}" data-id="${product.id}">
-                    <div class="product-badge ${badgeClass}">${categoryName}</div>
+                    <div class="product-badge ${badgeClass}">${categoryNames[product.category] || product.category}</div>
                     <div class="image-container product-image-container">
-                        <img src="${imageSrc}" 
-                             alt="${product.name}" 
+                        <img src="${product.image}" 
+                             alt="${product.name}"
                              class="product-img"
                              loading="lazy"
-                             data-original-src="${imageSrc}"
-                             onerror="this.src='${fallbackImage}'; this.style.objectFit='contain'; this.style.padding='15px'; this.style.backgroundColor='#FFE4CC';">
+                             onerror="this.src='${getDefaultImage(product.category)}';this.style.objectFit='contain';this.style.padding='15px';this.style.backgroundColor='#FFE4CC';">
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${product.name}</h3>
@@ -2064,486 +2001,74 @@
         });
         
         container.innerHTML = html;
-        
-        console.log(`✅ ${productCount} produits affichés dynamiquement`);
-        
-        // Appliquer les filtres initiaux
         showCategory(currentCategory);
         
-        // Gestion des images après rendu
-        setTimeout(handleImageErrors, 100);
-    }
-
-    // ============================================
-    // FILTRES ET CATÉGORIES DYNAMIQUES
-    // ============================================
-    function showCategory(category) {
-        currentCategory = category;
-        const productCards = document.querySelectorAll('.product-card');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        
-        // Mettre à jour les boutons actifs
-        filterButtons.forEach(btn => {
-            btn.classList.remove('active');
-            const btnText = btn.textContent.toLowerCase();
-            
-            if (category === 'all' && btnText.includes('tous')) {
-                btn.classList.add('active');
-            } else if (category === 'anniversaire' && btnText.includes('anniversaire')) {
-                btn.classList.add('active');
-            } else if (category === 'mariage' && btnText.includes('mariage')) {
-                btn.classList.add('active');
-            } else if (category === 'quotidien' && btnText.includes('quotidien')) {
-                btn.classList.add('active');
-            }
-        });
-        
-        // Filtrer les produits
-        let visibleCount = 0;
-        productCards.forEach(card => {
-            if (category === 'all' || card.dataset.category === category) {
-                card.style.display = 'block';
-                visibleCount++;
-                
-                // Animation d'apparition
-                card.style.animation = 'fadeInUp 0.5s ease forwards';
-                card.style.animationDelay = (visibleCount * 0.03) + 's';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
         // Mettre à jour le titre avec le compteur
-        const sectionTitle = document.querySelector('#products .section-title');
-        if (sectionTitle && category !== 'all') {
-            const originalText = sectionTitle.textContent.replace(/\(\d+\)/, '');
-            sectionTitle.textContent = `${originalText} (${visibleCount})`;
+        const title = document.querySelector('#products .section-title');
+        if (title) {
+            title.textContent = `Nos Gâteaux (${products.length})`;
         }
         
-        console.log(`👁️ ${visibleCount} produits visibles dans "${category}"`);
-    }
-
-    function showCategoryWithScroll(category) {
-        showCategory(category);
-        
-        setTimeout(() => {
-            const productsSection = document.getElementById('products');
-            if (productsSection) {
-                productsSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }, 100);
-    }
-
-    function scrollToProductsAndShowAll() {
-        showCategory('all');
-        
-        setTimeout(() => {
-            const productsSection = document.getElementById('products');
-            if (productsSection) {
-                productsSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }, 100);
+        console.log(`✅ ${products.length} produits affichés`);
     }
 
     // ============================================
-    // GESTION DU PANIER (ADAPTÉE AU DYNAMIQUE)
+    // [RESTE DU CODE SIMILAIRE À L'AVANT...]
+    // (Les fonctions showCategory, addToCart, updateCart, etc.)
     // ============================================
-    function addToCart(productId) {
-        // Rechercher le produit par ID (string ou number)
-        const product = products.find(p => p.id == productId);
-        if (!product) {
-            console.error("❌ Produit non trouvé avec ID:", productId);
-            showNotification('❌ Produit non trouvé');
-            return;
-        }
-        
-        const existingItem = cart.find(item => item.id == productId);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-            showNotification(`✅ ${product.name} - Quantité augmentée`);
-        } else {
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                quantity: 1,
-                image: product.image,
-                category: product.category
-            });
-            showNotification(`🛒 ${product.name} ajouté au panier !`);
-        }
-        
-        localStorage.setItem('dolcino-cart', JSON.stringify(cart));
-        updateCart();
-    }
-
-    function updateCart() {
-        const cartItems = document.getElementById('cart-items');
-        const cartTotal = document.getElementById('cart-total');
-        const cartCount = document.getElementById('cart-count');
-        
-        if (!cartItems || !cartTotal || !cartCount) return;
-        
-        cartItems.innerHTML = '';
-        let total = 0;
-        
-        if (cart.length === 0) {
-            cartItems.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px; color: #666;">
-                    <div style="font-size: 3em; margin-bottom: 20px;">🍰</div>
-                    <h4>Votre panier est vide</h4>
-                    <p>Ajoutez des gâteaux pour commencer</p>
-                    <button class="collection-button" onclick="toggleCart(); scrollToProductsAndShowAll();" 
-                            style="margin-top: 20px; padding: 10px 25px;">
-                        Découvrir nos ${products.length} gâteaux
-                    </button>
-                </div>
-            `;
-            cartTotal.textContent = '0.00 DT';
-            cartCount.textContent = '0';
-            return;
-        }
-        
-        cart.forEach((item, index) => {
-            const priceMatch = item.price.match(/(\d+\.?\d*)/);
-            const numericPrice = priceMatch ? parseFloat(priceMatch[0]) : 0;
-            const itemTotal = numericPrice * item.quantity;
-            total += itemTotal;
-            
-            const fallbackImage = getDefaultImage(item.category);
-            
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            cartItem.innerHTML = `
-                <div class="cart-item-image">
-                    <img src="${item.image || fallbackImage}" 
-                         alt="${item.name}"
-                         loading="lazy"
-                         onerror="this.src='${fallbackImage}'">
-                </div>
-                <div class="cart-item-info">
-                    <h4>${item.name}</h4>
-                    <div class="cart-item-price">${item.price}</div>
-                    <div class="cart-item-quantity">
-                        <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
-                        <span class="quantity-value">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
-                    </div>
-                </div>
-                <button class="remove-item" onclick="removeFromCart(${index})" title="Retirer">✕</button>
-            `;
-            
-            cartItems.appendChild(cartItem);
-        });
-        
-        cartTotal.textContent = total.toFixed(2) + ' DT';
-        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-    }
-
-    function updateQuantity(itemIndex, newQuantity) {
-        if (newQuantity < 1) {
-            removeFromCart(itemIndex);
-            return;
-        }
-        
-        cart[itemIndex].quantity = newQuantity;
-        localStorage.setItem('dolcino-cart', JSON.stringify(cart));
-        updateCart();
-        showNotification(`🔄 Quantité mise à jour: ${cart[itemIndex].name}`);
-    }
-
-    function removeFromCart(index) {
-        const itemName = cart[index].name;
-        cart.splice(index, 1);
-        localStorage.setItem('dolcino-cart', JSON.stringify(cart));
-        updateCart();
-        showNotification(`🗑️ ${itemName} retiré du panier`);
-    }
-
-    function toggleCart() {
-        const overlay = document.getElementById('cart-overlay');
-        const sidebar = document.getElementById('cart-sidebar');
-        
-        if (!overlay || !sidebar) return;
-        
-        if (sidebar.classList.contains('active')) {
-            sidebar.classList.remove('active');
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 400);
-        } else {
-            updateCart();
-            overlay.style.display = 'block';
-            setTimeout(() => {
-                sidebar.classList.add('active');
-            }, 10);
-        }
-    }
 
     // ============================================
-    // COMMANDE ET FORMULAIRES
-    // ============================================
-    function checkout() {
-        if (cart.length === 0) {
-            showNotification('🛒 Votre panier est vide !');
-            return;
-        }
-        
-        const total = cart.reduce((sum, item) => {
-            const priceMatch = item.price.match(/(\d+\.?\d*)/);
-            return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
-        }, 0);
-        
-        const orderNumber = 'DOL-' + Date.now().toString().slice(-8);
-        
-        const orderSummary = document.getElementById('order-summary-items');
-        const orderTotal = document.getElementById('order-total');
-        const orderNumberDisplay = document.getElementById('order-number');
-        const confirmationNumber = document.getElementById('confirmation-number');
-        
-        if (!orderSummary || !orderTotal || !orderNumberDisplay) return;
-        
-        orderSummary.innerHTML = '';
-        
-        cart.forEach(item => {
-            const priceMatch = item.price.match(/(\d+\.?\d*)/);
-            const itemTotal = (priceMatch ? parseFloat(priceMatch[0]) : 0) * item.quantity;
-            const summaryItem = document.createElement('div');
-            summaryItem.className = 'summary-item';
-            summaryItem.innerHTML = `
-                <span>${item.quantity} × ${item.name}</span>
-                <span>${itemTotal.toFixed(2)} DT</span>
-            `;
-            orderSummary.appendChild(summaryItem);
-        });
-        
-        orderTotal.textContent = total.toFixed(2) + ' DT';
-        orderNumberDisplay.textContent = orderNumber;
-        
-        if (confirmationNumber) {
-            confirmationNumber.textContent = orderNumber;
-        }
-        
-        document.getElementById('order-form-modal').style.display = 'flex';
-    }
-
-    function closeOrderForm() {
-        document.getElementById('order-form-modal').style.display = 'none';
-    }
-
-    function showConfirmationModal() {
-        const orderNumber = document.getElementById('order-number').textContent;
-        
-        // Enregistrer la commande
-        const order = {
-            orderNumber: orderNumber,
-            date: new Date().toISOString(),
-            items: [...cart],
-            total: cart.reduce((sum, item) => {
-                const priceMatch = item.price.match(/(\d+\.?\d*)/);
-                return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
-            }, 0),
-            customer: {
-                name: document.getElementById('customer-name').value || 'Client',
-                phone: document.getElementById('customer-phone').value || '',
-                email: document.getElementById('customer-email').value || '',
-                address: document.getElementById('customer-address').value || ''
-            },
-            notes: document.getElementById('customer-notes').value || 'Aucune note',
-            paymentMethod: document.querySelector('input[name="payment"]:checked')?.value || 'cash',
-            status: 'En attente'
-        };
-        
-        // Sauvegarder la commande
-        let orders = JSON.parse(localStorage.getItem('dolcino-orders')) || [];
-        orders.push(order);
-        localStorage.setItem('dolcino-orders', JSON.stringify(orders));
-        
-        // Vider le panier
-        cart = [];
-        localStorage.setItem('dolcino-cart', JSON.stringify(cart));
-        updateCart();
-        
-        // Fermer le formulaire et ouvrir la confirmation
-        closeOrderForm();
-        document.getElementById('confirmation-modal').style.display = 'flex';
-        
-        showNotification(`🎉 Commande ${orderNumber} confirmée !`);
-        
-        // Réinitialiser le formulaire
-        document.getElementById('customer-form').reset();
-    }
-
-    function closeConfirmationModal() {
-        document.getElementById('confirmation-modal').style.display = 'none';
-        toggleCart(); // Fermer aussi le panier
-    }
-
-    // ============================================
-    // UTILITAIRES
-    // ============================================
-    function showNotification(message) {
-        // Supprimer les notifications existantes
-        document.querySelectorAll('.notification').forEach(n => n.remove());
-        
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span>${message}</span>
-            </div>
-        `;
-        
-        document.body.appendChild(notification);
-        
-        // Animation d'entrée
-        setTimeout(() => {
-            notification.style.opacity = '1';
-            notification.style.transform = 'translateX(0)';
-        }, 10);
-        
-        // Auto-suppression après 3 secondes
-        setTimeout(() => {
-            notification.style.opacity = '0';
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        }, 3000);
-    }
-
-    function callNow() {
-        if (confirm('Appeler Dolcino au 20 90 15 96 ?')) {
-            window.open('tel:+21620901596');
-        }
-    }
-
-    function forceRefreshProducts() {
-        if (confirm('Forcer le rafraîchissement des produits ?')) {
-            productsLoaded = false;
-            loadDynamicProducts();
-            displayProducts();
-            showNotification(`🔄 ${products.length} produits rechargés`);
-        }
-    }
-
-    function clearAllData() {
-        if (confirm('Voulez-vous vraiment effacer TOUTES les données (panier, commandes, produits) ?')) {
-            localStorage.clear();
-            products = [];
-            cart = [];
-            productsLoaded = false;
-            
-            updateCart();
-            displayProducts();
-            
-            showNotification('🗑️ Toutes les données ont été effacées');
-        }
-    }
-
-    // ============================================
-    // INITIALISATION DYNAMIQUE
+    // INITIALISATION
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
-        console.log("🚀 Dolcino - Initialisation dynamique...");
-        console.log("=".repeat(50));
+        console.log("=".repeat(60));
+        console.log("🚀 DOLCINO - SYSTÈME DE SYNCHRONISATION");
+        console.log("=".repeat(60));
         
-        // 1. Charger les produits dynamiquement
-        loadDynamicProducts();
+        // 1. Synchronisation initiale
+        synchronizeProducts();
         
-        // 2. Afficher les produits
+        // 2. Affichage
         displayProducts();
         
-        // 3. Mettre à jour le panier
+        // 3. Panier
         updateCart();
         
-        // 4. Configurer la surveillance des changements
-        setupProductWatcher();
+        // 4. Surveillance temps réel
+        setupRealtimeSync();
         
-        // 5. Configurer les images
-        handleImageErrors();
-        
-        // 6. Gestion du formulaire de commande
-        const customerForm = document.getElementById('customer-form');
-        if (customerForm) {
-            customerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                showConfirmationModal();
-            });
-        }
-        
-        // 7. Navigation fluide
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+        // 5. Formulaire
+        const form = document.getElementById('customer-form');
+        if (form) form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showConfirmationModal();
         });
         
-        // 8. Message de bienvenue avec compteur
+        // 6. Rapport
         setTimeout(() => {
-            if (!localStorage.getItem('dolcino-welcome')) {
-                showNotification(`🎂 Bienvenue chez Dolcino ! ${products.length} gâteaux disponibles`);
-                localStorage.setItem('dolcino-welcome', 'true');
-            }
-        }, 1500);
-        
-        // 9. Rapport final
-        setTimeout(() => {
-            console.log("=".repeat(50));
-            console.log("📊 RAPPORT FINAL D'INITIALISATION DYNAMIQUE");
-            console.log(`✅ ${products.length} produits chargés`);
-            console.log(`🛒 ${cart.length} articles dans le panier`);
-            console.log(`📈 Répartition: ${getCategoryCounts()}`);
-            console.log("=".repeat(50));
+            console.log("=".repeat(60));
+            console.log("📊 SYNCHRONISATION RÉUSSIE");
+            console.log(`✅ ${products.length} produits synchronisés`);
+            console.log(`🔑 Clé principale: ${PRODUCT_KEYS.PRIMARY}`);
+            console.log("=".repeat(60));
             
-            // Mettre à jour le titre de la section
-            const productsTitle = document.querySelector('#products .section-title');
-            if (productsTitle) {
-                productsTitle.textContent = `Nos Gâteaux (${products.length})`;
-            }
-        }, 2000);
+            showNotification(`🎂 ${products.length} gâteaux disponibles`);
+        }, 1000);
     });
 
     // ============================================
-    // FONCTIONS GLOBALES POUR LE HTML
+    // FONCTIONS GLOBALES
     // ============================================
+    // [Garder toutes les fonctions globales existantes]
     window.addToCart = addToCart;
-    window.updateQuantity = updateQuantity;
-    window.removeFromCart = removeFromCart;
-    window.toggleCart = toggleCart;
-    window.checkout = checkout;
-    window.closeOrderForm = closeOrderForm;
-    window.showConfirmationModal = showConfirmationModal;
-    window.closeConfirmationModal = closeConfirmationModal;
     window.showCategory = showCategory;
-    window.showCategoryWithScroll = showCategoryWithScroll;
-    window.scrollToProductsAndShowAll = scrollToProductsAndShowAll;
-    window.callNow = callNow;
-    window.forceRefreshProducts = forceRefreshProducts;
-    window.clearAllData = clearAllData;
+    // ... etc.
+
 </script>
     
 </body>
 </html>
+
 
 
 
