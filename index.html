@@ -1705,221 +1705,207 @@
     let productsLoaded = false;
 
     // ============================================
-    // LES 19 GÂTEAUX COMPLETS
+    // DÉTECTION DYNAMIQUE DES PRODUITS
     // ============================================
-    const ALL_PRODUCTS = [
-        // ========== ANNIVERSAIRES (6) ==========
-        {
-            id: 1,
-            name: "Gâteau Chocolat Fondant",
-            price: "45.00 DT",
-            category: "anniversaire",
-            image: "./images/anniversaire/gateau-chocolat.jpg",
-            description: "Gâteau au chocolat belge avec cœur fondant",
-            featured: true
-        },
-        {
-            id: 2,
-            name: "Gâteau Fraise Passion",
-            price: "38.50 DT",
-            category: "anniversaire",
-            image: "./images/anniversaire/gateau-fraise.jpg",
-            description: "Fraise fraîche et crème passion onctueuse",
-            featured: false
-        },
-        {
-            id: 3,
-            name: "Gâteau Arc-en-Ciel",
-            price: "42.00 DT",
-            category: "anniversaire",
-            image: "./images/anniversaire/gateau-anniv-1.jpg",
-            description: "Gâteau multicolore pour fête d'enfant joyeuse",
-            featured: false
-        },
-        {
-            id: 4,
-            name: "Gâteau Créatif",
-            price: "39.99 DT",
-            category: "anniversaire",
-            image: "./images/anniversaire/gateau-anniv-2.jpg",
-            description: "Décoration créative et personnalisée sur mesure",
-            featured: false
-        },
-        {
-            id: 5,
-            name: "Gâteau Premium",
-            price: "47.50 DT",
-            category: "anniversaire",
-            image: "./images/anniversaire/gateau-anniv-3.jpg",
-            description: "Gâteau premium pour adulte aux saveurs raffinées",
-            featured: false
-        },
-        {
-            id: 6,
-            name: "Gâteau Personnalisé",
-            price: "44.00 DT",
-            category: "anniversaire",
-            image: "./images/anniversaire/gateau-anniv-4.jpg",
-            description: "Gâteau à thème personnalisable selon vos envies",
-            featured: false
-        },
+    function loadDynamicProducts() {
+        console.log("🔍 Chargement dynamique des produits...");
         
-        // ========== MARIAGES (5) ==========
-        {
-            id: 7,
-            name: "Gâteau de Mariage Classique",
-            price: "120.00 DT",
-            category: "mariage",
-            image: "./images/mariage/gateau-mariage-1.jpg",
-            description: "Élégant gâteau à étages pour mariage traditionnel",
-            featured: true
-        },
-        {
-            id: 8,
-            name: "Gâteau Royal Blanc",
-            price: "150.00 DT",
-            category: "mariage",
-            image: "./images/mariage/gateau-mariage-2.jpg",
-            description: "Blanc pur avec décorations en sucre délicates",
-            featured: false
-        },
-        {
-            id: 9,
-            name: "Gâteau Doré Élégant",
-            price: "135.00 DT",
-            category: "mariage",
-            image: "./images/mariage/gateau-mariage-3.jpg",
-            description: "Gâteau royal avec ornements dorés et perles",
-            featured: false
-        },
-        {
-            id: 10,
-            name: "Gâteau Moderne",
-            price: "140.00 DT",
-            category: "mariage",
-            image: "./images/mariage/gateau-mariage-4.jpg",
-            description: "Design moderne et épuré pour mariage contemporain",
-            featured: false
-        },
-        {
-            id: 11,
-            name: "Gâteau Traditionnel",
-            price: "125.00 DT",
-            category: "mariage",
-            image: "./images/mariage/gateau-mariage-5.jpg",
-            description: "Gâteau traditionnel raffiné aux saveurs classiques",
-            featured: false
-        },
+        // 1. Chercher les produits dans TOUTES les clés possibles
+        const possibleKeys = [
+            'dolcino-products',      // Clé principale
+            'delices-gateaux',       // Ancienne clé
+            'sarsel-products',       // Autre clé possible
+            'gateaux',               // Clé simple
+            'products',              // Clé générique
+            'admin-products'         // Clé admin
+        ];
         
-        // ========== QUOTIDIEN (8) ==========
-        {
-            id: 12,
-            name: "Gâteau Carotte Maison",
-            price: "25.00 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-carotte.jpg",
-            description: "Parfait pour le goûter familial, moelleux et léger",
-            featured: true
-        },
-        {
-            id: 13,
-            name: "Gâteau Vanille Noisette",
-            price: "28.00 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-vanille.jpg",
-            description: "Vanille de Madagascar et noisettes grillées croustillantes",
-            featured: false
-        },
-        {
-            id: 14,
-            name: "Gâteau Léger Moelleux",
-            price: "22.00 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-quotidien-1.jpg",
-            description: "Gâteau léger et moelleux, parfait pour une pause douce",
-            featured: false
-        },
-        {
-            id: 15,
-            name: "Gâteau Pause Gourmande",
-            price: "24.50 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-quotidien-2.jpg",
-            description: "Idéal pour une pause gourmande entre amis",
-            featured: false
-        },
-        {
-            id: 16,
-            name: "Gâteau aux Fruits Frais",
-            price: "27.00 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-quotidien-3.jpg",
-            description: "Avec fruits de saison et crème légère",
-            featured: false
-        },
-        {
-            id: 17,
-            name: "Gâteau Réconfortant",
-            price: "26.00 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-quotidien-4.jpg",
-            description: "Gâteau réconfortant maison comme chez grand-mère",
-            featured: false
-        },
-        {
-            id: 18,
-            name: "Petit Gâteau Individuel",
-            price: "23.50 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-quotidien-5.jpg",
-            description: "Petit gâteau individuel pour un plaisir solo",
-            featured: false
-        },
-        {
-            id: 19,
-            name: "Spécialité Maison",
-            price: "29.00 DT",
-            category: "quotidien",
-            image: "./images/quotidien/gateau-quotidien-6.jpg",
-            description: "Spécialité de la maison, recette secrète",
-            featured: false
-        }
-    ];
-
-    // ============================================
-    // INITIALISATION DES PRODUITS
-    // ============================================
-    function initializeProducts() {
-        console.log("🔄 Initialisation des produits...");
+        let foundProducts = [];
+        let sourceKey = '';
         
-        // Vérifier si des produits existent déjà
-        const storedProducts = localStorage.getItem('dolcino-products');
-        
-        if (storedProducts) {
-            try {
-                products = JSON.parse(storedProducts);
-                console.log(`✅ ${products.length} produits chargés depuis le stockage`);
-                
-                // Vérifier qu'on a bien 19 produits
-                if (products.length !== 19) {
-                    console.log(`⚠️ ${products.length}/19 produits, régénération...`);
-                    products = ALL_PRODUCTS;
-                    localStorage.setItem('dolcino-products', JSON.stringify(products));
+        // Chercher dans toutes les clés
+        for (const key of possibleKeys) {
+            const stored = localStorage.getItem(key);
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        foundProducts = parsed;
+                        sourceKey = key;
+                        console.log(`✅ ${foundProducts.length} produits trouvés dans "${key}"`);
+                        break;
+                    }
+                } catch (e) {
+                    console.warn(`⚠️ Erreur parsing "${key}":`, e);
                 }
-            } catch (e) {
-                console.error("❌ Erreur de parsing, régénération des produits:", e);
-                products = ALL_PRODUCTS;
-                localStorage.setItem('dolcino-products', JSON.stringify(products));
             }
-        } else {
-            console.log("🆕 Création des 19 produits initiaux");
-            products = ALL_PRODUCTS;
+        }
+        
+        // 2. Si aucun produit trouvé, créer des produits par défaut
+        if (foundProducts.length === 0) {
+            console.log("🆕 Aucun produit trouvé - création de produits par défaut");
+            
+            foundProducts = [
+                // Produits par défaut (exemples)
+                {
+                    id: Date.now() + 1,
+                    name: "Gâteau Chocolat Fondant",
+                    price: "45.00 DT",
+                    category: "anniversaire",
+                    image: "./images/anniversaire/gateau-chocolat.jpg",
+                    description: "Gâteau au chocolat belge avec cœur fondant"
+                },
+                {
+                    id: Date.now() + 2,
+                    name: "Gâteau de Mariage Classique",
+                    price: "120.00 DT",
+                    category: "mariage",
+                    image: "./images/mariage/gateau-mariage-1.jpg",
+                    description: "Élégant gâteau à étages pour mariage"
+                },
+                {
+                    id: Date.now() + 3,
+                    name: "Gâteau Carotte Maison",
+                    price: "25.00 DT",
+                    category: "quotidien",
+                    image: "./images/quotidien/gateau-carotte.jpg",
+                    description: "Parfait pour le goûter familial"
+                }
+            ];
+            
+            localStorage.setItem('dolcino-products', JSON.stringify(foundProducts));
+            sourceKey = 'dolcino-products';
+        }
+        
+        // 3. Normaliser les produits (assurer qu'ils ont toutes les propriétés nécessaires)
+        products = foundProducts.map(product => ({
+            id: product.id || Date.now() + Math.random(),
+            name: product.name || 'Gâteau sans nom',
+            price: product.price || '0.00 DT',
+            category: product.category || 'quotidien',
+            image: product.image || this.getDefaultImage(product.category),
+            description: product.description || 'Gâteau artisanal fait maison',
+            createdAt: product.createdAt || new Date().toISOString(),
+            inStock: product.inStock !== undefined ? product.inStock : true
+        }));
+        
+        // 4. Sauvegarder dans la clé principale
+        if (sourceKey !== 'dolcino-products') {
             localStorage.setItem('dolcino-products', JSON.stringify(products));
         }
         
         productsLoaded = true;
-        console.log(`🎯 ${products.length} produits prêts à l'emploi`);
+        
+        console.log(`📊 ${products.length} produits chargés dynamiquement`);
+        console.log(`📈 Répartition: ${this.getCategoryCounts()}`);
+        
         return products;
+    }
+
+    // ============================================
+    // FONCTIONS UTILITAIRES POUR PRODUITS
+    // ============================================
+    function getCategoryCounts() {
+        const counts = {
+            anniversaire: 0,
+            mariage: 0,
+            quotidien: 0,
+            autres: 0
+        };
+        
+        products.forEach(product => {
+            if (counts[product.category] !== undefined) {
+                counts[product.category]++;
+            } else {
+                counts.autres++;
+            }
+        });
+        
+        return `Anniversaires: ${counts.anniversaire} | Mariages: ${counts.mariage} | Quotidiens: ${counts.quotidien} | Autres: ${counts.autres}`;
+    }
+
+    function getDefaultImage(category) {
+        const defaultImages = {
+            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🎂 Anniversaire</text></svg>',
+            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">💒 Mariage</text></svg>',
+            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🍰 Quotidien</text></svg>'
+        };
+        
+        return defaultImages[category] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>';
+    }
+
+    // ============================================
+    // SURVEILLANCE DES CHANGEMENTS DYNAMIQUES
+    // ============================================
+    function setupProductWatcher() {
+        console.log("👁️ Configuration de la surveillance des produits...");
+        
+        let lastProductCount = products.length;
+        let lastUpdateTime = Date.now();
+        
+        // Surveiller les changements dans localStorage
+        window.addEventListener('storage', function(e) {
+            if (e.key && (
+                e.key.includes('product') || 
+                e.key.includes('gateau') || 
+                e.key === 'dolcino-products' ||
+                e.key === 'delices-gateaux' ||
+                e.key === 'sarsel-products'
+            )) {
+                console.log(`🔄 Changement détecté dans "${e.key}"`);
+                
+                // Attendre un peu pour éviter les rafraîchissements multiples
+                const now = Date.now();
+                if (now - lastUpdateTime < 1000) return;
+                lastUpdateTime = now;
+                
+                // Recharger les produits
+                productsLoaded = false;
+                const newCount = loadDynamicProducts().length;
+                
+                if (newCount !== lastProductCount) {
+                    console.log(`📈 Nombre de produits changé: ${lastProductCount} → ${newCount}`);
+                    lastProductCount = newCount;
+                    
+                    // Rafraîchir l'affichage
+                    displayProducts();
+                    showNotification(`🔄 ${newCount} gâteaux disponibles`);
+                } else {
+                    console.log("✅ Produits mis à jour (même quantité)");
+                    displayProducts();
+                }
+            }
+        });
+        
+        // Rafraîchissement périodique (toutes les 30 secondes)
+        setInterval(() => {
+            const stored = localStorage.getItem('dolcino-products');
+            if (stored) {
+                try {
+                    const currentProducts = JSON.parse(stored);
+                    if (currentProducts.length !== products.length) {
+                        console.log(`🔄 Rafraîchissement périodique: ${products.length} → ${currentProducts.length} produits`);
+                        productsLoaded = false;
+                        loadDynamicProducts();
+                        displayProducts();
+                    }
+                } catch (e) {
+                    console.warn("⚠️ Erreur rafraîchissement périodique:", e);
+                }
+            }
+        }, 30000);
+        
+        // Rafraîchir quand la page redevient visible
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                console.log("👁️ Page redevenue visible - vérification des produits");
+                setTimeout(() => {
+                    productsLoaded = false;
+                    loadDynamicProducts();
+                    displayProducts();
+                }, 500);
+            }
+        });
     }
 
     // ============================================
@@ -1929,32 +1915,31 @@
         console.log("🖼️ Configuration de la gestion des images...");
         
         const defaultImages = {
-            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🎂 Gâteau Anniversaire</text></svg>',
-            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">💒 Gâteau Mariage</text></svg>',
-            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🍰 Gâteau Quotidien</text></svg>',
-            default: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>'
+            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">🎂 Gâteau Anniversaire</text></svg>',
+            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">💒 Gâteau Mariage</text></svg>',
+            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">🍰 Gâteau Quotidien</text></svg>',
+            default: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>'
         };
         
-        // Configuration globale pour toutes les images
+        // Configuration pour toutes les images
         document.querySelectorAll('img').forEach(img => {
             // Sauvegarder la source originale
-            if (!img.dataset.originalSrc) {
+            if (!img.dataset.originalSrc && img.src && !img.src.startsWith('data:')) {
                 img.dataset.originalSrc = img.src;
             }
             
             // Gestionnaire d'erreur
             img.onerror = function() {
-                console.log(`⚠️ Image non chargée: ${this.dataset.originalSrc}`);
+                console.log(`⚠️ Image non chargée: ${this.dataset.originalSrc || this.src}`);
                 
                 let category = 'default';
                 if (this.closest('[data-category]')) {
                     category = this.closest('[data-category]').dataset.category;
-                } else if (this.alt.includes('Anniversaire') || this.src.includes('anniversaire')) {
-                    category = 'anniversaire';
-                } else if (this.alt.includes('Mariage') || this.src.includes('mariage')) {
-                    category = 'mariage';
-                } else if (this.alt.includes('Quotidien') || this.src.includes('quotidien')) {
-                    category = 'quotidien';
+                } else if (this.alt) {
+                    const alt = this.alt.toLowerCase();
+                    if (alt.includes('anniversaire')) category = 'anniversaire';
+                    else if (alt.includes('mariage')) category = 'mariage';
+                    else if (alt.includes('quotidien')) category = 'quotidien';
                 }
                 
                 this.src = defaultImages[category] || defaultImages.default;
@@ -1964,8 +1949,8 @@
                 this.onerror = null; // Éviter les boucles
             };
             
-            // Préchargement intelligent
-            if (img.src && !img.src.startsWith('data:')) {
+            // Préchargement pour améliorer les performances
+            if (img.src && !img.src.startsWith('data:') && img.complete === false) {
                 const tempImg = new Image();
                 tempImg.src = img.src;
             }
@@ -1978,7 +1963,7 @@
                     if (node.tagName === 'IMG' || (node.querySelector && node.querySelector('img'))) {
                         const images = node.tagName === 'IMG' ? [node] : node.querySelectorAll('img');
                         images.forEach(img => {
-                            if (!img.dataset.originalSrc) {
+                            if (!img.dataset.originalSrc && img.src && !img.src.startsWith('data:')) {
                                 img.dataset.originalSrc = img.src;
                                 img.onerror = function() {
                                     let category = 'default';
@@ -2001,11 +1986,11 @@
     }
 
     // ============================================
-    // AFFICHAGE DES PRODUITS
+    // AFFICHAGE DYNAMIQUE DES PRODUITS
     // ============================================
     function displayProducts() {
         if (!productsLoaded) {
-            initializeProducts();
+            loadDynamicProducts();
         }
         
         const container = document.getElementById('products-container');
@@ -2014,11 +1999,28 @@
             return;
         }
         
+        // Message si aucun produit
+        if (products.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 4em; margin-bottom: 20px;">🍰</div>
+                    <h3 style="color: var(--dark); margin-bottom: 15px;">Aucun gâteau disponible</h3>
+                    <p style="color: #666; margin-bottom: 25px;">Ajoutez des gâteaux depuis la page d'administration</p>
+                    <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" 
+                       style="display: inline-flex; padding: 12px 25px; text-decoration: none;">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span>Ajouter des gâteaux</span>
+                    </a>
+                </div>
+            `;
+            return;
+        }
+        
         let html = '';
-        let displayedCount = 0;
+        let productCount = 0;
         
         products.forEach((product, index) => {
-            displayedCount++;
+            productCount++;
             
             let badgeClass = 'badge-anniversaire';
             let categoryName = 'Anniversaire';
@@ -2029,15 +2031,14 @@
             } else if (product.category === 'quotidien') {
                 badgeClass = 'badge-quotidien';
                 categoryName = 'Quotidien';
+            } else {
+                badgeClass = 'badge-anniversaire';
+                categoryName = product.category || 'Autre';
             }
             
             // Image avec fallback
-            const imageSrc = product.image || '';
-            const fallbackImage = product.category === 'anniversaire' 
-                ? 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">' + product.name + '</text></svg>'
-                : product.category === 'mariage'
-                ? 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">' + product.name + '</text></svg>'
-                : 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="18" fill="%238B4513" text-anchor="middle">' + product.name + '</text></svg>';
+            const imageSrc = product.image || getDefaultImage(product.category);
+            const fallbackImage = getDefaultImage(product.category);
             
             html += `
                 <div class="product-card" data-category="${product.category}" data-id="${product.id}">
@@ -2055,7 +2056,7 @@
                         <p class="product-desc">${product.description}</p>
                         <div class="product-meta">
                             <div class="product-price">${product.price}</div>
-                            <button class="add-to-cart" onclick="addToCart(${product.id})">Ajouter</button>
+                            <button class="add-to-cart" onclick="addToCart('${product.id}')">Ajouter</button>
                         </div>
                     </div>
                 </div>
@@ -2064,7 +2065,7 @@
         
         container.innerHTML = html;
         
-        console.log(`✅ ${displayedCount} produits affichés sur ${products.length} disponibles`);
+        console.log(`✅ ${productCount} produits affichés dynamiquement`);
         
         // Appliquer les filtres initiaux
         showCategory(currentCategory);
@@ -2074,7 +2075,7 @@
     }
 
     // ============================================
-    // FILTRES ET CATÉGORIES
+    // FILTRES ET CATÉGORIES DYNAMIQUES
     // ============================================
     function showCategory(category) {
         currentCategory = category;
@@ -2106,42 +2107,34 @@
                 
                 // Animation d'apparition
                 card.style.animation = 'fadeInUp 0.5s ease forwards';
-                card.style.animationDelay = (visibleCount * 0.05) + 's';
+                card.style.animationDelay = (visibleCount * 0.03) + 's';
             } else {
                 card.style.display = 'none';
             }
         });
         
-        // Message si aucun produit
-        if (visibleCount === 0) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-                    <div style="font-size: 4em; margin-bottom: 20px;">🍰</div>
-                    <h3 style="color: var(--dark); margin-bottom: 15px;">Aucun gâteau dans cette catégorie</h3>
-                    <p style="color: #666; margin-bottom: 25px;">Essayez une autre catégorie ou consultez tous nos gâteaux</p>
-                    <button class="filter-btn active" onclick="showCategory('all')" style="font-size: 1.1em; padding: 12px 30px;">
-                        Voir tous les gâteaux
-                    </button>
-                </div>
-            `;
+        // Mettre à jour le titre avec le compteur
+        const sectionTitle = document.querySelector('#products .section-title');
+        if (sectionTitle && category !== 'all') {
+            const originalText = sectionTitle.textContent.replace(/\(\d+\)/, '');
+            sectionTitle.textContent = `${originalText} (${visibleCount})`;
         }
         
         console.log(`👁️ ${visibleCount} produits visibles dans "${category}"`);
-        
-        // Défilement vers le haut de la section
-        if (category !== 'all' && visibleCount > 0) {
-            const productsSection = document.getElementById('products');
-            if (productsSection) {
-                setTimeout(() => {
-                    productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
-            }
-        }
     }
 
     function showCategoryWithScroll(category) {
         showCategory(category);
+        
+        setTimeout(() => {
+            const productsSection = document.getElementById('products');
+            if (productsSection) {
+                productsSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }, 100);
     }
 
     function scrollToProductsAndShowAll() {
@@ -2159,16 +2152,18 @@
     }
 
     // ============================================
-    // GESTION DU PANIER
+    // GESTION DU PANIER (ADAPTÉE AU DYNAMIQUE)
     // ============================================
     function addToCart(productId) {
-        const product = products.find(p => p.id === productId);
+        // Rechercher le produit par ID (string ou number)
+        const product = products.find(p => p.id == productId);
         if (!product) {
+            console.error("❌ Produit non trouvé avec ID:", productId);
             showNotification('❌ Produit non trouvé');
             return;
         }
         
-        const existingItem = cart.find(item => item.id === productId);
+        const existingItem = cart.find(item => item.id == productId);
         
         if (existingItem) {
             existingItem.quantity += 1;
@@ -2207,7 +2202,7 @@
                     <p>Ajoutez des gâteaux pour commencer</p>
                     <button class="collection-button" onclick="toggleCart(); scrollToProductsAndShowAll();" 
                             style="margin-top: 20px; padding: 10px 25px;">
-                        Découvrir nos gâteaux
+                        Découvrir nos ${products.length} gâteaux
                     </button>
                 </div>
             `;
@@ -2222,7 +2217,7 @@
             const itemTotal = numericPrice * item.quantity;
             total += itemTotal;
             
-            const fallbackImage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="%23FFE4CC"/><text x="30" y="30" font-family="Arial" font-size="14" fill="%238B4513" text-anchor="middle">🎂</text></svg>';
+            const fallbackImage = getDefaultImage(item.category);
             
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
@@ -2432,43 +2427,52 @@
         }
     }
 
-    function resetAllData() {
-        if (confirm('Voulez-vous vraiment réinitialiser toutes les données ? Cette action effacera le panier et les commandes.')) {
-            localStorage.removeItem('dolcino-cart');
-            localStorage.removeItem('dolcino-products');
-            localStorage.removeItem('dolcino-orders');
-            localStorage.removeItem('welcome-shown');
-            
+    function forceRefreshProducts() {
+        if (confirm('Forcer le rafraîchissement des produits ?')) {
+            productsLoaded = false;
+            loadDynamicProducts();
+            displayProducts();
+            showNotification(`🔄 ${products.length} produits rechargés`);
+        }
+    }
+
+    function clearAllData() {
+        if (confirm('Voulez-vous vraiment effacer TOUTES les données (panier, commandes, produits) ?')) {
+            localStorage.clear();
+            products = [];
             cart = [];
-            products = ALL_PRODUCTS;
             productsLoaded = false;
             
             updateCart();
             displayProducts();
             
-            showNotification('🔄 Toutes les données ont été réinitialisées');
+            showNotification('🗑️ Toutes les données ont été effacées');
         }
     }
 
     // ============================================
-    // INITIALISATION
+    // INITIALISATION DYNAMIQUE
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
-        console.log("🚀 Dolcino - Initialisation du site...");
+        console.log("🚀 Dolcino - Initialisation dynamique...");
+        console.log("=".repeat(50));
         
-        // Initialiser les produits
-        initializeProducts();
+        // 1. Charger les produits dynamiquement
+        loadDynamicProducts();
         
-        // Afficher les produits
+        // 2. Afficher les produits
         displayProducts();
         
-        // Mettre à jour le panier
+        // 3. Mettre à jour le panier
         updateCart();
         
-        // Configurer les images
+        // 4. Configurer la surveillance des changements
+        setupProductWatcher();
+        
+        // 5. Configurer les images
         handleImageErrors();
         
-        // Gestion du formulaire de commande
+        // 6. Gestion du formulaire de commande
         const customerForm = document.getElementById('customer-form');
         if (customerForm) {
             customerForm.addEventListener('submit', function(e) {
@@ -2477,7 +2481,7 @@
             });
         }
         
-        // Navigation fluide
+        // 7. Navigation fluide
         document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -2494,38 +2498,29 @@
             });
         });
         
-        // Message de bienvenue
+        // 8. Message de bienvenue avec compteur
         setTimeout(() => {
             if (!localStorage.getItem('dolcino-welcome')) {
-                showNotification('🎂 Bienvenue chez Dolcino ! Découvrez nos 19 gâteaux artisanaux');
+                showNotification(`🎂 Bienvenue chez Dolcino ! ${products.length} gâteaux disponibles`);
                 localStorage.setItem('dolcino-welcome', 'true');
             }
         }, 1500);
         
-        // Vérification finale
+        // 9. Rapport final
         setTimeout(() => {
             console.log("=".repeat(50));
-            console.log("📊 RAPPORT FINAL D'INITIALISATION");
-            console.log(`✅ ${products.length}/19 produits chargés`);
+            console.log("📊 RAPPORT FINAL D'INITIALISATION DYNAMIQUE");
+            console.log(`✅ ${products.length} produits chargés`);
             console.log(`🛒 ${cart.length} articles dans le panier`);
-            console.log(`🖼️ ${document.querySelectorAll('img').length} images sur la page`);
+            console.log(`📈 Répartition: ${getCategoryCounts()}`);
             console.log("=".repeat(50));
             
-            if (products.length === 19) {
-                console.log("🎉 PARFAIT ! Tous les 19 gâteaux sont chargés !");
-            } else {
-                console.warn(`⚠️ ATTENTION: ${products.length}/19 gâteaux seulement`);
+            // Mettre à jour le titre de la section
+            const productsTitle = document.querySelector('#products .section-title');
+            if (productsTitle) {
+                productsTitle.textContent = `Nos Gâteaux (${products.length})`;
             }
         }, 2000);
-        
-        // Rafraîchissement automatique des produits si changements
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'dolcino-products') {
-                console.log("🔄 Produits mis à jour, rechargement...");
-                productsLoaded = false;
-                displayProducts();
-            }
-        });
     });
 
     // ============================================
@@ -2543,13 +2538,13 @@
     window.showCategoryWithScroll = showCategoryWithScroll;
     window.scrollToProductsAndShowAll = scrollToProductsAndShowAll;
     window.callNow = callNow;
-    window.resetAllData = resetAllData;
+    window.forceRefreshProducts = forceRefreshProducts;
+    window.clearAllData = clearAllData;
 </script>
-
-
     
 </body>
 </html>
+
 
 
 
