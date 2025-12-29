@@ -2060,6 +2060,206 @@
     </div>
 
     <script>
+
+
+// ============================================
+// CORRECTION DES CHEMINS D'IMAGES POUR MOBILE
+// ============================================
+
+// Fonction pour corriger les chemins d'images pour GitHub Pages
+function correctImagePath(imagePath) {
+    // Si c'est déjà une URL complète (Unsplash), la garder
+    if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
+        return imagePath;
+    }
+    
+    // Si l'image commence par ./images/, corriger pour GitHub Pages
+    if (imagePath.startsWith('./images/')) {
+        // Enlever le ./ pour avoir un chemin relatif correct
+        return imagePath.substring(2); // Retire "./"
+    }
+    
+    // Si l'image commence juste par images/, la garder
+    if (imagePath.startsWith('images/')) {
+        return imagePath;
+    }
+    
+    // Pour les autres cas, essayer différentes options
+    const baseUrl = 'https://ssyahia-source.github.io/dolcino.github.io/';
+    
+    // Essayer différents chemins possibles
+    const possiblePaths = [
+        imagePath,
+        `images/${imagePath}`,
+        `./images/${imagePath}`,
+        `${baseUrl}${imagePath}`,
+        `${baseUrl}images/${imagePath}`,
+        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80' // Fallback
+    ];
+    
+    return possiblePaths[0];
+}
+
+// Fonction pour tester si une image existe
+function testImage(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+}
+
+// Modifiez la fonction displayProducts() pour inclure cette correction
+async function displayProductsWithCorrectedImages() {
+    loadProducts();
+    
+    const container = document.getElementById('products-container');
+    if (!container) return;
+    
+    let html = '';
+    
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        let badgeClass = 'badge-anniversaire';
+        let categoryName = 'Anniversaire';
+        
+        if (product.category === 'mariage') {
+            badgeClass = 'badge-mariage';
+            categoryName = 'Mariage';
+        } else if (product.category === 'quotidien') {
+            badgeClass = 'badge-quotidien';
+            categoryName = 'Quotidien';
+        }
+        
+        let imageSrc = product.image;
+        
+        // CORRECTION IMPORTANTE : Corriger le chemin de l'image
+        imageSrc = correctImagePath(imageSrc);
+        
+        // Si l'image est stockée dans localStorage (base64)
+        if (product.imageKey) {
+            const imageData = localStorage.getItem(product.imageKey);
+            if (imageData && imageData.startsWith('data:image')) {
+                imageSrc = imageData;
+            }
+        }
+        
+        // Gestion des erreurs d'image améliorée
+        const imgErrorHandler = `
+            this.onerror=null; 
+            this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';
+            this.alt='Image non disponible';
+        `;
+        
+        html += `
+            <div class="product-card" data-category="${product.category}" data-id="${product.id}" style="animation-delay: ${i * 0.1}s">
+                <div class="product-badge ${badgeClass}">${categoryName}</div>
+                <div class="image-container product-image-container">
+                    <img src="${imageSrc}" 
+                         alt="${product.name}" 
+                         class="product-img"
+                         loading="lazy"
+                         onerror="${imgErrorHandler}">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-desc">${product.description}</p>
+                    <div class="product-meta">
+                        <div class="product-price">${product.price}</div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">Ajouter</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+    showCategory(currentCategory);
+}
+
+// ============================================
+// CORRECTION DES IMAGES DANS LA SECTION CATÉGORIES
+// ============================================
+
+// Ajoutez cette fonction pour corriger les images des catégories
+function correctCategoryImages() {
+    // Corriger l'image de la catégorie Anniversaire
+    const annivImage = document.querySelector('.collection-card:nth-child(1) .collection-image');
+    if (annivImage && annivImage.src.includes('./images/')) {
+        annivImage.src = annivImage.src.replace('./images/', 'images/');
+        annivImage.onerror = function() {
+            this.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80';
+        };
+    }
+    
+    // Les autres images (mariage et quotidien) utilisent déjà Unsplash, donc OK
+}
+
+// ============================================
+// REMPLACEZ L'APPEL À displayProducts()
+// ============================================
+
+// Dans votre fonction d'initialisation, remplacez :
+// displayProducts(); 
+// par :
+async function initializeSite() {
+    console.log("🚀 Dolcino - Site chargé");
+    
+    // Charger et afficher les produits avec images corrigées
+    await displayProductsWithCorrectedImages();
+    
+    // Corriger les images des catégories
+    correctCategoryImages();
+    
+    updateCart();
+    setupSmartRefresh();
+    
+    // ... le reste de votre code d'initialisation ...
+}
+
+// Puis modifiez votre event listener DOMContentLoaded :
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSite();
+    
+    document.getElementById('customer-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        showConfirmationModal();
+    });
+    
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    setTimeout(() => {
+        if (!localStorage.getItem('welcome-shown')) {
+            showNotification('🎂 Bienvenue chez Dolcino !');
+            localStorage.setItem('welcome-shown', 'true');
+        }
+    }, 1000);
+});
+
+
+
+
+
+        
+        
+        
+        
+        
         // ============================================
         // CORRECTION POUR CHARGER LES IMAGES LOCALES
         // ============================================
@@ -2640,6 +2840,7 @@
     </script>
 </body>
 </html>
+
 
 
 
