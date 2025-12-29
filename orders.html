@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Délices Sucrés - Gestion commandes</title>
+    <title>Dolcino - Pâtisserie Fine & Gâteaux Maison</title>
+    <meta name="description" content="Dolcino : Gâteaux artisanaux, pâtisseries fines et douceurs faites maison. Livraison dans toute la Tunisie.">
+    
+    <!-- META TAGS POUR SEO TUNISIEN -->
+    <meta name="keywords" content="pâtisserie Tunis, gâteaux Tunisie, anniversaire Tunis, mariage gâteau, livraison gâteaux Tunis, commande gâteau en ligne Tunisie">
+    <meta name="author" content="Sweet Delights">
+    <meta name="geo.region" content="TN">
+    <meta name="geo.placename" content="Tunis">
+    
     <style>
+        /* THÈME PÂTISSERIE DOUX ET APPÉTISSANT */
         :root {
             --primary: #FF6B8B; /* Rose pâtissier */
             --secondary: #FFB74D; /* Orange doux */
             --accent: #FFD166; /* Jaune crème */
             --dark: #8B4513; /* Brun chocolat */
             --light: #FFF8F0; /* Crème très claire */
+            --text: #5D4037; /* Brun foncé */
+            --gold: #D4AF37;
         }
         
         * {
@@ -21,896 +32,2476 @@
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #FFF8F0 0%, #FFE4CC 100%);
-            padding: 20px;
-            min-height: 100vh;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" fill="none" stroke="%23FFD166" stroke-width="0.5" opacity="0.1"/></svg>');
+            padding-bottom: 80px; /* Pour la barre fixe en bas */
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.1);
-            overflow: hidden;
+        /* BANNIÈRE DE LIVRAISON TUNIS */
+        .delivery-banner {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.2);
         }
         
-        .header {
+        /* ========== BOUTONS ADMIN OPTIMISÉS ========== */
+        .admin-floating-buttons {
+            position: fixed;
+            bottom: 120px; /* AU-DESSUS de la barre WhatsApp */
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--dark);
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+            min-width: 140px;
+        }
+        
+        .admin-btn:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.6);
+        }
+        
+        .admin-orders {
+            background: linear-gradient(135deg, var(--secondary), #FFA726);
+            color: white;
+        }
+        
+        .admin-products {
+            background: linear-gradient(135deg, var(--primary), #FF4081);
+            color: white;
+        }
+        
+        /* Responsive pour mobile */
+        @media (max-width: 768px) {
+            .admin-floating-buttons {
+                bottom: 80px;
+                right: 10px;
+                gap: 8px;
+            }
+            
+            .admin-btn {
+                padding: 10px 16px;
+                font-size: 0.85em;
+                min-width: 120px;
+            }
+        }
+        
+        /* BARRE DE CONTACT FIXE - OPTIMISÉE */
+        .quick-contact-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, var(--dark), #FA8E78);
+            color: Black;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-around;
+            z-index: 9999;
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.9);
+            border-top: 2px solid var(--accent);
+        }
+
+       
+        .quick-contact-btn {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+        
+        .quick-contact-btn.whatsapp {
+            background: #25D366;
+            border-color: #25D366;
+        }
+        
+        .quick-contact-btn.call {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .quick-contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* HEADER - Design gourmand */
+        header {
             background: linear-gradient(135deg, var(--dark) 0%, #A0522D 100%);
             color: white;
-            padding: 30px;
-            text-align: center;
-            border-bottom: 5px solid var(--accent);
-            position: relative;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
+            border-bottom: 3px solid var(--accent);
         }
         
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-size: 2.8em;
+            font-weight: 900;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: 3px;
+            position: relative;
         }
         
-        .back-link {
-            display: inline-block;
-            margin-top: 15px;
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+        
+        .slogan {
+            font-size: 1.1em;
+            font-style: italic;
             color: var(--accent);
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            margin: 5px;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
         
-        .back-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .orders-container {
-            padding: 30px;
-        }
-        
-        .orders-list {
-            margin-top: 20px;
-        }
-        
-        .order-card {
-            background: var(--light);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .order-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(139, 69, 19, 0.1);
-        }
-        
-        .order-header {
+        nav {
             display: flex;
-            justify-content: space-between;
+            gap: 25px;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #FFE4CC;
         }
         
-        .order-number {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: var(--dark);
-        }
-        
-        .order-date {
-            color: #A0522D;
-            font-size: 0.9em;
-        }
-        
-        .order-status {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-        
-        .status-en-attente { background: #FFF3CD; color: #856404; }
-        .status-confirmée { background: #D1ECF1; color: #0C5460; }
-        .status-preparation { background: #FFE0B2; color: #E65100; }
-        .status-livraison { background: #C8E6C9; color: #1B5E20; }
-        .status-livrée { background: #C3E6CB; color: #155724; }
-        .status-annulée { background: #F5C6CB; color: #721C24; }
-        
-        .customer-info {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #FFE4CC;
-        }
-        
-        .customer-info h4 {
-            color: var(--dark);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-        }
-        
-        .info-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #FFE4CC;
-        }
-        
-        .info-label {
-            font-weight: bold;
-            color: #A0522D;
-            display: block;
-            font-size: 0.9em;
-        }
-        
-        .info-value {
-            color: var(--dark);
-        }
-        
-        .order-items {
-            margin: 20px 0;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #FFE4CC;
-        }
-        
-        .order-items h4 {
-            color: var(--dark);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .item-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #FFE4CC;
-        }
-        
-        .item-row:last-child {
-            border-bottom: none;
-        }
-        
-        .item-name {
-            flex: 2;
-            font-weight: 500;
-        }
-        
-        .item-quantity {
-            flex: 1;
-            text-align: center;
-            background: #FFF8F0;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        
-        .item-price {
-            flex: 1;
-            text-align: right;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        
-        .order-total {
-            text-align: right;
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid var(--primary);
-            color: var(--dark);
-        }
-        
-        .order-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Montserrat', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .btn-whatsapp {
-            background: #25D366;
+        nav a {
             color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05em;
+            padding: 8px 0;
+            position: relative;
+            transition: all 0.3s ease;
         }
         
-        .btn-call {
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5em;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .cart-icon:hover {
+            background: var(--primary);
+            transform: rotate(15deg);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
             background: var(--primary);
             color: white;
-        }
-        
-        .btn-email {
-            background: var(--secondary);
-            color: white;
-        }
-        
-        .btn-status {
-            background: var(--dark);
-            color: white;
-            padding: 10px 15px;
-        }
-        
-        .empty-message {
-            text-align: center;
-            padding: 50px;
-            color: #A0522D;
-        }
-        
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.05);
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            border: 1px solid #FFE4CC;
-            transition: all 0.3s ease;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.1);
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
+            border-radius: 50%;
+            padding: 3px 8px;
+            font-size: 0.8em;
             font-weight: bold;
-            color: var(--primary);
-            margin: 10px 0;
         }
         
-        .stat-label {
-            color: #A0522D;
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-        
-        /* Section allergènes et notes */
-        .order-notes {
-            background: #FFF3E0;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #FFB74D;
-        }
-        
-        .order-notes h5 {
-            color: #E65100;
-            margin-bottom: 8px;
+        /* HERO SECTION */
+        .hero {
+            height: 500px;
+            background: linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.9)),
+                        url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
         }
         
-        /* Filtres */
+        .hero-content {
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            font-weight: 300;
+        }
+        
+        .hero .brand-name {
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.2em;
+        }
+        
+        .hero p {
+            font-size: 1.5em;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        
+        .hero button {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--accent);
+            padding: 12px 35px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .hero button:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        /* CATÉGORIES SECTION */
+        .collections-section {
+            padding: 60px 20px;
+            text-align: center;
+            background: var(--light);
+        }
+        
+        .section-title {
+            font-size: 2.5em;
+            color: var(--dark);
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .collection-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .collection-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.15);
+        }
+        
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #FFF8F0, #FFE4CC);
+        }
+        
+        .collection-image-container {
+            width: 100%;
+            height: 300px;
+        }
+        
+        .collection-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.6s ease;
+            display: block;
+        }
+        
+        .collection-card:hover .collection-image {
+            transform: scale(1.1);
+        }
+        
+        .collection-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(139, 69, 19, 0.8), transparent);
+            padding: 30px 20px 20px;
+            color: white;
+            transform: translateY(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .collection-card:hover .collection-overlay {
+            transform: translateY(0);
+        }
+        
+        .collection-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .collection-description {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .collection-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: inline-block;
+        }
+        
+        .collection-button:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
+        }
+        
+        /* PRODUCTS SECTION */
+        .products-section {
+            padding: 60px 20px;
+            background: white;
+        }
+        
         .filters {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
         
         .filter-btn {
-            padding: 8px 20px;
-            background: white;
-            border: 2px solid #FFE4CC;
-            border-radius: 20px;
+            padding: 10px 25px;
+            border: 2px solid var(--dark);
+            background: transparent;
+            color: var(--dark);
+            border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
-            color: var(--dark);
             transition: all 0.3s ease;
+            font-size: 0.95em;
         }
         
+        .filter-btn.active,
         .filter-btn:hover {
-            border-color: var(--primary);
+            background: var(--dark);
+            color: white;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(139, 69, 19, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(139, 69, 19, 0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: white;
+            z-index: 10;
+        }
+        
+        .badge-anniversaire { background: var(--primary); }
+        .badge-mariage { background: var(--dark); }
+        .badge-quotidien { background: var(--secondary); }
+        
+        .product-image-container {
+            width: 100%;
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+        
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 18px;
+        }
+        
+        .product-title {
+            font-size: 1.3em;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .product-desc {
+            color: #666;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+        
+        .product-price {
+            font-size: 1.4em;
+            font-weight: 700;
             color: var(--primary);
         }
         
-        .filter-btn.active {
-            background: var(--primary);
+        .add-to-cart {
+            background: var(--dark);
             color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        
+        .add-to-cart:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        /* SECTION PAIEMENT TUNISIEN */
+        .tunisian-payment {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE4CC 100%);
+            padding: 40px 20px;
+            margin: 30px 0;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .payment-methods-tunisia {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .payment-method-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .payment-method-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .payment-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        /* CART */
+        .cart-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(139, 69, 19, 0.5);
+            z-index: 1001;
+        }
+        
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -380px;
+            width: 380px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 30px rgba(139, 69, 19, 0.2);
+            transition: right 0.4s ease;
+            z-index: 1002;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-sidebar.active {
+            right: 0;
+        }
+        
+        .cart-header {
+            background: var(--dark);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-header h3 {
+            font-size: 1.6em;
+        }
+        
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        
+        .cart-items {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: var(--light);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            gap: 15px;
+        }
+        
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-info h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+        
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        
+        .quantity-btn {
+            background: #FFE4CC;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background: #FFD166;
+        }
+        
+        .quantity-value {
+            font-weight: bold;
+            min-width: 25px;
+            text-align: center;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+            padding: 5px;
+        }
+        
+        .remove-item:hover {
+            color: var(--primary);
+        }
+        
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid #FFE4CC;
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* BOUTON "PASSER LA COMMANDE" TRÈS VISIBLE */
+        .checkout-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #FF4081 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 107, 139, 0.4);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .checkout-btn:hover {
+            background: linear-gradient(135deg, var(--dark) 0%, #8B4513 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(139, 69, 19, 0.5);
+        }
+        
+        /* FORMULAIRE DE COMMANDE */
+        .order-form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(139, 69, 19, 0.85);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .order-form-content {
+            background: white;
+            max-width: 500px;
+            max-height: 85vh;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(139, 69, 19, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .order-form-header {
+            background: linear-gradient(135deg, var(--dark) 0%, #A0522D 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .order-form-header h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .order-number {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        
+        .close-order-form {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-order-form:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+        
+        .order-form-body {
+            padding: 30px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(85vh - 200px);
+        }
+        
+        .order-summary {
+            background: #FFF8F0;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #FFE4CC;
+        }
+        
+        .order-summary h4 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #order-summary-items {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 10px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #FFE4CC;
+            color: #8B4513;
+            font-size: 0.95em;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--dark);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary);
+            background: linear-gradient(to right, transparent, rgba(255, 107, 139, 0.05), transparent);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h4 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FFE4CC;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #FFE4CC;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
             border-color: var(--primary);
         }
         
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #FFE4CC;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: rgba(255, 107, 139, 0.03);
+        }
+        
+        .payment-method input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-info strong {
+            display: block;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .payment-info small {
+            color: #A0522D;
+            font-size: 0.9em;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #FFE4CC;
+        }
+        
+        .btn-cancel {
+            background: #FFF8F0;
+            color: var(--dark);
+            border: 2px solid #FFE4CC;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+        
+        .btn-cancel:hover {
+            background: #FFE4CC;
+            border-color: #FFD166;
+            transform: translateY(-2px);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, #FF4081 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 2;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 139, 0.3);
+        }
+        
+        /* MODALE DE CONFIRMATION */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(139, 69, 19, 0.95);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .confirmation-content {
+            background: white;
+            max-width: 800px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 25px 50px rgba(139, 69, 19, 0.3);
+        }
+        
+        .confirmation-header {
+            background: linear-gradient(135deg, var(--secondary) 0%, #FF9800 100%);
+            color: white;
+            padding: 40px 30px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .confirmation-header .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        
+        .confirmation-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 2.2em;
+            font-weight: 800;
+        }
+        
+        /* FOOTER */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 40px 20px 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-logo {
+            font-size: 2.2em;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .footer-slogan {
+            color: var(--accent);
+            font-style: italic;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+        
+        .footer-links h4,
+        .footer-contact h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: #FFD166;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 209, 102, 0.1);
+            color: #FFD166;
+            font-size: 0.85em;
+        }
+        
+        /* NOTIFICATIONS */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 1003;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .order-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+            .header-top { flex-direction: column; gap: 15px; }
+            nav { gap: 12px; flex-wrap: wrap; justify-content: center; }
+            .hero { height: 400px; }
+            .hero h1 { font-size: 2.2em; }
+            .hero p { font-size: 1.2em; }
+            .section-title { font-size: 2em; }
+            .collection-image-container { height: 250px; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .footer-content { grid-template-columns: 1fr; }
+            
+            /* BOUTONS ADMIN MOBILE */
+            .admin-floating-buttons { 
+                bottom: 80px; 
+                right: 10px; 
             }
             
-            .info-grid {
-                grid-template-columns: 1fr;
+            .admin-btn { 
+                font-size: 0.85em; 
+                padding: 10px 15px;
             }
             
-            .order-actions {
-                flex-direction: column;
+            /* BARRE CONTACT MOBILE */
+            .quick-contact-bar { 
+                flex-direction: column; 
+                gap: 10px; 
+                padding: 15px 10px;
             }
-            
-            .btn {
-                width: 100%;
+            .quick-contact-btn { 
+                width: 100%; 
                 justify-content: center;
+                padding: 12px;
             }
             
-            .stats-bar {
+            .payment-methods-tunisia {
                 flex-direction: column;
             }
             
-            .stat-card {
+            .payment-method-card {
                 min-width: 100%;
             }
             
-            .filters {
-                justify-content: center;
-            }
-            
-            .header {
-                padding: 20px 15px;
-            }
-            
-            .orders-container {
-                padding: 20px;
+            body {
+                padding-bottom: 120px; /* Plus d'espace pour mobile */
             }
         }
-    </style>
+    
+
+/* ========== CORRECTIONS FINALES ========== */
+
+/* 1. Corriger l'espace dans le panier */
+.cart-sidebar {
+    padding-bottom: 90px !important; /* Ajoute de l'espace pour la barre */
+}
+
+.cart-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+/* 2. S'assurer que le bouton est visible */
+.checkout-btn {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 5px; /* Petit espace */
+}
+
+/* 3. Ajuster sur mobile */
+@media (max-width: 768px) {
+    .cart-sidebar {
+        padding-bottom: 110px !important; /* Plus d'espace sur mobile */
+    }
+    
+    .cart-footer {
+        padding: 15px 20px;
+    }
+    
+    .checkout-btn {
+        padding: 18px;
+        font-size: 1.1em;
+    }
+    
+    /* Ajuster la barre de contact si besoin */
+    .quick-contact-bar {
+        padding: 10px 15px;
+    }
+}
+
+/* 4. Option: Bouton flottant dans le panier */
+.checkout-btn.floating {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 350px;
+    border-radius: 50px;
+    box-shadow: 0 5px 25px rgba(255, 107, 139, 0.5);
+}
+
+/* AJOUTEZ CE CSS À LA FIN DE VOTRE <style> */
+
+
+/* AJOUTEZ CE CSS À LA FIN DE VOTRE <style> */
+
+/* ========== BARRE DE CONTACT UNIFIÉE ========== */
+.quick-contact-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, var(--dark), #A0522D);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9999;
+    box-shadow: 0 -3px 15px rgba(0,0,0,0.9);
+    border-top: 2px solid var(--accent);
+    gap: 8px;
+}
+
+/* Style UNIFIÉ pour TOUS les boutons */
+.contact-btn {
+    padding: 10px 18px;
+    border-radius: 50px; /* OVALE comme vos autres boutons */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+    flex: 1;
+    min-width: 0;
+    max-width: 180px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* WhatsApp - Garde sa couleur originale */
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border-color: #25D366;
+}
+
+/* Appeler - Garde sa couleur originale */
+.call-btn {
+    background: linear-gradient(135deg, var(--primary), #FF4081);
+    border-color: var(--primary);
+}
+
+/* Admin Commandes - NOUVELLE COULEUR (orange) */
+.admin-orders-btn {
+    background: linear-gradient(135deg, var(--secondary), #FF9800);
+    border-color: var(--secondary);
+    opacity: 0.9;
+}
+
+/* Admin Gâteaux - NOUVELLE COULEUR (rose foncé) */
+.admin-products-btn {
+    background: linear-gradient(135deg, #E91E63, #C2185B);
+    border-color: #E91E63;
+    opacity: 0.9;
+}
+
+/* Effet hover pour TOUS les boutons */
+.contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    opacity: 1;
+}
+
+/* WhatsApp hover */
+.whatsapp-btn:hover {
+    background: linear-gradient(135deg, #128C7E, #0D6E5A);
+}
+
+/* Appeler hover */
+.call-btn:hover {
+    background: linear-gradient(135deg, #FF4081, #E91E63);
+}
+
+/* Admin Commandes hover */
+.admin-orders-btn:hover {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+}
+
+/* Admin Gâteaux hover */
+.admin-products-btn:hover {
+    background: linear-gradient(135deg, #C2185B, #AD1457);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .quick-contact-bar {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+    
+    .contact-btn {
+        padding: 8px 12px;
+        font-size: 0.85em;
+        gap: 6px;
+    }
+    
+    /* Sur petits écrans, cacher le texte des boutons admin */
+    @media (max-width: 480px) {
+        .admin-orders-btn span,
+        .admin-products-btn span {
+            display: none;
+        }
+        
+        .admin-orders-btn,
+        .admin-products-btn {
+            padding: 10px;
+            width: 44px;
+            justify-content: center;
+        }
+        
+        .whatsapp-btn span,
+        .call-btn span {
+            display: inline; /* Garde le texte pour les boutons principaux */
+        }
+    }
+}
+
+/* Pour écrans moyens */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .contact-btn {
+        padding: 10px 16px;
+        font-size: 0.9em;
+    }
+}
+
+/* ========== AJUSTEMENT PANIER ========== */
+/* S'assurer que le panier a assez d'espace */
+.cart-sidebar {
+    padding-bottom: 85px !important;
+}
+
+/* Les boutons admin doivent être légèrement plus transparents par défaut */
+.admin-orders-btn,
+.admin-products-btn {
+    opacity: 0.85;
+}
+
+.admin-orders-btn:hover,
+.admin-products-btn:hover {
+    opacity: 1;
+}
+
+
+
+
+</style>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-birthday-cake"></i> Commandes Pâtisserie</h1>
-            <p>Gestion des commandes de gâteaux</p>
-            <div>
-                <a href="index.html" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Retour à la pâtisserie
-                </a>
-                <a href="#" class="back-link" id="exportCSV">
-                    <i class="fas fa-download"></i> Exporter CSV
-                </a>
+    
+    <!-- BANNIÈRE DE LIVRAISON -->
+    <div class="delivery-banner">
+        🚚 Livraison GRATUITE  Au Grand Tunis pour commandes > 100 DT | 📞 20 90 15 96
+    </div>
+    
+    <!-- LIENS ADMIN OPTIMISÉS -->
+    
+
+
+
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-top">
+            <div class="logo-container">
+    <div class="logo">Dolcino</div>
+    <div class="slogan">Quand le gâteau devient design</div>
+</div>
+            
+            <nav>
+                <a href="#home">Accueil</a>
+                <a href="#products" onclick="showCategoryWithScroll('anniversaire')">Anniversaires</a>
+                <a href="#products" onclick="showCategoryWithScroll('mariage')">Mariages</a>
+                <a href="#products" onclick="showCategoryWithScroll('quotidien')">Quotidien</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒 <span class="cart-count" id="cart-count">0</span>
+                </div>
             </div>
         </div>
-        
-        <div class="orders-container">
-            <h2><i class="fas fa-list"></i> Liste des commandes</h2>
-            
-            <!-- Filtres -->
-            <div class="filters">
-                <button class="filter-btn active" data-filter="all">Toutes</button>
-                <button class="filter-btn" data-filter="En attente">⏳ En attente</button>
-                <button class="filter-btn" data-filter="Confirmée">✅ Confirmées</button>
-                <button class="filter-btn" data-filter="Préparation">👨‍🍳 En préparation</button>
-                <button class="filter-btn" data-filter="Livraison">🚚 En livraison</button>
-                <button class="filter-btn" data-filter="Livrée">🎉 Livrées</button>
-                <button class="filter-btn" data-filter="Annulée">❌ Annulées</button>
-            </div>
-            
-            <!-- Barre de statistiques -->
-            <div class="stats-bar" id="statsBar">
-                <!-- Les statistiques seront chargées dynamiquement -->
-            </div>
-            
-            <div class="orders-list" id="ordersList">
-                <!-- Commandes chargées dynamiquement -->
-                <div class="empty-message">
-                    <i class="fas fa-birthday-cake" style="font-size: 4em; margin-bottom: 20px; color: #FFD166;"></i>
-                    <h3>Chargement des commandes...</h3>
-                    <p>Veuillez patienter</p>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-content fade-in">
+            <h1>
+                <span class="brand-name">Dolcino</span><br>
+                Un moment de bonheur
+            </h1>
+            <p>Gâteaux faits maison avec amour et passion</p>
+            <button onclick="scrollToProductsAndShowAll()">Découvrir nos gâteaux</button>
+        </div>
+    </section>
+
+    <!-- CATÉGORIES SECTION -->
+    <section class="collections-section">
+        <h2 class="section-title">Nos Catégories</h2>
+        <div class="collections-grid">
+            <!-- GÂTEAUX D'ANNIVERSAIRE -->
+            <div class="collection-card fade-in">
+                <div class="image-container collection-image-container">
+                   <img src="images/anniversaire/gateau-chocolat.jpg" 
+     alt="Gâteau Anniversaire Chocolat" 
+     class="collection-image">
                 </div>
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Anniversaires</h3>
+                    <p class="collection-description">Pour célébrer chaque moment spécial</p>
+                    <button class="collection-button" onclick="showCategoryWithScroll('anniversaire')">Découvrir</button>
+                </div>
+            </div>
+            
+            <!-- GÂTEAUX DE MARIAGE -->
+            <div class="collection-card fade-in">
+                <div class="image-container collection-image-container">
+                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                         alt="Gâteaux de mariage" 
+                         class="collection-image">
+                </div>
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Mariages</h3>
+                    <p class="collection-description">L'élégance et la finesse pour votre grand jour</p>
+                    <button class="collection-button" onclick="showCategoryWithScroll('mariage')">Découvrir</button>
+                </div>
+            </div>
+            
+            <!-- GÂTEAUX QUOTIDIENS -->
+            <div class="collection-card fade-in">
+                <div class="image-container collection-image-container">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                         alt="Gâteaux du quotidien" 
+                         class="collection-image">
+                </div>
+                <div class="collection-overlay">
+                    <h3 class="collection-title">Quotidien</h3>
+                    <p class="collection-description">Pour égayer vos journées</p>
+                    <button class="collection-button" onclick="showCategoryWithScroll('quotidien')">Découvrir</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="products-section" id="products">
+        <h2 class="section-title">Nos Gâteaux</h2>
+        
+        <div class="filters">
+            <button class="filter-btn active" onclick="showCategory('all')">Tous les gâteaux</button>
+            <button class="filter-btn" onclick="showCategory('anniversaire')">🎂 Anniversaires</button>
+            <button class="filter-btn" onclick="showCategory('mariage')">💒 Mariages</button>
+            <button class="filter-btn" onclick="showCategory('quotidien')">🍰 Quotidien</button>
+        </div>
+        
+        <!-- Grille principale des produits -->
+        <div class="products-grid" id="products-container">
+            <!-- Gâteaux chargés dynamiquement -->
+        </div>
+    </section>
+
+    <!-- SECTION PAIEMENT TUNISIEN -->
+    <section class="tunisian-payment">
+        <h2 class="section-title">Paiement Sécurisé</h2>
+        <p style="margin-bottom: 30px; font-size: 1.1em;">Nous acceptons tous les modes de paiement utilisés en Tunisie</p>
+        
+        <div class="payment-methods-tunisia">
+            <div class="payment-method-card">
+                <div class="payment-icon">💰</div>
+                <h3>À la livraison</h3>
+                <p>Payez cash quand vous recevez votre commande</p>
+            </div>
+            
+            <div class="payment-method-card">
+                <div class="payment-icon">🏦</div>
+                <h3>Virement bancaire</h3>
+                <p>RIB envoyé après confirmation</p>
+            </div>
+            
+            <div class="payment-method-card">
+                <div class="payment-icon">💳</div>
+                <h3>Mandat Cash</h3>
+                <p>Disponible dans toutes les postes</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>🛒 Votre Panier</h3>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">0.00 DT</span>
+            </div>
+            <button class="checkout-btn">
+                <i class="fas fa-shopping-bag"></i> Passer la commande
+            </button>
+        </div>
+    </div>
+
+    <!-- FORMULAIRE DE COMMANDE -->
+    <div class="order-form-modal" id="order-form-modal">
+        <div class="order-form-content">
+            <div class="order-form-header">
+                <button class="close-order-form" onclick="closeOrderForm()">×</button>
+                <h3><i class="fas fa-shopping-bag"></i> Finaliser la commande</h3>
+                <div class="order-number" id="order-number">DL-123456</div>
+            </div>
+            <div class="order-form-body">
+                <div class="order-summary">
+                    <h4><i class="fas fa-receipt"></i> Récapitulatif</h4>
+                    <div id="order-summary-items"></div>
+                    <div class="summary-total">
+                        <span>Total à payer:</span>
+                        <span id="order-total">0.00 DT</span>
+                    </div>
+                </div>
+                
+                <form id="customer-form">
+                    <div class="form-section">
+                        <h4><i class="fas fa-user"></i> Informations personnelles</h4>
+                        <input type="text" id="customer-name" placeholder="Nom complet" required>
+                        <input type="tel" id="customer-phone" placeholder="Téléphone" required>
+                        <input type="email" id="customer-email" placeholder="Email (optionnel)">
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4><i class="fas fa-map-marker-alt"></i> Livraison</h4>
+                        <textarea id="customer-address" placeholder="Adresse complète" required></textarea>
+                        <textarea id="customer-notes" placeholder="Notes (allergies, message sur le gâteau, etc.)"></textarea>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4><i class="fas fa-credit-card"></i> Paiement</h4>
+                        <div class="payment-methods">
+                            <label class="payment-method">
+                                <input type="radio" name="payment" value="cash" checked>
+                                <div class="payment-info">
+                                    <strong>💰 Paiement à la livraison</strong>
+                                    <small>Payez cash à la réception</small>
+                                </div>
+                            </label>
+                            <label class="payment-method">
+                                <input type="radio" name="payment" value="bank">
+                                <div class="payment-info">
+                                    <strong>🏦 Virement bancaire</strong>
+                                    <small>RIB envoyé après confirmation</small>
+                                </div>
+                            </label>
+                            <label class="payment-method">
+                                <input type="radio" name="payment" value="mandat">
+                                <div class="payment-info">
+                                    <strong>📮 Mandat Cash</strong>
+                                    <small>Disponible dans toutes les postes</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeOrderForm()">Annuler</button>
+                        <button type="submit" class="btn-submit">Confirmer la commande</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    
-    <script>
-        let allOrders = [];
-        let currentFilter = 'all';
+
+    <!-- CONFIRMATION -->
+    <div class="confirmation-modal" id="confirmation-modal">
+        <div class="confirmation-content">
+            <div class="confirmation-header">
+                <div class="icon">🎉</div>
+                <h2>Commande Confirmée !</h2>
+                <div class="order-number" id="confirmation-number">DL-123456</div>
+            </div>
+            <div style="padding: 30px; text-align: center;">
+                <h3>Merci pour votre commande !</h3>
+                <p>Nous vous contacterons dans les plus brefs délais pour confirmer les détails.</p>
+                <p style="margin-top: 15px; font-weight: bold;">📞 Notre équipe vous appellera au numéro fourni</p>
+                <button class="collection-button" onclick="closeConfirmationModal()" 
+                        style="margin-top: 20px;">Retour à la boutique</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">Dolcino</div>
+                <div class="footer-slogan">Un moment de bonheur</div>
+                <p>Gâteaux artisanaux faits avec passion.</p>
+                <div style="margin-top: 20px;">
+                    <h4>Suivez-nous</h4>
+                    <div style="display: flex; gap: 15px; margin-top: 10px;">
+                        <a href="#" style="color: #FFD166; font-size: 1.5em;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="color: #FFD166; font-size: 1.5em;"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/21620901596" style="color: #FFD166; font-size: 1.5em;"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#home">Accueil</a></li>
+                    <li><a href="#products" onclick="showCategoryWithScroll('anniversaire')">Anniversaires</a></li>
+                    <li><a href="#products" onclick="showCategoryWithScroll('mariage')">Mariages</a></li>
+                    <li><a href="#products" onclick="showCategoryWithScroll('quotidien')">Quotidien</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>📧 contact@Dolcino.com</p>
+                <p>📞 +216 20 90 15 96</p>
+                <p>📍 Tunis, Tunisie</p>
+                <p>🕒 7j/7: 8h-20h</p>
+                <p style="margin-top: 15px; color: #FFD166;">
+                    <i class="fas fa-truck"></i> Livraison dans toute la Tunisie
+                </p>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Google Maps</h4>
+                <div style="margin-top: 15px; border-radius: 10px; overflow: hidden;">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12783.715720906393!2d10.181530435058577!3d36.80653707490209!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd337f5e7ef543%3A0xd671924e714a0275!2sTunis%2C%20Tunisie!5e0!3m2!1sfr!2sfr!4v1620223869524!5m2!1sfr!2sfr" 
+                        width="100%" 
+                        height="200" 
+                        style="border:0;" 
+                        allowfullscreen 
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
         
-        function loadOrders() {
-            try {
-                // Charger depuis le nouveau système
-                let orders = JSON.parse(localStorage.getItem('delices-commandes')) || [];
+        <div class="footer-bottom">
+            <p>&copy; 2024 Dolcino. Tous droits réservés.</p>
+            <p>Livraison dans toute la Tunisie | Gâteaux frais garantis</p>
+        </div>
+    </footer>
+
+    <!-- BARRE DE CONTACT FIXE -->
+  <!-- REMPLACEZ VOTRE BARRE DE CONTACT PAR CE CODE -->
+<div class="quick-contact-bar">
+    <!-- Admin Commandes (gauche) -->
+    <a href="admin-login.html?page=orders" class="contact-btn admin-orders-btn" title="Gérer les commandes">
+        <i class="fas fa-clipboard-list"></i>
+        <span>Commandes</span>
+    </a>
+    
+    <!-- WhatsApp -->
+    <a href="https://wa.me/21620901596" class="contact-btn whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp</span>
+    </a>
+    
+    <!-- Appeler -->
+    <button class="contact-btn call-btn" onclick="callNow()">
+        <i class="fas fa-phone"></i>
+        <span>Appeler</span>
+    </button>
+    
+    <!-- Admin Gâteaux (droite) -->
+    <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" title="Gérer les gâteaux">
+        <i class="fas fa-birthday-cake"></i>
+        <span>Gâteaux</span>
+    </a>
+</div>
+
+
+
+
+
+    <script>
+        // ============================================
+        // VARIABLES GLOBALES OPTIMISÉES
+        // ============================================
+        let products = [];
+        let cart = JSON.parse(localStorage.getItem('delices-cart')) || [];
+        let currentCategory = 'all';
+        let productsLoaded = false;
+        let productsHash = '';
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION OPTIMISÉES
+        // ============================================
+        function scrollToProductsAndShowAll() {
+            console.log("🎯 Défilement vers les produits...");
+            
+            showCategory('all');
+            
+            setTimeout(() => {
+                const productsSection = document.getElementById('products');
+                if (productsSection) {
+                    productsSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 100);
+        }
+
+        function showCategoryWithScroll(category) {
+            showCategory(category);
+            
+            setTimeout(() => {
+                const productsSection = document.getElementById('products');
+                if (productsSection) {
+                    productsSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }, 50);
+        }
+
+        // ============================================
+        // CHARGEMENT INTELLIGENT DES PRODUITS
+        // ============================================
+        function loadProducts() {
+            if (productsLoaded) {
+                const currentStored = localStorage.getItem('delices-gateaux');
+                const newHash = currentStored ? btoa(currentStored).substring(0, 20) : '';
                 
-                // Si pas de commandes, essayer l'ancien système
-                if (orders.length === 0) {
-                    orders = JSON.parse(localStorage.getItem('sarsel-orders')) || [];
-                    // Migrer vers le nouveau système
-                    if (orders.length > 0) {
-                        localStorage.setItem('delices-commandes', JSON.stringify(orders));
+                if (newHash === productsHash) {
+                    console.log("📦 Utilisation du cache produits");
+                    return products;
+                }
+            }
+            
+            console.log("🔍 Chargement des produits...");
+            
+            const keys = ['delices-gateaux', 'sarsel-products', 'gateaux', 'products'];
+            
+            for (let key of keys) {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    console.log(`✅ Trouvé avec clé: ${key}`);
+                    try {
+                        const newProducts = JSON.parse(stored);
+                        productsHash = btoa(encodeURIComponent(stored)).substring(0, 20);
+                        
+                        products = newProducts.map(product => {
+                            return {
+                                id: product.id || Date.now() + Math.random(),
+                                name: product.name || 'Gâteau',
+                                price: product.price || '0 DT',
+                                category: product.category || 'quotidien',
+                                image: product.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+                                description: product.description || 'Gâteau artisanal fait maison',
+                                imageKey: product.imageKey
+                            };
+                        });
+                        
+                        console.log(`${products.length} produits chargés`);
+                        productsLoaded = true;
+                        return products;
+                    } catch (e) {
+                        console.error(`❌ Erreur parsing ${key}:`, e);
+                    }
+                }
+            }
+            
+            if (products.length === 0) {
+                console.log("⚠️ Aucun produit trouvé - produits par défaut");
+                products = [
+                    {
+                        id: 1,
+                        name: "Gâteau Démo Chocolat",
+                        price: "49.99 DT",
+                        category: "anniversaire",
+                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+                        description: "Gâteau artisanal au chocolat belge"
+                    }
+                ];
+                productsLoaded = true;
+            }
+            
+            return products;
+        }
+
+        // ============================================
+        // AFFICHAGE DES PRODUITS OPTIMISÉ
+        // ============================================
+        function displayProducts() {
+            loadProducts();
+
+// ============================================
+// INITIALISATION URGENTE - localStorage VIDE
+// ============================================
+console.log("🔍 Vérification initialisation...");
+
+// Vérifier si localStorage est vide
+const checkStorage = () => {
+    const hasData = localStorage.getItem('delices-gateaux') || 
+                    localStorage.getItem('sarsel-products') || 
+                    localStorage.getItem('gateaux');
+    
+    if (!hasData) {
+        console.log("🆕 CREATION de données initiales...");
+        
+        const initialProducts = [
+            // ========== ANNIVERSAIRES ==========
+            {
+                id: Date.now() + 1,
+                name: "Gâteau Chocolat Fondant",
+                price: "45.00 DT",
+                category: "anniversaire", // TRÈS IMPORTANT
+                image: "./images/anniversaire/gateau-chocolat.jpg",
+                description: "Gâteau au chocolat belge avec cœur fondant"
+            },
+            {
+                id: Date.now() + 2,
+                name: "Gâteau Fraise Passion",
+                price: "38.50 DT",
+                category: "anniversaire", // MÊME CATÉGORIE
+                image: "./images/anniversaire/gateau-fraise.jpg", // Créez ce fichier
+                description: "Fraise fraîche et crème passion"
+            },
+            
+            // ========== MARIAGES ==========
+            {
+                id: Date.now() + 3,
+                name: "Gâteau de Mariage Classique",
+                price: "120.00 DT",
+                category: "mariage", // EXACTEMENT "mariage"
+                image: "./images/mariage/gateau-mariage-1.jpg", // Créez ce fichier
+                description: "Élégant gâteau à étages pour mariage"
+            },
+            {
+                id: Date.now() + 4,
+                name: "Gâteau Royal Blanc",
+                price: "150.00 DT",
+                category: "mariage", // EXACTEMENT "mariage"
+                image: "./images/mariage/gateau-mariage-2.jpg", // Créez ce fichier
+                description: "Blanc pur avec décorations en sucre"
+            },
+            
+            // ========== QUOTIDIEN ==========
+            {
+                id: Date.now() + 5,
+                name: "Gâteau Carotte Quotidien",
+                price: "25.00 DT",
+                category: "quotidien", // EXACTEMENT "quotidien"
+                image: "./images/quotidien/gateau-carotte.jpg", // Créez ce fichier
+                description: "Parfait pour le goûter familial"
+            },
+            {
+                id: Date.now() + 6,
+                name: "Gâteau Vanille Noisette",
+                price: "28.00 DT",
+                category: "quotidien", // EXACTEMENT "quotidien"
+                image: "./images/quotidien/gateau-vanille.jpg", // Créez ce fichier
+                description: "Vanille de Madagascar et noisettes grillées"
+            }
+        ];
+        
+        // Sauvegarder
+        localStorage.setItem('delices-gateaux', JSON.stringify(initialProducts));
+        console.log(`✅ ${initialProducts.length} produits initiaux créés`);
+        
+        // Vider le cache pour forcer le rechargement
+        products = [];
+        productsLoaded = false;
+        
+        return true;
+    }
+    return false;
+};
+
+// Exécuter l'initialisation
+const wasInitialized = checkStorage();
+if (wasInitialized) {
+    console.log("🔄 Redémarrage nécessaire...");
+    // Forcer le rechargement des produits
+    setTimeout(() => {
+        if (typeof loadProducts === 'function') {
+            loadProducts();
+            if (typeof displayProducts === 'function') {
+                displayProducts();
+            }
+        }
+    }, 100);
+}
+
+            
+            
+            const container = document.getElementById('products-container');
+            if (!container) return;
+            
+            // Dans loadProducts(), cherchez :
+if (products.length === 0) {
+    console.log("⚠️ Aucun produit trouvé - produits par défaut");
+    products = [
+        {
+            id: 1,
+            name: "Gâteau Démo Chocolat",
+            price: "49.99 DT",
+            category: "anniversaire", // CATÉGORIE CORRECTE
+            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+            description: "Gâteau artisanal au chocolat belge"
+        }
+    ];
+    productsLoaded = true;
+}
+
+// REMPLACEZ PAR :
+if (products.length === 0) {
+    console.log("⚠️ Aucun produit trouvé - vérification localStorage...");
+    
+    // Vérifier à nouveau localStorage
+    const stored = localStorage.getItem('delices-gateaux');
+    if (stored) {
+        try {
+            const parsed = JSON.parse(stored);
+            products = parsed;
+            console.log(`✅ ${products.length} produits chargés depuis localStorage`);
+        } catch (e) {
+            console.error("❌ Erreur parsing:", e);
+            products = createDefaultProducts();
+        }
+    } else {
+        console.log("🆕 Création produits par défaut avec catégories variées");
+        products = [
+            {
+                id: 1,
+                name: "Gâteau Chocolat Anniversaire",
+                price: "45.00 DT",
+                category: "anniversaire", // CORRECT
+                image: "./images/anniversaire/gateau-chocolat.jpg",
+                description: "Gâteau au chocolat belge"
+            },
+            {
+                id: 2,
+                name: "Gâteau Mariage Élégant",
+                price: "120.00 DT",
+                category: "mariage", // CORRECT
+                image: "./images/mariage/gateau-mariage-1.jpg",
+                description: "Élégant pour mariage"
+            },
+            {
+                id: 3,
+                name: "Gâteau Quotidien Carotte",
+                price: "25.00 DT",
+                category: "quotidien", // CORRECT
+                image: "./images/quotidien/gateau-carotte.jpg",
+                description: "Parfait quotidien"
+            }
+        ];
+    }
+    productsLoaded = true;
+}
+            
+            let html = '';
+            products.forEach((product, index) => {
+                let badgeClass = 'badge-anniversaire';
+                let categoryName = 'Anniversaire';
+                
+                if (product.category === 'mariage') {
+                    badgeClass = 'badge-mariage';
+                    categoryName = 'Mariage';
+                } else if (product.category === 'quotidien') {
+                    badgeClass = 'badge-quotidien';
+                    categoryName = 'Quotidien';
+                }
+                
+                let imageSrc = product.image;
+                if (product.imageKey) {
+                    const imageData = localStorage.getItem(product.imageKey);
+                    if (imageData && imageData.startsWith('data:image')) {
+                        imageSrc = imageData;
                     }
                 }
                 
-                // Nettoyer et normaliser les données
-                orders = orders.map((order, index) => {
-                    if (!order.orderNumber) {
-                        order.orderNumber = 'CMD-' + (index + 1).toString().padStart(3, '0');
-                    }
-                    if (!order.date) {
-                        order.date = new Date().toISOString();
-                    }
-                    if (!order.status) {
-                        order.status = 'En attente';
-                    }
-                    
-                    // Convertir le total en nombre si nécessaire
-                    if (order.total) {
-                        order.total = parseFloat(order.total);
-                        if (isNaN(order.total)) order.total = 0;
-                    } else {
-                        order.total = 0;
-                    }
-                    
-                    // Nettoyer les items
-                    if (order.items && Array.isArray(order.items)) {
-                        order.items = order.items.map(item => {
-                            // Convertir le prix en nombre
-                            if (item.price) {
-                                const price = parseFloat(item.price);
-                                item.price = isNaN(price) ? 0 : price;
-                            } else {
-                                item.price = 0;
-                            }
-                            
-                            // Convertir la quantité en nombre
-                            if (item.quantity) {
-                                const quantity = parseInt(item.quantity);
-                                item.quantity = isNaN(quantity) ? 0 : quantity;
-                            } else {
-                                item.quantity = 0;
-                            }
-                            
-                            return item;
-                        });
-                    } else {
-                        order.items = [];
-                    }
-                    
-                    return order;
-                });
-                
-                allOrders = orders;
-                displayOrders();
-            } catch (error) {
-                console.error('Erreur lors du chargement des commandes:', error);
-                document.getElementById('ordersList').innerHTML = `
-                    <div class="empty-message">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 4em; margin-bottom: 20px; color: #FF6B8B;"></i>
-                        <h3>Erreur de chargement</h3>
-                        <p>Impossible de charger les commandes. Vérifiez la console pour plus de détails.</p>
-                        <p style="font-size: 0.8em; margin-top: 10px;">Erreur: ${error.message}</p>
-                    </div>
-                `;
-            }
-        }
-        
-        function displayOrders() {
-            const container = document.getElementById('ordersList');
-            const statsBar = document.getElementById('statsBar');
-            
-            // Filtrer les commandes
-            const filteredOrders = currentFilter === 'all' 
-                ? allOrders  // Afficher TOUTES les commandes sans filtre
-                : allOrders.filter(order => order.status === currentFilter);
-            
-            if (filteredOrders.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-message">
-                        <i class="fas fa-birthday-cake" style="font-size: 4em; margin-bottom: 20px; color: #FFD166;"></i>
-                        <h3>Aucune commande ${currentFilter === 'all' ? '' : 'avec ce statut'}</h3>
-                        <p>${currentFilter === 'all' ? 'Les commandes apparaîtront ici' : 'Aucune commande avec le statut "' + currentFilter + '"'}</p>
-                    </div>
-                `;
-                
-                statsBar.innerHTML = '';
-                return;
-            }
-            
-            // Calculer les statistiques TOUJOURS sur toutes les commandes
-            const totalOrders = allOrders.length;
-            const totalRevenue = allOrders.reduce((sum, order) => sum + (order.total || 0), 0);
-            const pendingOrders = allOrders.filter(order => order.status === 'En attente').length;
-            const totalGâteaux = allOrders.reduce((sum, order) => 
-                sum + (order.items ? order.items.reduce((itemSum, item) => itemSum + (item.quantity || 0), 0) : 0), 0);
-            
-            // Afficher les statistiques
-            statsBar.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-number">${totalOrders}</div>
-                    <div class="stat-label">Commandes totales</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${totalRevenue.toFixed(2)} DT</div>
-                    <div class="stat-label">Chiffre d'affaires</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${pendingOrders}</div>
-                    <div class="stat-label">Commandes en attente</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">${totalGâteaux}</div>
-                    <div class="stat-label">Gâteaux vendus</div>
-                </div>
-            `;
-            
-            // Trier par date (plus récent d'abord)
-            filteredOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            let html = '';
-            filteredOrders.forEach((order, index) => {
-                const date = new Date(order.date);
-                const formattedDate = date.toLocaleDateString('fr-FR', {
-                    weekday: 'long',
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                const statusClass = getStatusClass(order.status);
-                const statusText = getStatusText(order.status);
-                
-                // Vérifier s'il y a des allergènes spécifiques
-                const hasAllergens = order.items && order.items.some(item => item.allergens && item.allergens !== 'Aucun');
-                const allergensNotes = order.items ?
-                    order.items
-                        .filter(item => item.allergens && item.allergens !== 'Aucun')
-                        .map(item => `${item.name || 'Gâteau'}: ${item.allergens}`)
-                        .join(', ') : '';
-                
-                // Déterminer la couleur de la bordure en fonction du statut
-                let borderColor = 'var(--primary)'; // Par défaut rose
-                if (order.status === 'Confirmée') borderColor = '#0C5460';
-                if (order.status === 'Préparation') borderColor = '#E65100';
-                if (order.status === 'Livraison') borderColor = '#1B5E20';
-                if (order.status === 'Livrée') borderColor = '#155724';
-                if (order.status === 'Annulée') borderColor = '#721C24';
-                
                 html += `
-                    <div class="order-card" style="border-left: 5px solid ${borderColor};">
-                        <div class="order-header">
-                            <div>
-                                <div class="order-number">${order.orderNumber}</div>
-                                <div class="order-date"><i class="far fa-clock"></i> ${formattedDate}</div>
-                            </div>
-                            <div class="order-status ${statusClass}">
-                                ${statusText}
-                            </div>
+                    <div class="product-card" data-category="${product.category}" data-id="${product.id}" style="animation-delay: ${index * 0.1}s">
+                        <div class="product-badge ${badgeClass}">${categoryName}</div>
+                        <div class="image-container product-image-container">
+                            <img src="${imageSrc}" 
+                                 alt="${product.name}" 
+                                 class="product-img"
+                                 loading="lazy"
+                                 onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
                         </div>
-                        
-                        <div class="customer-info">
-                            <h4><i class="fas fa-user"></i> Informations client</h4>
-                            <div class="info-grid">
-                                <div class="info-item">
-                                    <span class="info-label">Nom complet:</span>
-                                    <span class="info-value">${order.name || 'Non spécifié'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Téléphone:</span>
-                                    <span class="info-value">${order.phone || 'Non spécifié'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Email:</span>
-                                    <span class="info-value">${order.email || 'Non spécifié'}</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="info-label">Paiement:</span>
-                                    <span class="info-value">${getPaymentMethodText(order.paymentMethod)}</span>
-                                </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="product-desc">${product.description}</p>
+                            <div class="product-meta">
+                                <div class="product-price">${product.price}</div>
+                                <button class="add-to-cart" onclick="addToCart(${product.id})">Ajouter</button>
                             </div>
-                            <div style="margin-top: 10px;">
-                                <span class="info-label">Adresse de livraison:</span>
-                                <div class="info-value"><i class="fas fa-map-marker-alt"></i> ${order.address || 'Non spécifiée'}</div>
-                            </div>
-                        </div>
-                        
-                        ${(order.notes && order.notes !== 'Aucune note') || hasAllergens ? `
-                            <div class="order-notes">
-                                <h5><i class="fas fa-sticky-note"></i> Notes importantes</h5>
-                                ${order.notes && order.notes !== 'Aucune note' ? `
-                                    <div><strong>Instructions client:</strong> ${order.notes}</div>
-                                ` : ''}
-                                ${hasAllergens ? `
-                                    <div style="margin-top: 8px;">
-                                        <strong><i class="fas fa-exclamation-triangle"></i> Allergènes:</strong> ${allergensNotes}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        ` : ''}
-                        
-                        <div class="order-items">
-                            <h4><i class="fas fa-birthday-cake"></i> Gâteaux commandés</h4>
-                            ${order.items && order.items.length > 0 ? order.items.map(item => {
-                                const price = parseFloat(item.price) || 0;
-                                const quantity = parseInt(item.quantity) || 0;
-                                const totalItem = price * quantity;
-                                
-                                return `
-                                    <div class="item-row">
-                                        <div class="item-name">${item.name || 'Gâteau'}</div>
-                                        <div class="item-quantity">${quantity} × ${price.toFixed(2)} DT</div>
-                                        <div class="item-price">${totalItem.toFixed(2)} DT</div>
-                                    </div>
-                                `;
-                            }).join('') : '<div class="item-row">Aucun détail de produit</div>'}
-                        </div>
-                        
-                        <div class="order-total">
-                            <i class="fas fa-receipt"></i> Total: ${(order.total || 0).toFixed(2)} DT
-                        </div>
-                        
-                        <div class="order-actions">
-                            ${order.status !== 'Annulée' && order.phone ? `
-                                <button class="btn btn-whatsapp" onclick="contactOnWhatsApp('${order.phone || ''}', '${order.orderNumber}', '${order.name || 'Client'}')">
-                                    <i class="fab fa-whatsapp"></i> WhatsApp
-                                </button>
-                                <button class="btn btn-call" onclick="callCustomer('${order.phone || ''}')">
-                                    <i class="fas fa-phone"></i> Appeler
-                                </button>
-                            ` : ''}
-                            
-                            ${order.email && order.email !== 'Non spécifié' ? `
-                                <button class="btn btn-email" onclick="emailCustomer('${order.email}', '${order.orderNumber}', '${order.name || 'Client'}')">
-                                    <i class="fas fa-envelope"></i> Email
-                                </button>
-                            ` : ''}
-                            
-                            <select class="btn btn-status" onchange="updateOrderStatus('${order.orderNumber}', this.value)">
-                                <option value="En attente" ${order.status === 'En attente' ? 'selected' : ''}>⏳ En attente</option>
-                                <option value="Confirmée" ${order.status === 'Confirmée' ? 'selected' : ''}>✅ Confirmée</option>
-                                <option value="Préparation" ${order.status === 'Préparation' ? 'selected' : ''}>👨‍🍳 En préparation</option>
-                                <option value="Livraison" ${order.status === 'Livraison' ? 'selected' : ''}>🚚 En livraison</option>
-                                <option value="Livrée" ${order.status === 'Livrée' ? 'selected' : ''}>🎉 Livrée</option>
-                                <option value="Annulée" ${order.status === 'Annulée' ? 'selected' : ''}>❌ Annulée</option>
-                            </select>
                         </div>
                     </div>
                 `;
             });
             
             container.innerHTML = html;
+            showCategory(currentCategory);
+        }
+
+        // ============================================
+        // FONCTION PRINCIPALE D'AFFICHAGE CATÉGORIE
+        // ============================================
+        function showCategory(category) {
+            currentCategory = category;
+            const productCards = document.querySelectorAll('.product-card');
+            const filterButtons = document.querySelectorAll('.filter-btn');
             
-            // Mettre à jour les boutons de filtre actifs
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (btn.getAttribute('data-filter') === currentFilter) {
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                const btnText = btn.textContent.toLowerCase();
+                
+                if (category === 'all' && btnText.includes('tous')) {
                     btn.classList.add('active');
+                } else if (category === 'anniversaire' && btnText.includes('anniversaire')) {
+                    btn.classList.add('active');
+                } else if (category === 'mariage' && btnText.includes('mariage')) {
+                    btn.classList.add('active');
+                } else if (category === 'quotidien' && btnText.includes('quotidien')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            productCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
                 } else {
-                    btn.classList.remove('active');
+                    card.style.display = 'none';
                 }
             });
         }
-        
-        function filterOrders(status) {
-            currentFilter = status;
-            displayOrders();
+
+        // ============================================
+        // FONCTIONS DU PANIER OPTIMISÉES
+        // ============================================
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image,
+                    category: product.category
+                });
+            }
+            
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+            showNotification(`✅ ${product.name} ajouté au panier !`);
         }
-        
-        function getStatusClass(status) {
-            const statusMap = {
-                'En attente': 'status-en-attente',
-                'Confirmée': 'status-confirmée',
-                'Préparation': 'status-preparation',
-                'Livraison': 'status-livraison',
-                'Livrée': 'status-livrée',
-                'Annulée': 'status-annulée'
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                const numericPrice = priceMatch ? parseFloat(priceMatch[0]) : 0;
+                const itemTotal = numericPrice * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">
+                        <img src="${item.image}" 
+                             alt="${item.name}"
+                             loading="lazy">
+                    </div>
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <div class="cart-item-price">${item.price}</div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity - 1})">-</button>
+                            <span class="quantity-value">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, ${item.quantity + 1})">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${index})">✕</button>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            cartTotal.textContent = total.toFixed(2) + ' DT';
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666;">
+                        <div style="font-size: 3em; margin-bottom: 20px;">🍰</div>
+                        <h4>Votre panier est vide</h4>
+                        <p>Ajoutez des gâteaux pour commencer</p>
+                    </div>
+                `;
+            }
+            
+            // Ajouter l'événement au bouton "Passer la commande"
+            document.querySelector('.checkout-btn').onclick = checkout;
+        }
+
+        function updateQuantity(itemIndex, newQuantity) {
+            if (newQuantity < 1) {
+                removeFromCart(itemIndex);
+                return;
+            }
+            cart[itemIndex].quantity = newQuantity;
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            const itemName = cart[index].name;
+            cart.splice(index, 1);
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+            showNotification(`🗑️ ${itemName} retiré du panier`);
+        }
+
+        function toggleCart() {
+            const overlay = document.getElementById('cart-overlay');
+            const sidebar = document.getElementById('cart-sidebar');
+            
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                setTimeout(() => overlay.style.display = 'none', 400);
+            } else {
+                updateCart();
+                overlay.style.display = 'block';
+                setTimeout(() => sidebar.classList.add('active'), 10);
+            }
+        }
+
+        // ============================================
+        // FONCTION CHECKOUT (PASSER LA COMMANDE)
+        // ============================================
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('🛒 Votre panier est vide !');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
+            }, 0);
+            
+            const orderNumber = 'DL-' + Date.now().toString().slice(-6);
+            
+            const orderSummary = document.getElementById('order-summary-items');
+            orderSummary.innerHTML = '';
+            
+            cart.forEach(item => {
+                const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                const itemTotal = (priceMatch ? parseFloat(priceMatch[0]) : 0) * item.quantity;
+                const summaryItem = document.createElement('div');
+                summaryItem.className = 'summary-item';
+                summaryItem.innerHTML = `
+                    <span>${item.quantity} × ${item.name}</span>
+                    <span>${itemTotal.toFixed(2)} DT</span>
+                `;
+                orderSummary.appendChild(summaryItem);
+            });
+            
+            document.getElementById('order-total').textContent = total.toFixed(2) + ' DT';
+            document.getElementById('order-number').textContent = orderNumber;
+            
+            document.getElementById('order-form-modal').style.display = 'flex';
+        }
+
+        function closeOrderForm() {
+            document.getElementById('order-form-modal').style.display = 'none';
+        }
+
+        function showConfirmationModal() {
+            const orderNumber = document.getElementById('order-number').textContent;
+            document.getElementById('confirmation-number').textContent = orderNumber;
+            
+            closeOrderForm();
+            document.getElementById('confirmation-modal').style.display = 'flex';
+            
+            const order = {
+                orderNumber: orderNumber,
+                date: new Date().toISOString(),
+                items: [...cart],
+                total: cart.reduce((sum, item) => {
+                    const priceMatch = item.price.match(/(\d+\.?\d*)/);
+                    return sum + (priceMatch ? parseFloat(priceMatch[0]) * item.quantity : 0);
+                }, 0),
+                name: document.getElementById('customer-name').value || 'Client',
+                phone: document.getElementById('customer-phone').value || '',
+                email: document.getElementById('customer-email').value || '',
+                address: document.getElementById('customer-address').value || '',
+                notes: document.getElementById('customer-notes').value || 'Aucune note',
+                paymentMethod: document.querySelector('input[name="payment"]:checked').value || 'cash',
+                status: 'En attente'
             };
-            return statusMap[status] || 'status-en-attente';
-        }
-        
-        function getStatusText(status) {
-            const statusMap = {
-                'En attente': '⏳ En attente',
-                'Confirmée': '✅ Confirmée',
-                'Préparation': '👨‍🍳 En préparation',
-                'Livraison': '🚚 En livraison',
-                'Livrée': '🎉 Livrée',
-                'Annulée': '❌ Annulée'
-            };
-            return statusMap[status] || '⏳ En attente';
-        }
-        
-        function getPaymentMethodText(method) {
-            const methodMap = {
-                'cash': '💰 Paiement à la livraison',
-                'bank': '🏦 Virement bancaire',
-                'contact': '📞 À contacter',
-                'card': '💳 Carte bancaire'
-            };
-            return methodMap[method] || method || 'Non spécifié';
-        }
-        
-        function contactOnWhatsApp(phone, orderNumber, customerName) {
-            if (!phone) {
-                alert("Numéro de téléphone non disponible");
-                return;
-            }
-            
-            const cleanPhone = phone.replace(/\D/g, '');
-            if (cleanPhone.length < 8) {
-                alert("Numéro de téléphone invalide");
-                return;
-            }
-            
-            const message = encodeURIComponent(
-                `Bonjour ${customerName},\n\nJe vous contacte concernant votre commande de gâteaux ${orderNumber} chez Délices Sucrés.\n\nPouvez-vous me confirmer les détails de votre commande ?\n\nMerci !\n🍰 Délices Sucrés`
-            );
-            window.open(`https://wa.me/${cleanPhone}?text=${message}`, '_blank');
-        }
-        
-        function callCustomer(phone) {
-            if (!phone) {
-                alert("Numéro de téléphone non disponible");
-                return;
-            }
-            
-            if (confirm(`Voulez-vous appeler ce client ?\n📞 ${phone}`)) {
-                window.open(`tel:${phone}`);
-            }
-        }
-        
-        function emailCustomer(email, orderNumber, customerName) {
-            if (!email || email === 'Non spécifié') {
-                alert("Ce client n'a pas fourni d'adresse email");
-                return;
-            }
-            
-            const subject = encodeURIComponent(`Votre commande de gâteaux ${orderNumber} - Délices Sucrés`);
-            const body = encodeURIComponent(
-                `Bonjour ${customerName},\n\nMerci pour votre commande chez Délices Sucrés !\n\nNous vous contacterons bientôt pour confirmer les détails de votre commande ${orderNumber}.\n\nÀ très bientôt,\nL'équipe Délices Sucrés\n🍰`
-            );
-            window.open(`mailto:${email}?subject=${subject}&body=${body}`);
-        }
-        
-        function updateOrderStatus(orderNumber, newStatus) {
-            if (!confirm(`Voulez-vous vraiment changer le statut de la commande ${orderNumber} en "${getStatusText(newStatus)}" ?`)) {
-                return;
-            }
             
             let orders = JSON.parse(localStorage.getItem('delices-commandes')) || [];
-            const orderIndex = orders.findIndex(o => o.orderNumber === orderNumber);
+            orders.push(order);
+            localStorage.setItem('delices-commandes', JSON.stringify(orders));
             
-            if (orderIndex !== -1) {
-                orders[orderIndex].status = newStatus;
-                localStorage.setItem('delices-commandes', JSON.stringify(orders));
-                
-                // Synchroniser avec l'ancien système
-                localStorage.setItem('sarsel-orders', JSON.stringify(orders));
-                
-                loadOrders();
-                alert(`✅ Statut mis à jour pour la commande ${orderNumber} : ${getStatusText(newStatus)}`);
-            } else {
-                alert('❌ Commande non trouvée');
+            cart = [];
+            localStorage.setItem('delices-cart', JSON.stringify(cart));
+            updateCart();
+            
+            showNotification(`🎉 Commande ${orderNumber} confirmée !`);
+            
+            document.getElementById('customer-form').reset();
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
+        // ============================================
+        // FONCTIONS UTILITAIRES
+        // ============================================
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function callNow() {
+            if (confirm('Appeler Dolcino au 20 90 15 96 ?')) {
+                window.open('tel:+21620901596');
             }
         }
-        
-        function exportToCSV() {
-            const orders = JSON.parse(localStorage.getItem('delices-commandes')) || [];
+
+         // ============================================
+        // RAFRAÎCHISSEMENT INTELLIGENT
+        // ============================================
+        function setupSmartRefresh() {
+            console.log("🚀 Configuration du rafraîchissement intelligent");
             
-            if (orders.length === 0) {
-                alert('Aucune commande à exporter');
-                return;
-            }
+            let lastUpdate = Date.now();
+            let isRefreshing = false;
             
-            // Créer le contenu CSV
-            let csv = 'Numéro;Date;Client;Téléphone;Email;Adresse;Paiement;Total;Statut;Gâteaux;Allergènes;Notes\n';
-            
-            orders.forEach(order => {
-                const date = new Date(order.date).toLocaleDateString('fr-FR');
-                const gâteaux = order.items ? 
-                    order.items.map(item => `${parseInt(item.quantity) || 0}x ${item.name || 'Gâteau'}`).join(', ') : 'N/A';
+            const refreshIfNeeded = () => {
+                if (isRefreshing) return;
                 
-                const allergens = order.items ?
-                    order.items
-                        .map(item => item.allergens || 'Aucun')
-                        .filter(a => a !== 'Aucun')
-                        .join(', ') : '';
+                const now = Date.now();
+                if (now - lastUpdate < 5000) return;
                 
-                csv += `"${order.orderNumber || 'N/A'}";"${date}";"${order.name || ''}";"${order.phone || ''}";"${order.email || ''}";"${order.address || ''}";"${getPaymentMethodText(order.paymentMethod)}";"${(parseFloat(order.total) || 0).toFixed(2)}";"${order.status || ''}";"${gâteaux}";"${allergens}";"${order.notes || ''}"\n`;
+                isRefreshing = true;
+                
+                const storedProducts = localStorage.getItem('delices-gateaux');
+                const storedHash = storedProducts ? btoa(storedProducts).substring(0, 20) : '';
+                
+                if (storedHash !== productsHash) {
+                    console.log("🔄 Changement détecté, mise à jour des produits");
+                    lastUpdate = now;
+                    productsLoaded = false;
+                    displayProducts();
+                }
+                
+                isRefreshing = false;
+            };
+            
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'delices-gateaux' || e.key === 'sarsel-products') {
+                    console.log("📦 Changement détecté dans localStorage");
+                    setTimeout(refreshIfNeeded, 500);
+                }
             });
             
-            // Créer et télécharger le fichier
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    console.log("👁️ Page redevenue visible");
+                    setTimeout(refreshIfNeeded, 1000);
+                }
+            });
             
-            link.setAttribute('href', url);
-            link.setAttribute('download', `commandes-delices-sucrees-${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Libérer l'URL de l'objet
-            setTimeout(() => URL.revokeObjectURL(url), 100);
+            setInterval(refreshIfNeeded, 30000);
         }
-        
-        // Charger les commandes au démarrage
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            // Configurer le bouton d'export CSV
-            document.getElementById('exportCSV').addEventListener('click', function(e) {
+            console.log("🚀 Dolcino - Site chargé");
+            
+            displayProducts();
+            updateCart();
+            setupSmartRefresh();
+            
+            document.getElementById('customer-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                exportToCSV();
+                showConfirmationModal();
             });
             
-            // Configurer les boutons de filtre
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const filter = this.getAttribute('data-filter');
-                    filterOrders(filter);
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 });
             });
             
-            // Charger les commandes
-            loadOrders();
-            
-            // Rafraîchir automatiquement toutes les 30 secondes
-            setInterval(loadOrders, 30000);
-            
-            // Ajouter un raccourci clavier pour exporter (Ctrl+E)
-            document.addEventListener('keydown', function(e) {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
-                    e.preventDefault();
-                    exportToCSV();
+            setTimeout(() => {
+                if (!localStorage.getItem('welcome-shown')) {
+                    showNotification('🎂 Bienvenue chez Dolcino !');
+                    localStorage.setItem('welcome-shown', 'true');
                 }
-            });
+            }, 1000);
         });
-        
-        // Exposer les fonctions globales pour les boutons HTML
-        window.filterOrders = filterOrders;
-        window.contactOnWhatsApp = contactOnWhatsApp;
-        window.callCustomer = callCustomer;
-        window.emailCustomer = emailCustomer;
-        window.updateOrderStatus = updateOrderStatus;
-        window.exportToCSV = exportToCSV;
     </script>
+
+
+
 </body>
 </html>
+
+
+
