@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dolcino - Pâtisserie Fine & Gâteaux Maison</title>
@@ -1493,7 +1494,110 @@
 }
 
 
+/* =================================================== */
+/* ========== CORRECTIONS MOBILE MINIMALES ========== */
+/* =================================================== */
 
+@media (max-width: 768px) {
+    /* CORRECTION ESPACE */
+    body {
+        padding-top: 0 !important;
+        padding-bottom: 80px !important;
+    }
+    
+    /* Header ajusté */
+    header {
+        padding: 10px 15px !important;
+    }
+    
+    .logo {
+        font-size: 2em !important;
+    }
+    
+    .slogan {
+        font-size: 0.9em !important;
+    }
+    
+    /* Hero réduit */
+    .hero {
+        height: 350px !important;
+        padding: 20px !important;
+    }
+    
+    .hero h1 {
+        font-size: 2em !important;
+    }
+    
+    .hero p {
+        font-size: 1.1em !important;
+    }
+    
+    /* Sections réduites */
+    .collections-section,
+    .products-section {
+        padding: 40px 15px !important;
+    }
+    
+    .section-title {
+        font-size: 1.8em !important;
+        margin-bottom: 30px !important;
+    }
+    
+    /* Grilles mobile */
+    .collections-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .collection-image-container {
+        height: 250px !important;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .product-image-container {
+        height: 180px !important;
+    }
+    
+    /* Images optimisées */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Barre contact mobile */
+    .quick-contact-bar {
+        padding: 8px 10px !important;
+        gap: 5px !important;
+    }
+    
+    .contact-btn {
+        padding: 8px 10px !important;
+        font-size: 0.8em !important;
+    }
+    
+    /* Cache texte admin sur petits écrans */
+    @media (max-width: 480px) {
+        .admin-orders-btn span,
+        .admin-products-btn span {
+            display: none;
+        }
+        
+        .admin-orders-btn,
+        .admin-products-btn {
+            padding: 10px !important;
+            justify-content: center;
+        }
+    }
+}
+
+
+
+
+        
 
 </style>
     
@@ -1838,6 +1942,60 @@
 
 
     <script>
+       
+        <script>
+    // ============================================
+    // CORRECTION SIMPLE POUR GITHUB PAGES
+    // ============================================
+    function fixImageUrlsForGitHub() {
+        // Seulement sur GitHub Pages
+        if (!window.location.hostname.includes('github.io')) return;
+        
+        console.log("🌐 Correction des URLs pour GitHub Pages");
+        
+        // Corriger les images des catégories
+        const categoryImages = document.querySelectorAll('.collection-image');
+        categoryImages.forEach(img => {
+            if (img.src.includes('./images/')) {
+                const newSrc = img.src.replace('./images/', 'images/');
+                img.src = newSrc;
+                console.log(`🖼️ Image catégorie corrigée: ${newSrc}`);
+            }
+        });
+        
+        // Corriger les images des produits (après leur chargement)
+        setTimeout(() => {
+            const productImages = document.querySelectorAll('.product-img');
+            productImages.forEach(img => {
+                if (img.src.includes('./images/')) {
+                    const newSrc = img.src.replace('./images/', 'images/');
+                    img.src = newSrc;
+                    console.log(`🎂 Image produit corrigée: ${newSrc}`);
+                }
+            });
+        }, 2000); // Attendre que les produits soient chargés
+    }
+
+    // Appeler cette fonction après le chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Votre code existant...
+        
+        // AJOUTEZ CETTE LIGNE à la fin de votre DOMContentLoaded :
+        setTimeout(fixImageUrlsForGitHub, 3000);
+    });
+
+    // ============================================
+    // VOTRE CODE EXISTANT RESTE CI-DESSOUS
+    // ============================================
+    // VARIABLES GLOBALES OPTIMISÉES
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem('delices-cart')) || [];
+    // ... le reste de votre code JavaScript ...
+</script>
+        
+        
+        
+        
         // ============================================
         // VARIABLES GLOBALES OPTIMISÉES
         // ============================================
@@ -2502,6 +2660,7 @@ if (products.length === 0) {
 
 </body>
 </html>
+
 
 
 
