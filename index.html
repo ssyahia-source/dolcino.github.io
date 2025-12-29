@@ -36,7 +36,7 @@
             color: var(--text);
             line-height: 1.6;
             background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" fill="none" stroke="%23FFD166" stroke-width="0.5" opacity="0.1"/></svg>');
-            padding-bottom: 80px; /* Pour la barre fixe en bas */
+            padding-bottom: 70px; /* Espace pour barre fixe */
         }
         
         /* BANNIÈRE DE LIVRAISON TUNIS */
@@ -50,114 +50,6 @@
             position: relative;
             z-index: 999;
             box-shadow: 0 2px 10px rgba(139, 69, 19, 0.2);
-        }
-        
-        /* ========== BOUTONS ADMIN OPTIMISÉS ========== */
-        .admin-floating-buttons {
-            position: fixed;
-            bottom: 120px; /* AU-DESSUS de la barre WhatsApp */
-            right: 20px;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .admin-btn {
-            background: linear-gradient(135deg, var(--accent), var(--secondary));
-            color: var(--dark);
-            padding: 12px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95em;
-            border: 2px solid white;
-            transition: all 0.3s ease;
-            opacity: 0.9;
-            min-width: 140px;
-        }
-        
-        .admin-btn:hover {
-            opacity: 1;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.6);
-        }
-        
-        .admin-orders {
-            background: linear-gradient(135deg, var(--secondary), #FFA726);
-            color: white;
-        }
-        
-        .admin-products {
-            background: linear-gradient(135deg, var(--primary), #FF4081);
-            color: white;
-        }
-        
-        /* Responsive pour mobile */
-        @media (max-width: 768px) {
-            .admin-floating-buttons {
-                bottom: 80px;
-                right: 10px;
-                gap: 8px;
-            }
-            
-            .admin-btn {
-                padding: 10px 16px;
-                font-size: 0.85em;
-                min-width: 120px;
-            }
-        }
-        
-        /* BARRE DE CONTACT FIXE - OPTIMISÉE */
-        .quick-contact-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(90deg, var(--dark), #FA8E78);
-            color: Black;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-around;
-            z-index: 9999;
-            box-shadow: 0 -3px 15px rgba(0,0,0,0.9);
-            border-top: 2px solid var(--accent);
-        }
-
-       
-        .quick-contact-btn {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95em;
-        }
-        
-        .quick-contact-btn.whatsapp {
-            background: #25D366;
-            border-color: #25D366;
-        }
-        
-        .quick-contact-btn.call {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .quick-contact-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
         /* HEADER - Design gourmand */
@@ -286,7 +178,7 @@
         .hero {
             height: 500px;
             background: linear-gradient(rgba(139, 69, 19, 0.85), rgba(139, 69, 19, 0.9)),
-                        url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="500" viewBox="0 0 1920 500"><rect width="1920" height="500" fill="%238B4513"/><text x="960" y="250" font-family="Arial" font-size="60" fill="%23FFD166" text-anchor="middle">🎂 Dolcino - Gâteaux Maison 🎂</text></svg>');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -411,6 +303,7 @@
             object-position: center;
             transition: transform 0.6s ease;
             display: block;
+            background-color: #FFE4CC;
         }
         
         .collection-card:hover .collection-image {
@@ -552,6 +445,7 @@
             height: 250px;
             position: relative;
             overflow: hidden;
+            background-color: #FFE4CC;
         }
         
         .product-img {
@@ -560,6 +454,7 @@
             object-fit: cover;
             transition: transform 0.5s ease;
             display: block;
+            background-color: #FFE4CC;
         }
         
         .product-card:hover .product-img {
@@ -673,6 +568,7 @@
             z-index: 1002;
             display: flex;
             flex-direction: column;
+            padding-bottom: 80px;
         }
         
         .cart-sidebar.active {
@@ -723,6 +619,7 @@
             border-radius: 5px;
             overflow: hidden;
             flex-shrink: 0;
+            background-color: #FFE4CC;
         }
         
         .cart-item-image img {
@@ -794,6 +691,10 @@
         .cart-footer {
             padding: 20px;
             border-top: 1px solid #FFE4CC;
+            background: white;
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
         }
         
         .cart-total {
@@ -805,7 +706,7 @@
             color: var(--dark);
         }
         
-        /* BOUTON "PASSER LA COMMANDE" TRÈS VISIBLE */
+        /* BOUTON "PASSER LA COMMANDE" */
         .checkout-btn {
             background: linear-gradient(135deg, var(--primary) 0%, #FF4081 100%);
             color: white;
@@ -1234,39 +1135,179 @@
             animation: fadeIn 0.6s ease forwards;
         }
         
-        /* RESPONSIVE */
+        /* ========== BARRE DE CONTACT FIXE - CORRIGÉE ========== */
+        .quick-contact-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, var(--dark), #A0522D);
+            padding: 8px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 9999;
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.3);
+            border-top: 2px solid var(--accent);
+            gap: 4px;
+            height: 60px;
+        }
+
+        /* Boutons optimisés pour mobile */
+        .contact-btn {
+            padding: 8px 10px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-decoration: none;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 0.75em;
+            flex: 1;
+            min-width: 0;
+            max-width: 100px;
+            height: 44px;
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: var(--primary);
+        }
+
+        /* Icônes seulement sur très petits écrans */
+        .contact-btn i {
+            font-size: 1.1em;
+            margin-bottom: 2px;
+        }
+
+        .contact-btn span {
+            font-size: 0.7em;
+            line-height: 1;
+        }
+
+        /* Couleurs des boutons */
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        .call-btn {
+            background: linear-gradient(135deg, var(--primary), #FF4081);
+        }
+
+        .admin-orders-btn {
+            background: linear-gradient(135deg, var(--secondary), #FF9800);
+        }
+
+        .admin-products-btn {
+            background: linear-gradient(135deg, #E91E63, #C2185B);
+        }
+
+        /* Effet hover */
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .header-top { flex-direction: column; gap: 15px; }
-            nav { gap: 12px; flex-wrap: wrap; justify-content: center; }
-            .hero { height: 400px; }
-            .hero h1 { font-size: 2.2em; }
-            .hero p { font-size: 1.2em; }
-            .section-title { font-size: 2em; }
-            .collection-image-container { height: 250px; }
-            .cart-sidebar { width: 100%; right: -100%; }
-            .footer-content { grid-template-columns: 1fr; }
-            
-            /* BOUTONS ADMIN MOBILE */
-            .admin-floating-buttons { 
-                bottom: 80px; 
-                right: 10px; 
-            }
-            
-            .admin-btn { 
-                font-size: 0.85em; 
-                padding: 10px 15px;
-            }
-            
-            /* BARRE CONTACT MOBILE */
-            .quick-contact-bar { 
+            .header-top { 
                 flex-direction: column; 
-                gap: 10px; 
-                padding: 15px 10px;
+                gap: 15px; 
+                text-align: center;
             }
-            .quick-contact-btn { 
+            nav { 
+                gap: 12px; 
+                flex-wrap: wrap; 
+                justify-content: center; 
+            }
+            .hero { 
+                height: 400px; 
+                padding: 20px;
+            }
+            .hero h1 { 
+                font-size: 2.2em; 
+                line-height: 1.3;
+            }
+            .hero p { 
+                font-size: 1.2em; 
+            }
+            .section-title { 
+                font-size: 2em; 
+                padding: 0 20px;
+            }
+            .collection-image-container { 
+                height: 250px; 
+            }
+            .cart-sidebar { 
                 width: 100%; 
-                justify-content: center;
-                padding: 12px;
+                right: -100%; 
+            }
+            .footer-content { 
+                grid-template-columns: 1fr; 
+                text-align: center;
+            }
+            
+            /* Barre contact mobile */
+            .quick-contact-bar {
+                padding: 6px 3px;
+                gap: 3px;
+                height: 55px;
+            }
+            
+            .contact-btn {
+                padding: 6px 4px;
+                font-size: 0.65em;
+                height: 40px;
+            }
+            
+            .contact-btn span {
+                font-size: 0.6em;
+            }
+            
+            .contact-btn i {
+                font-size: 0.9em;
+            }
+            
+            body {
+                padding-bottom: 65px !important;
+            }
+        }
+
+        /* Mobile très petit (320px - 480px) */
+        @media (max-width: 480px) {
+            .contact-btn span {
+                display: none;
+            }
+            
+            .contact-btn {
+                padding: 10px 5px;
+                font-size: 0.7em;
+            }
+            
+            .contact-btn i {
+                font-size: 1.2em;
+                margin-bottom: 0;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn {
+                width: 90%;
+                max-width: 250px;
+            }
+            
+            .collections-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .payment-methods-tunisia {
@@ -1276,226 +1317,50 @@
             .payment-method-card {
                 min-width: 100%;
             }
+        }
+
+        /* Desktop (769px+) */
+        @media (min-width: 769px) {
+            .quick-contact-bar {
+                padding: 10px 20px;
+                height: 65px;
+            }
+            
+            .contact-btn {
+                padding: 12px 15px;
+                font-size: 0.9em;
+                height: 50px;
+                flex-direction: row;
+                gap: 8px;
+            }
+            
+            .contact-btn span {
+                font-size: 0.85em;
+            }
             
             body {
-                padding-bottom: 120px; /* Plus d'espace pour mobile */
+                padding-bottom: 75px !important;
             }
         }
-    
 
-/* ========== CORRECTIONS FINALES ========== */
-
-/* 1. Corriger l'espace dans le panier */
-.cart-sidebar {
-    padding-bottom: 90px !important; /* Ajoute de l'espace pour la barre */
-}
-
-.cart-footer {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-}
-
-/* 2. S'assurer que le bouton est visible */
-.checkout-btn {
-    position: relative;
-    z-index: 2;
-    margin-bottom: 5px; /* Petit espace */
-}
-
-/* 3. Ajuster sur mobile */
-@media (max-width: 768px) {
-    .cart-sidebar {
-        padding-bottom: 110px !important; /* Plus d'espace sur mobile */
-    }
-    
-    .cart-footer {
-        padding: 15px 20px;
-    }
-    
-    .checkout-btn {
-        padding: 18px;
-        font-size: 1.1em;
-    }
-    
-    /* Ajuster la barre de contact si besoin */
-    .quick-contact-bar {
-        padding: 10px 15px;
-    }
-}
-
-/* 4. Option: Bouton flottant dans le panier */
-.checkout-btn.floating {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 350px;
-    border-radius: 50px;
-    box-shadow: 0 5px 25px rgba(255, 107, 139, 0.5);
-}
-
-/* AJOUTEZ CE CSS À LA FIN DE VOTRE <style> */
-
-
-/* AJOUTEZ CE CSS À LA FIN DE VOTRE <style> */
-
-/* ========== BARRE DE CONTACT UNIFIÉE ========== */
-.quick-contact-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(90deg, var(--dark), #A0522D);
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 9999;
-    box-shadow: 0 -3px 15px rgba(0,0,0,0.9);
-    border-top: 2px solid var(--accent);
-    gap: 8px;
-}
-
-/* Style UNIFIÉ pour TOUS les boutons */
-.contact-btn {
-    padding: 10px 18px;
-    border-radius: 50px; /* OVALE comme vos autres boutons */
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-decoration: none;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    font-size: 0.9em;
-    flex: 1;
-    min-width: 0;
-    max-width: 180px;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-}
-
-/* WhatsApp - Garde sa couleur originale */
-.whatsapp-btn {
-    background: linear-gradient(135deg, #25D366, #128C7E);
-    border-color: #25D366;
-}
-
-/* Appeler - Garde sa couleur originale */
-.call-btn {
-    background: linear-gradient(135deg, var(--primary), #FF4081);
-    border-color: var(--primary);
-}
-
-/* Admin Commandes - NOUVELLE COULEUR (orange) */
-.admin-orders-btn {
-    background: linear-gradient(135deg, var(--secondary), #FF9800);
-    border-color: var(--secondary);
-    opacity: 0.9;
-}
-
-/* Admin Gâteaux - NOUVELLE COULEUR (rose foncé) */
-.admin-products-btn {
-    background: linear-gradient(135deg, #E91E63, #C2185B);
-    border-color: #E91E63;
-    opacity: 0.9;
-}
-
-/* Effet hover pour TOUS les boutons */
-.contact-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    opacity: 1;
-}
-
-/* WhatsApp hover */
-.whatsapp-btn:hover {
-    background: linear-gradient(135deg, #128C7E, #0D6E5A);
-}
-
-/* Appeler hover */
-.call-btn:hover {
-    background: linear-gradient(135deg, #FF4081, #E91E63);
-}
-
-/* Admin Commandes hover */
-.admin-orders-btn:hover {
-    background: linear-gradient(135deg, #FF9800, #F57C00);
-}
-
-/* Admin Gâteaux hover */
-.admin-products-btn:hover {
-    background: linear-gradient(135deg, #C2185B, #AD1457);
-}
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 768px) {
-    .quick-contact-bar {
-        padding: 8px 10px;
-        gap: 6px;
-    }
-    
-    .contact-btn {
-        padding: 8px 12px;
-        font-size: 0.85em;
-        gap: 6px;
-    }
-    
-    /* Sur petits écrans, cacher le texte des boutons admin */
-    @media (max-width: 480px) {
-        .admin-orders-btn span,
-        .admin-products-btn span {
-            display: none;
+        /* Pour écrans moyens (481px - 768px) */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .quick-contact-bar {
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            
+            .contact-btn {
+                padding: 10px 8px;
+                font-size: 0.8em;
+                height: 48px;
+            }
+            
+            .contact-btn span {
+                font-size: 0.75em;
+            }
         }
-        
-        .admin-orders-btn,
-        .admin-products-btn {
-            padding: 10px;
-            width: 44px;
-            justify-content: center;
-        }
-        
-        .whatsapp-btn span,
-        .call-btn span {
-            display: inline; /* Garde le texte pour les boutons principaux */
-        }
-    }
-}
-
-/* Pour écrans moyens */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .contact-btn {
-        padding: 10px 16px;
-        font-size: 0.9em;
-    }
-}
-
-/* ========== AJUSTEMENT PANIER ========== */
-/* S'assurer que le panier a assez d'espace */
-.cart-sidebar {
-    padding-bottom: 85px !important;
-}
-
-/* Les boutons admin doivent être légèrement plus transparents par défaut */
-.admin-orders-btn,
-.admin-products-btn {
-    opacity: 0.85;
-}
-
-.admin-orders-btn:hover,
-.admin-products-btn:hover {
-    opacity: 1;
-}
-
-
-
-
-</style>
+    </style>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1506,20 +1371,14 @@
     <div class="delivery-banner">
         🚚 Livraison GRATUITE  Au Grand Tunis pour commandes > 100 DT | 📞 20 90 15 96
     </div>
-    
-    <!-- LIENS ADMIN OPTIMISÉS -->
-    
-
-
-
 
     <!-- HEADER -->
     <header>
         <div class="header-top">
             <div class="logo-container">
-    <div class="logo">Dolcino</div>
-    <div class="slogan">Quand le gâteau devient design</div>
-</div>
+                <div class="logo">Dolcino</div>
+                <div class="slogan">Quand le gâteau devient design</div>
+            </div>
             
             <nav>
                 <a href="#home">Accueil</a>
@@ -1556,9 +1415,10 @@
             <!-- GÂTEAUX D'ANNIVERSAIRE -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                   <img src="images/anniversaire/gateau-chocolat.jpg" 
-     alt="Gâteau Anniversaire Chocolat" 
-     class="collection-image">
+                    <img src="./images/anniversaire/gateau-chocolat.jpg" 
+                         alt="Gâteau Anniversaire Chocolat" 
+                         class="collection-image"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\" viewBox=\"0 0 400 300\"><rect width=\"400\" height=\"300\" fill=\"%23FFD166\"/><text x=\"200\" y=\"150\" font-family=\"Arial\" font-size=\"24\" fill=\"%238B4513\" text-anchor=\"middle\">🎂 Anniversaires</text></svg>'">
                 </div>
                 <div class="collection-overlay">
                     <h3 class="collection-title">Anniversaires</h3>
@@ -1570,9 +1430,10 @@
             <!-- GÂTEAUX DE MARIAGE -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                    <img src="./images/mariage/gateau-mariage-1.jpg" 
                          alt="Gâteaux de mariage" 
-                         class="collection-image">
+                         class="collection-image"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\" viewBox=\"0 0 400 300\"><rect width=\"400\" height=\"300\" fill=\"%23FFD166\"/><text x=\"200\" y=\"150\" font-family=\"Arial\" font-size=\"24\" fill=\"%238B4513\" text-anchor=\"middle\">💒 Mariages</text></svg>'">
                 </div>
                 <div class="collection-overlay">
                     <h3 class="collection-title">Mariages</h3>
@@ -1584,9 +1445,10 @@
             <!-- GÂTEAUX QUOTIDIENS -->
             <div class="collection-card fade-in">
                 <div class="image-container collection-image-container">
-                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                    <img src="./images/quotidien/gateau-carotte.jpg" 
                          alt="Gâteaux du quotidien" 
-                         class="collection-image">
+                         class="collection-image"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\" viewBox=\"0 0 400 300\"><rect width=\"400\" height=\"300\" fill=\"%23FFD166\"/><text x=\"200\" y=\"150\" font-family=\"Arial\" font-size=\"24\" fill=\"%238B4513\" text-anchor=\"middle\">🍰 Quotidien</text></svg>'">
                 </div>
                 <div class="collection-overlay">
                     <h3 class="collection-title">Quotidien</h3>
@@ -1653,7 +1515,7 @@
                 <span>Total:</span>
                 <span id="cart-total">0.00 DT</span>
             </div>
-            <button class="checkout-btn">
+            <button class="checkout-btn" onclick="checkout()">
                 <i class="fas fa-shopping-bag"></i> Passer la commande
             </button>
         </div>
@@ -1805,41 +1667,36 @@
         </div>
     </footer>
 
-    <!-- BARRE DE CONTACT FIXE -->
-  <!-- REMPLACEZ VOTRE BARRE DE CONTACT PAR CE CODE -->
-<div class="quick-contact-bar">
-    <!-- Admin Commandes (gauche) -->
-    <a href="admin-login.html?page=orders" class="contact-btn admin-orders-btn" title="Gérer les commandes">
-        <i class="fas fa-clipboard-list"></i>
-        <span>Commandes</span>
-    </a>
-    
-    <!-- WhatsApp -->
-    <a href="https://wa.me/21620901596" class="contact-btn whatsapp-btn" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-        <span>WhatsApp</span>
-    </a>
-    
-    <!-- Appeler -->
-    <button class="contact-btn call-btn" onclick="callNow()">
-        <i class="fas fa-phone"></i>
-        <span>Appeler</span>
-    </button>
-    
-    <!-- Admin Gâteaux (droite) -->
-    <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" title="Gérer les gâteaux">
-        <i class="fas fa-birthday-cake"></i>
-        <span>Gâteaux</span>
-    </a>
-</div>
-
-
-
-
+    <!-- BARRE DE CONTACT FIXE - CORRIGÉE -->
+    <div class="quick-contact-bar">
+        <!-- Admin Commandes (gauche) -->
+        <a href="admin-login.html?page=orders" class="contact-btn admin-orders-btn" title="Gérer les commandes">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Commandes</span>
+        </a>
+        
+        <!-- WhatsApp -->
+        <a href="https://wa.me/21620901596" class="contact-btn whatsapp-btn" target="_blank">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+        </a>
+        
+        <!-- Appeler -->
+        <button class="contact-btn call-btn" onclick="callNow()">
+            <i class="fas fa-phone"></i>
+            <span>Appeler</span>
+        </button>
+        
+        <!-- Admin Gâteaux (droite) -->
+        <a href="admin-login.html?page=products" class="contact-btn admin-products-btn" title="Gérer les gâteaux">
+            <i class="fas fa-birthday-cake"></i>
+            <span>Gâteaux</span>
+        </a>
+    </div>
 
     <script>
         // ============================================
-        // VARIABLES GLOBALES OPTIMISÉES
+        // VARIABLES GLOBALES
         // ============================================
         let products = [];
         let cart = JSON.parse(localStorage.getItem('delices-cart')) || [];
@@ -1848,7 +1705,94 @@
         let productsHash = '';
 
         // ============================================
-        // FONCTIONS DE NAVIGATION OPTIMISÉES
+        // CORRECTION DES IMAGES POUR MOBILE
+        // ============================================
+        function fixMobileImages() {
+            console.log("📱 Correction des images pour mobile...");
+            
+            // Images par défaut SVG (ne nécessitent pas de téléchargement)
+            const defaultImages = {
+                anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">🎂 Anniversaires</text></svg>',
+                mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">💒 Mariages</text></svg>',
+                quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">🍰 Quotidien</text></svg>',
+                default: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>'
+            };
+            
+            // Fonction pour remplacer les images problématiques
+            function replaceProblematicImages() {
+                document.querySelectorAll('img').forEach(img => {
+                    const originalSrc = img.src || '';
+                    
+                    // Si l'image est externe (Unsplash) ou manquante, utiliser une image locale
+                    if (originalSrc.includes('unsplash.com') || 
+                        originalSrc.includes('images.unsplash.com') || 
+                        originalSrc === '' || 
+                        originalSrc.includes('undefined')) {
+                        
+                        let category = 'default';
+                        
+                        // Détecter la catégorie à partir du contexte
+                        if (img.closest('.collection-card')) {
+                            if (img.alt.includes('Anniversaire') || img.src.includes('anniversaire')) {
+                                category = 'anniversaire';
+                            } else if (img.alt.includes('Mariage') || img.src.includes('mariage')) {
+                                category = 'mariage';
+                            } else if (img.alt.includes('Quotidien') || img.src.includes('quotidien')) {
+                                category = 'quotidien';
+                            }
+                        } else if (img.closest('.product-card')) {
+                            const productCard = img.closest('.product-card');
+                            if (productCard) {
+                                category = productCard.dataset.category || 'default';
+                            }
+                        }
+                        
+                        // Appliquer l'image par défaut appropriée
+                        img.src = defaultImages[category] || defaultImages.default;
+                        img.style.objectFit = 'contain';
+                        img.style.padding = '20px';
+                        img.style.backgroundColor = '#FFE4CC';
+                    }
+                    
+                    // Gestionnaire d'erreur pour toutes les images
+                    img.onerror = function() {
+                        this.onerror = null; // Éviter les boucles infinies
+                        let fallbackCategory = 'default';
+                        
+                        // Détecter la catégorie pour l'image de secours
+                        if (this.alt.includes('Anniversaire') || this.src.includes('anniversaire')) {
+                            fallbackCategory = 'anniversaire';
+                        } else if (this.alt.includes('Mariage') || this.src.includes('mariage')) {
+                            fallbackCategory = 'mariage';
+                        } else if (this.alt.includes('Quotidien') || this.src.includes('quotidien')) {
+                            fallbackCategory = 'quotidien';
+                        }
+                        
+                        this.src = defaultImages[fallbackCategory] || defaultImages.default;
+                        this.style.objectFit = 'contain';
+                        this.style.padding = '20px';
+                        this.style.backgroundColor = '#FFE4CC';
+                    };
+                });
+            }
+            
+            // Exécuter maintenant
+            replaceProblematicImages();
+            
+            // Surveiller les nouvelles images ajoutées dynamiquement
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.addedNodes.length) {
+                        replaceProblematicImages();
+                    }
+                });
+            });
+            
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
         // ============================================
         function scrollToProductsAndShowAll() {
             console.log("🎯 Défilement vers les produits...");
@@ -1881,7 +1825,7 @@
         }
 
         // ============================================
-        // CHARGEMENT INTELLIGENT DES PRODUITS
+        // CHARGEMENT DES PRODUITS
         // ============================================
         function loadProducts() {
             if (productsLoaded) {
@@ -1912,7 +1856,7 @@
                                 name: product.name || 'Gâteau',
                                 price: product.price || '0 DT',
                                 category: product.category || 'quotidien',
-                                image: product.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+                                image: product.image || '',
                                 description: product.description || 'Gâteau artisanal fait maison',
                                 imageKey: product.imageKey
                             };
@@ -1927,18 +1871,61 @@
                 }
             }
             
+            // Si aucun produit n'est trouvé, créer des produits par défaut
             if (products.length === 0) {
-                console.log("⚠️ Aucun produit trouvé - produits par défaut");
+                console.log("⚠️ Aucun produit trouvé - création produits par défaut");
                 products = [
                     {
                         id: 1,
-                        name: "Gâteau Démo Chocolat",
-                        price: "49.99 DT",
+                        name: "Gâteau Chocolat Anniversaire",
+                        price: "45.00 DT",
                         category: "anniversaire",
-                        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-                        description: "Gâteau artisanal au chocolat belge"
+                        image: "./images/anniversaire/gateau-chocolat.jpg",
+                        description: "Gâteau au chocolat belge avec cœur fondant"
+                    },
+                    {
+                        id: 2,
+                        name: "Gâteau Fraise Passion",
+                        price: "38.50 DT",
+                        category: "anniversaire",
+                        image: "./images/anniversaire/gateau-fraise.jpg",
+                        description: "Fraise fraîche et crème passion"
+                    },
+                    {
+                        id: 3,
+                        name: "Gâteau de Mariage Classique",
+                        price: "120.00 DT",
+                        category: "mariage",
+                        image: "./images/mariage/gateau-mariage-1.jpg",
+                        description: "Élégant gâteau à étages pour mariage"
+                    },
+                    {
+                        id: 4,
+                        name: "Gâteau Royal Blanc",
+                        price: "150.00 DT",
+                        category: "mariage",
+                        image: "./images/mariage/gateau-mariage-2.jpg",
+                        description: "Blanc pur avec décorations en sucre"
+                    },
+                    {
+                        id: 5,
+                        name: "Gâteau Carotte Quotidien",
+                        price: "25.00 DT",
+                        category: "quotidien",
+                        image: "./images/quotidien/gateau-carotte.jpg",
+                        description: "Parfait pour le goûter familial"
+                    },
+                    {
+                        id: 6,
+                        name: "Gâteau Vanille Noisette",
+                        price: "28.00 DT",
+                        category: "quotidien",
+                        image: "./images/quotidien/gateau-vanille.jpg",
+                        description: "Vanille de Madagascar et noisettes grillées"
                     }
                 ];
+                
+                localStorage.setItem('delices-gateaux', JSON.stringify(products));
                 productsLoaded = true;
             }
             
@@ -1946,176 +1933,13 @@
         }
 
         // ============================================
-        // AFFICHAGE DES PRODUITS OPTIMISÉ
+        // AFFICHAGE DES PRODUITS
         // ============================================
         function displayProducts() {
             loadProducts();
-
-// ============================================
-// INITIALISATION URGENTE - localStorage VIDE
-// ============================================
-console.log("🔍 Vérification initialisation...");
-
-// Vérifier si localStorage est vide
-const checkStorage = () => {
-    const hasData = localStorage.getItem('delices-gateaux') || 
-                    localStorage.getItem('sarsel-products') || 
-                    localStorage.getItem('gateaux');
-    
-    if (!hasData) {
-        console.log("🆕 CREATION de données initiales...");
-        
-        const initialProducts = [
-            // ========== ANNIVERSAIRES ==========
-            {
-                id: Date.now() + 1,
-                name: "Gâteau Chocolat Fondant",
-                price: "45.00 DT",
-                category: "anniversaire", // TRÈS IMPORTANT
-                image: "./images/anniversaire/gateau-chocolat.jpg",
-                description: "Gâteau au chocolat belge avec cœur fondant"
-            },
-            {
-                id: Date.now() + 2,
-                name: "Gâteau Fraise Passion",
-                price: "38.50 DT",
-                category: "anniversaire", // MÊME CATÉGORIE
-                image: "./images/anniversaire/gateau-fraise.jpg", // Créez ce fichier
-                description: "Fraise fraîche et crème passion"
-            },
-            
-            // ========== MARIAGES ==========
-            {
-                id: Date.now() + 3,
-                name: "Gâteau de Mariage Classique",
-                price: "120.00 DT",
-                category: "mariage", // EXACTEMENT "mariage"
-                image: "./images/mariage/gateau-mariage-1.jpg", // Créez ce fichier
-                description: "Élégant gâteau à étages pour mariage"
-            },
-            {
-                id: Date.now() + 4,
-                name: "Gâteau Royal Blanc",
-                price: "150.00 DT",
-                category: "mariage", // EXACTEMENT "mariage"
-                image: "./images/mariage/gateau-mariage-2.jpg", // Créez ce fichier
-                description: "Blanc pur avec décorations en sucre"
-            },
-            
-            // ========== QUOTIDIEN ==========
-            {
-                id: Date.now() + 5,
-                name: "Gâteau Carotte Quotidien",
-                price: "25.00 DT",
-                category: "quotidien", // EXACTEMENT "quotidien"
-                image: "./images/quotidien/gateau-carotte.jpg", // Créez ce fichier
-                description: "Parfait pour le goûter familial"
-            },
-            {
-                id: Date.now() + 6,
-                name: "Gâteau Vanille Noisette",
-                price: "28.00 DT",
-                category: "quotidien", // EXACTEMENT "quotidien"
-                image: "./images/quotidien/gateau-vanille.jpg", // Créez ce fichier
-                description: "Vanille de Madagascar et noisettes grillées"
-            }
-        ];
-        
-        // Sauvegarder
-        localStorage.setItem('delices-gateaux', JSON.stringify(initialProducts));
-        console.log(`✅ ${initialProducts.length} produits initiaux créés`);
-        
-        // Vider le cache pour forcer le rechargement
-        products = [];
-        productsLoaded = false;
-        
-        return true;
-    }
-    return false;
-};
-
-// Exécuter l'initialisation
-const wasInitialized = checkStorage();
-if (wasInitialized) {
-    console.log("🔄 Redémarrage nécessaire...");
-    // Forcer le rechargement des produits
-    setTimeout(() => {
-        if (typeof loadProducts === 'function') {
-            loadProducts();
-            if (typeof displayProducts === 'function') {
-                displayProducts();
-            }
-        }
-    }, 100);
-}
-
-            
             
             const container = document.getElementById('products-container');
             if (!container) return;
-            
-            // Dans loadProducts(), cherchez :
-if (products.length === 0) {
-    console.log("⚠️ Aucun produit trouvé - produits par défaut");
-    products = [
-        {
-            id: 1,
-            name: "Gâteau Démo Chocolat",
-            price: "49.99 DT",
-            category: "anniversaire", // CATÉGORIE CORRECTE
-            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-            description: "Gâteau artisanal au chocolat belge"
-        }
-    ];
-    productsLoaded = true;
-}
-
-// REMPLACEZ PAR :
-if (products.length === 0) {
-    console.log("⚠️ Aucun produit trouvé - vérification localStorage...");
-    
-    // Vérifier à nouveau localStorage
-    const stored = localStorage.getItem('delices-gateaux');
-    if (stored) {
-        try {
-            const parsed = JSON.parse(stored);
-            products = parsed;
-            console.log(`✅ ${products.length} produits chargés depuis localStorage`);
-        } catch (e) {
-            console.error("❌ Erreur parsing:", e);
-            products = createDefaultProducts();
-        }
-    } else {
-        console.log("🆕 Création produits par défaut avec catégories variées");
-        products = [
-            {
-                id: 1,
-                name: "Gâteau Chocolat Anniversaire",
-                price: "45.00 DT",
-                category: "anniversaire", // CORRECT
-                image: "./images/anniversaire/gateau-chocolat.jpg",
-                description: "Gâteau au chocolat belge"
-            },
-            {
-                id: 2,
-                name: "Gâteau Mariage Élégant",
-                price: "120.00 DT",
-                category: "mariage", // CORRECT
-                image: "./images/mariage/gateau-mariage-1.jpg",
-                description: "Élégant pour mariage"
-            },
-            {
-                id: 3,
-                name: "Gâteau Quotidien Carotte",
-                price: "25.00 DT",
-                category: "quotidien", // CORRECT
-                image: "./images/quotidien/gateau-carotte.jpg",
-                description: "Parfait quotidien"
-            }
-        ];
-    }
-    productsLoaded = true;
-}
             
             let html = '';
             products.forEach((product, index) => {
@@ -2130,11 +1954,23 @@ if (products.length === 0) {
                     categoryName = 'Quotidien';
                 }
                 
-                let imageSrc = product.image;
+                // Utiliser l'image du produit ou une image par défaut
+                let imageSrc = product.image || '';
                 if (product.imageKey) {
                     const imageData = localStorage.getItem(product.imageKey);
                     if (imageData && imageData.startsWith('data:image')) {
                         imageSrc = imageData;
+                    }
+                }
+                
+                // Si pas d'image, utiliser une image SVG par défaut
+                if (!imageSrc) {
+                    if (product.category === 'anniversaire') {
+                        imageSrc = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">🎂 ' + product.name + '</text></svg>';
+                    } else if (product.category === 'mariage') {
+                        imageSrc = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">💒 ' + product.name + '</text></svg>';
+                    } else {
+                        imageSrc = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">🍰 ' + product.name + '</text></svg>';
                     }
                 }
                 
@@ -2146,7 +1982,7 @@ if (products.length === 0) {
                                  alt="${product.name}" 
                                  class="product-img"
                                  loading="lazy"
-                                 onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\" viewBox=\"0 0 400 300\"><rect width=\"400\" height=\"300\" fill=\"%23FFE4CC\"/><text x=\"200\" y=\"150\" font-family=\"Arial\" font-size=\"24\" fill=\"%238B4513\" text-anchor=\"middle\">${product.name}</text></svg>'; this.style.objectFit=\'contain\'; this.style.padding=\'20px\'; this.style.backgroundColor=\'#FFE4CC\';">
                         </div>
                         <div class="product-info">
                             <h3 class="product-title">${product.name}</h3>
@@ -2162,6 +1998,9 @@ if (products.length === 0) {
             
             container.innerHTML = html;
             showCategory(currentCategory);
+            
+            // Corriger les images après le chargement
+            setTimeout(fixMobileImages, 100);
         }
 
         // ============================================
@@ -2197,7 +2036,7 @@ if (products.length === 0) {
         }
 
         // ============================================
-        // FONCTIONS DU PANIER OPTIMISÉES
+        // FONCTIONS DU PANIER
         // ============================================
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
@@ -2237,13 +2076,20 @@ if (products.length === 0) {
                 const itemTotal = numericPrice * item.quantity;
                 total += itemTotal;
                 
+                // Image par défaut pour le panier
+                let itemImage = item.image;
+                if (!itemImage || itemImage === '') {
+                    itemImage = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="60" height="60" fill="%23FFE4CC"/><text x="30" y="30" font-family="Arial" font-size="14" fill="%238B4513" text-anchor="middle">🎂</text></svg>';
+                }
+                
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item';
                 cartItem.innerHTML = `
                     <div class="cart-item-image">
-                        <img src="${item.image}" 
+                        <img src="${itemImage}" 
                              alt="${item.name}"
-                             loading="lazy">
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" viewBox=\"0 0 60 60\"><rect width=\"60\" height=\"60\" fill=\"%23FFE4CC\"/><text x=\"30\" y=\"30\" font-family=\"Arial\" font-size=\"14\" fill=\"%238B4513\" text-anchor=\"middle\">🎂</text></svg>'">
                     </div>
                     <div class="cart-item-info">
                         <h4>${item.name}</h4>
@@ -2272,9 +2118,6 @@ if (products.length === 0) {
                     </div>
                 `;
             }
-            
-            // Ajouter l'événement au bouton "Passer la commande"
-            document.querySelector('.checkout-btn').onclick = checkout;
         }
 
         function updateQuantity(itemIndex, newQuantity) {
@@ -2310,7 +2153,7 @@ if (products.length === 0) {
         }
 
         // ============================================
-        // FONCTION CHECKOUT (PASSER LA COMMANDE)
+        // FONCTION CHECKOUT
         // ============================================
         function checkout() {
             if (cart.length === 0) {
@@ -2411,7 +2254,7 @@ if (products.length === 0) {
             }
         }
 
-         // ============================================
+        // ============================================
         // RAFRAÎCHISSEMENT INTELLIGENT
         // ============================================
         function setupSmartRefresh() {
@@ -2464,15 +2307,21 @@ if (products.length === 0) {
         document.addEventListener('DOMContentLoaded', function() {
             console.log("🚀 Dolcino - Site chargé");
             
+            // Correction des images
+            fixMobileImages();
+            
+            // Chargement initial
             displayProducts();
             updateCart();
             setupSmartRefresh();
             
+            // Gestion du formulaire
             document.getElementById('customer-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 showConfirmationModal();
             });
             
+            // Navigation fluide
             document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -2489,16 +2338,17 @@ if (products.length === 0) {
                 });
             });
             
+            // Message de bienvenue
             setTimeout(() => {
                 if (!localStorage.getItem('welcome-shown')) {
                     showNotification('🎂 Bienvenue chez Dolcino !');
                     localStorage.setItem('welcome-shown', 'true');
                 }
             }, 1000);
+            
+            // Correction finale après tout chargement
+            setTimeout(fixMobileImages, 2000);
         });
     </script>
-
-
-
 </body>
 </html>
