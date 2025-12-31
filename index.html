@@ -244,12 +244,16 @@
         }
         
         /* CATÉGORIES SECTION */
-        .collections-section {
-            padding: 60px 20px;
-            text-align: center;
-            background: linear-gradient(rgba(255, 248, 240, 0.85), rgba(148, 129, 103, 0.9))
-         url('images/fond.jpg');
-        }
+        /* CATÉGORIES SECTION - AVEC IMAGE DE FOND */
+.collections-section {
+    padding: 60px 20px;
+    text-align: center;
+    background: 
+        linear-gradient(rgba(255, 248, 240, 0.85), rgba(255, 248, 240, 0.9)),
+        url('images/fond.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
         
         .section-title {
             font-size: 2.5em;
@@ -2393,6 +2397,7 @@
     
 </body>
 </html>
+
 
 
 
