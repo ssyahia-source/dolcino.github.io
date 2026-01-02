@@ -12,6 +12,7 @@
             --dark: #8B4513; /* Brun chocolat */
             --light: #FFF8F0; /* Crème très claire */
         }
+
         
         * {
             margin: 0;
@@ -559,26 +560,41 @@
                         </div>
                         
                         <div class="form-group">
-                            <label><i class="fas fa-image"></i> Image principale</label>
-                            <div class="upload-area" onclick="document.getElementById('mainImageFile').click()">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Cliquez pour sélectionner une image</p>
-                                <p><small>Formats acceptés: JPG, PNG, GIF (max 2MB)</small></p>
-                            </div>
-                            <input type="file" id="mainImageFile" accept="image/*" style="display: none;" onchange="handleMainImageUpload(event)">
-                            
-                            <div id="mainImagePreview" class="image-preview" style="margin-top: 15px; display: none;">
-                                <img id="mainPreviewImg" src="" alt="Aperçu">
-                            </div>
-                            
-                            <div id="mainImageInfo" style="display: none; margin-top: 10px;">
-                                <strong>Image sélectionnée:</strong>
-                                <span id="selectedFileName"></span>
-                                <button type="button" onclick="removeMainImage()" style="background: none; border: none; color: #FF4081; cursor: pointer; margin-left: 10px;">
-                                    <i class="fas fa-times"></i> Retirer
-                                </button>
-                            </div>
-                        </div>
+    <label><i class="fas fa-image"></i> Image principale</label>
+    
+    <!-- Sélecteur d'images existantes -->
+    <select id="imageSelector" class="form-control" onchange="handleImageSelection(this.value)">
+        <option value="">-- Choisir une image existante --</option>
+        <!-- Les options seront chargées dynamiquement -->
+    </select>
+    
+    <!-- OU uploader nouvelle image -->
+    <div style="margin: 15px 0; text-align: center; color: #666;">
+        <span style="display: inline-block; padding: 10px;">OU</span>
+    </div>
+    
+    <div class="upload-area" onclick="document.getElementById('mainImageFile').click()">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>Uploader une nouvelle image</p>
+        <p><small>Formats acceptés: JPG, PNG, GIF (max 2MB)</small></p>
+    </div>
+    <input type="file" id="mainImageFile" accept="image/*" style="display: none;" onchange="handleMainImageUpload(event)">
+    
+    <!-- Aperçu -->
+    <div id="mainImagePreview" class="image-preview" style="margin-top: 15px; display: none;">
+        <img id="mainPreviewImg" src="" alt="Aperçu">
+    </div>
+    
+    <!-- Information sur l'image sélectionnée -->
+    <div id="mainImageInfo" style="display: none; margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+        <strong>Image sélectionnée:</strong>
+        <span id="selectedFileName"></span>
+        <span id="selectedImageType"></span>
+        <button type="button" onclick="removeMainImage()" style="background: none; border: none; color: #FF4081; cursor: pointer; margin-left: 10px;">
+            <i class="fas fa-times"></i> Retirer
+        </button>
+    </div>
+</div>
                         
                         <div class="form-group">
                             <label><i class="fas fa-images"></i> Images supplémentaires (optionnel)</label>
@@ -1755,5 +1771,236 @@
             loadProductSelect();
         });
     </script>
+// Ajoutez ces variables globales
+let selectedImageFromGitHub = null;
+let uploadedImageData = null;
+
+// Fonction pour charger la liste des images
+function loadImageList() {
+    const selector = document.getElementById('imageSelector');
+    
+    // Vider le sélecteur
+    selector.innerHTML = '<option value="">-- Choisir une image existante --</option>';
+    
+    // Ajouter les catégories
+    const categories = {
+        'Gâteaux d\'Anniversaire': [
+            'nuage.jpg',
+            'paris pistache.jpg',
+            'tarte fruit Rouge.jpg',
+            'cheescake vanille.jpg',
+            'opera.jpg'
+        ],
+        'Cookies': [
+            'Cookies double.jpg',
+            'Cookies croquant.jpg',
+            'Cookies choco.jpg',
+            'Cookies avoine.jpg'
+        ],
+        'Chocolats': [
+            'fondant.jpg',
+            'truff fondant.jpg',
+            'caramel et lait.jpg',
+            'fromboise.jpg'
+        ],
+        'Spécialités': [
+            'le coeur.jpg'
+        ],
+        'Fonds': [
+            'fond.jpg',
+            'fond2.jpg'
+        ]
+    };
+    
+    // Ajouter les images par catégorie
+    Object.entries(categories).forEach(([category, images]) => {
+        const group = document.createElement('optgroup');
+        group.label = category;
+        
+        images.forEach(imageName => {
+            const option = document.createElement('option');
+            option.value = imageName;
+            option.textContent = imageName;
+            group.appendChild(option);
+        });
+        
+        selector.appendChild(group);
+    });
+    
+    // Option pour uploader
+    const uploadOption = document.createElement('option');
+    uploadOption.value = 'upload';
+    uploadOption.textContent = '➕ Uploader une nouvelle image';
+    selector.appendChild(uploadOption);
+}
+
+// Gestion de la sélection d'image
+function handleImageSelection(imageName) {
+    const preview = document.getElementById('mainImagePreview');
+    const info = document.getElementById('mainImageInfo');
+    const fileName = document.getElementById('selectedFileName');
+    const imageType = document.getElementById('selectedImageType');
+    
+    if (imageName === 'upload') {
+        // Masquer l'aperçu existant
+        preview.style.display = 'none';
+        info.style.display = 'none';
+        selectedImageFromGitHub = null;
+        
+        // Montrer le champ d'upload
+        document.getElementById('mainImageFile').style.display = 'block';
+        return;
+    }
+    
+    if (imageName) {
+        // Cacher le champ d'upload
+        document.getElementById('mainImageFile').style.display = 'none';
+        
+        // Stocker l'image sélectionnée
+        selectedImageFromGitHub = imageName;
+        uploadedImageData = null;
+        
+        // Afficher l'aperçu depuis GitHub
+        const imageUrl = `https://raw.githubusercontent.com/votre-username/votre-repo/main/images/${imageName}`;
+        document.getElementById('mainPreviewImg').src = imageUrl;
+        preview.style.display = 'flex';
+        
+        // Afficher les infos
+        fileName.textContent = imageName;
+        imageType.textContent = ' (Image GitHub)';
+        info.style.display = 'block';
+    } else {
+        // Aucune image sélectionnée
+        preview.style.display = 'none';
+        info.style.display = 'none';
+        selectedImageFromGitHub = null;
+        uploadedImageData = null;
+    }
+}
+
+// Modifiez la fonction handleMainImageUpload
+function handleMainImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    if (file.size > 2 * 1024 * 1024) {
+        alert('L\'image est trop volumineuse (max 2MB)');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        uploadedImageData = {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: e.target.result
+        };
+        
+        // Afficher l'aperçu
+        document.getElementById('mainPreviewImg').src = e.target.result;
+        document.getElementById('mainImagePreview').style.display = 'flex';
+        
+        // Afficher les infos
+        document.getElementById('selectedFileName').textContent = file.name;
+        document.getElementById('selectedImageType').textContent = ' (Nouvelle image uploadée)';
+        document.getElementById('mainImageInfo').style.display = 'block';
+        
+        // Mettre à jour le sélecteur
+        document.getElementById('imageSelector').value = 'upload';
+    };
+    
+    reader.readAsDataURL(file);
+}
+
+// Modifiez la fonction removeMainImage
+function removeMainImage() {
+    selectedImageFromGitHub = null;
+    uploadedImageData = null;
+    document.getElementById('mainImagePreview').style.display = 'none';
+    document.getElementById('mainImageInfo').style.display = 'none';
+    document.getElementById('imageSelector').value = '';
+    document.getElementById('mainImageFile').value = '';
+}
+
+// Modifiez la fonction de soumission du formulaire
+document.getElementById('addForm').onsubmit = function(e) {
+    e.preventDefault();
+    
+    if (!selectedImageFromGitHub && !uploadedImageData) {
+        alert('Veuillez sélectionner une image');
+        return false;
+    }
+    
+    const category = document.getElementById('productCategory').value;
+    const productType = document.getElementById('productType').value;
+    
+    // Collecter les ingrédients
+    const ingredients = [];
+    document.querySelectorAll('.ingredient-item input').forEach(input => {
+        if (input.value.trim()) {
+            ingredients.push(input.value.trim());
+        }
+    });
+    
+    // Générer un ID unique
+    const productId = Date.now();
+    
+    // Gestion de l'image
+    let imageData = null;
+    
+    if (uploadedImageData) {
+        // Nouvelle image uploadée
+        const imageKey = `image_${productId}_main`;
+        localStorage.setItem(imageKey, uploadedImageData.data);
+        imageData = {
+            type: 'uploaded',
+            key: imageKey
+        };
+    } else if (selectedImageFromGitHub) {
+        // Image existante de GitHub
+        imageData = {
+            type: 'github',
+            url: `https://raw.githubusercontent.com/votre-username/votre-repo/main/images/${selectedImageFromGitHub}`
+        };
+    }
+    
+    // Créer le nouveau gâteau
+    const newProduct = {
+        id: productId,
+        name: document.getElementById('productName').value,
+        price: document.getElementById('productPrice').value,
+        category: category,
+        type: productType || undefined,
+        image: imageData, // Stocke les infos sur l'image
+        description: document.getElementById('productDescription').value || 'Gâteau artisanal fait maison',
+        ingredients: ingredients,
+        allergens: document.getElementById('allergens').value || 'Aucun',
+        portions: parseInt(document.getElementById('portions').value) || 8,
+        createdAt: new Date().toISOString()
+    };
+    
+    loadProducts();
+    products.push(newProduct);
+    saveProducts();
+    
+    showMessage('addMessage', `✅ Gâteau "${newProduct.name}" ajouté avec succès !`, 'success');
+    
+    resetForm();
+    loadProductSelect();
+    
+    return false;
+};
+
+// Ajoutez dans l'initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    loadProducts();
+    loadProductTypes();
+    loadTypeSelect();
+    loadProductSelect();
+    loadImageList(); // ← AJOUTEZ CETTE LIGNE
+});
+
 </body>
+
 </html>
