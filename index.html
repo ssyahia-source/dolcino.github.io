@@ -383,24 +383,30 @@
 }
         
         .filters {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 15px;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
     margin-bottom: 40px;
-    backdrop-filter: blur(5px);
+    flex-wrap: wrap;
 }
 
 .filter-btn {
-    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px 25px;
+    border: 2px solid var(--dark);
+    background: transparent;
+    color: var(--dark);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
 }
-        
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: var(--dark);
-            color: white;
-        }
-        
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--dark);
+    color: white;
+}
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -2387,6 +2393,7 @@
     
 </body>
 </html>
+
 
 
 
