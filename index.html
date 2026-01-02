@@ -1831,23 +1831,36 @@
     // FONCTIONS UTILITAIRES POUR LES IMAGES
     // ============================================
     function getProductImage(product) {
-        // Si le produit a une image stockée dans localStorage
-        if (product.imageKey) {
-            const storedImage = localStorage.getItem(product.imageKey);
-            if (storedImage && storedImage.startsWith('data:image')) {
-                return storedImage;
-            }
+    // 1. Si le produit a une image uploadée
+    if (product.image && product.image.type === 'uploaded' && product.image.key) {
+        const storedImage = localStorage.getItem(product.image.key);
+        if (storedImage && storedImage.startsWith('data:image')) {
+            return storedImage;
         }
-        
-        // Sinon, utiliser une image par défaut selon la catégorie
-        const defaultImages = {
-            anniversaire: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🎂 ' + (product.name || 'Anniversaire') + '</text></svg>',
-            mariage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">💒 ' + (product.name || 'Mariage') + '</text></svg>',
-            quotidien: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFD166"/><text x="200" y="150" font-family="Arial" font-size="20" fill="%238B4513" text-anchor="middle">🍰 ' + (product.name || 'Quotidien') + '</text></svg>'
-        };
-        
-        return defaultImages[product.category] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>';
     }
+    
+    // 2. Si le produit a une URL GitHub
+    if (product.image && product.image.type === 'github' && product.image.url) {
+        return product.image.url;
+    }
+    
+    // 3. Si ancien format (compatibilité)
+    if (product.imageKey) {
+        const storedImage = localStorage.getItem(product.imageKey);
+        if (storedImage) {
+            return storedImage;
+        }
+    }
+    
+    // 4. Image par défaut selon la catégorie
+    const defaultImages = {
+        anniversaire: `https://raw.githubusercontent.com/votre-username/votre-repo/main/images/nuage.jpg`,
+        mariage: `https://raw.githubusercontent.com/votre-username/votre-repo/main/images/le coeur.jpg`,
+        quotidien: `https://raw.githubusercontent.com/votre-username/votre-repo/main/images/Cookies double.jpg`
+    };
+    
+    return defaultImages[product.category] || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23FFE4CC"/><text x="200" y="150" font-family="Arial" font-size="24" fill="%238B4513" text-anchor="middle">Dolcino 🎂</text></svg>';
+}
 
     function getCategoryDistribution() {
         const counts = { anniversaire: 0, mariage: 0, quotidien: 0, autres: 0 };
@@ -2393,6 +2406,7 @@
     
 </body>
 </html>
+
 
 
 
